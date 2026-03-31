@@ -11,14 +11,14 @@ description: Manage evan-lei's personal GitHub Pages site (evan-lei.github.io). 
 |------|-----|
 | 公开地址 | `https://evan-lei.github.io/` |
 | GitHub 仓库 | `https://github.com/evan-lei/evan-lei.github.io` |
-| 本地工作目录 | `/Users/user/Desktop/Minho` |
+| 本地工作目录 | `/Users/user/Documents/evan-lei.github.io` |
 | GitHub 用户名 | `evan-lei` |
 | Git 邮箱 | `ding.lei@hellogroup.com` |
 
 ## 目录结构
 
 ```
-/Users/user/Desktop/Minho/          ← 本地工作目录（对应 evan-lei.github.io 仓库）
+/Users/user/Documents/evan-lei.github.io/          ← 本地工作目录（对应 evan-lei.github.io 仓库）
 ├── index.html                       ← 根目录主页（项目入口列表）
 ├── 455fdbdc9ef2517c3fa35ebb6aaf2955.txt  ← 微信域名验证文件（勿删）
 ├── .gitignore
@@ -72,7 +72,7 @@ git remote set-url pages https://github.com/evan-lei/evan-lei.github.io.git
 编辑 `fishing/index.html` 或替换 `fishing/source/` 内的素材后：
 
 ```bash
-cd /Users/user/Desktop/Minho
+cd /Users/user/Documents/evan-lei.github.io
 git add fishing/
 git commit -m "update fishing courseware"
 git push pages main
@@ -80,7 +80,7 @@ git push pages main
 
 ## 工作流：添加新项目
 
-1. 在 `/Users/user/Desktop/Minho/` 下新建项目目录：
+1. 在 `/Users/user/Documents/evan-lei.github.io/` 下新建项目目录：
    ```bash
    mkdir -p <项目名>/source
    ```
