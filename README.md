@@ -11,7 +11,7 @@
 | 项目 | 目录 | 访问链接 | 简介 |
 |------|------|----------|------|
 | 跟着爸爸去中国钓鱼 | `fishing/` | [evan-lei.github.io/fishing/](https://evan-lei.github.io/fishing/) | 幼儿园互动课件，带孩子认识中国各地的鱼 🎣 |
-| 三亚 5 天 4 宿旅游攻略 | `sanya/` | [evan-lei.github.io/sanya/](https://evan-lei.github.io/sanya/) | 2023 年三亚旅行全攻略，含行程、景点地图、物品清单 🌴 |
+| 跟着爸爸去三亚 | `sanya/` | [evan-lei.github.io/sanya/](https://evan-lei.github.io/sanya/) | 2023 年三亚旅行全攻略，含行程、景点地图、物品清单 🌴 |
 
 ---
 
