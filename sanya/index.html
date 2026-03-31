@@ -449,12 +449,204 @@
     }
     footer a { color: var(--ocean); text-decoration: none; }
 
+    /* ═══════════════════ 游玩实录 ═══════════════════ */
+
+    .sanya-trip-divider {
+      text-align: center;
+      margin: 64px 0 28px;
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: clamp(1.2rem, 4vw, 1.9rem);
+      color: var(--ocean);
+      position: relative;
+    }
+    .sanya-trip-divider::before,
+    .sanya-trip-divider::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ocean), transparent);
+      margin: 10px auto;
+      max-width: 480px;
+    }
+
+    .sanya-trip-stats {
+      display: flex;
+      justify-content: center;
+      max-width: 560px;
+      margin: 0 auto 52px;
+      border: 1px solid rgba(14,165,233,0.25);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(14,165,233,0.04);
+    }
+    .sanya-stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 18px 6px;
+      border-right: 1px solid rgba(14,165,233,0.18);
+    }
+    .sanya-stat-item:last-child { border-right: none; }
+    .sanya-stat-num { font-size: 1.7rem; font-weight: 700; color: var(--ocean); line-height: 1.1; }
+    .sanya-stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
+    /* Featured video */
+    .sanya-video-hero {
+      margin: 0 auto 56px;
+      max-width: 780px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .sanya-video-hero video { width: 100%; display: block; max-height: 440px; object-fit: cover; }
+    .sanya-video-hero-caption {
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: rgba(0,0,0,0.3);
+    }
+
+    /* Polaroid wall */
+    .polaroid-wall {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      padding: 12px 12px 48px;
+    }
+    .polaroid-card {
+      background: #fff;
+      padding: 8px 8px 34px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
+      position: relative;
+      width: 170px;
+      flex-shrink: 0;
+    }
+    .polaroid-card:nth-child(1)  { transform: rotate(-3.2deg); }
+    .polaroid-card:nth-child(2)  { transform: rotate(1.8deg); }
+    .polaroid-card:nth-child(3)  { transform: rotate(-1.5deg); }
+    .polaroid-card:nth-child(4)  { transform: rotate(2.9deg); }
+    .polaroid-card:nth-child(5)  { transform: rotate(-0.7deg); }
+    .polaroid-card:nth-child(6)  { transform: rotate(3.5deg); }
+    .polaroid-card:nth-child(7)  { transform: rotate(-2.4deg); }
+    .polaroid-card:nth-child(8)  { transform: rotate(1.2deg); }
+    .polaroid-card:nth-child(9)  { transform: rotate(-3.8deg); }
+    .polaroid-card:nth-child(10) { transform: rotate(0.6deg); }
+    .polaroid-card:nth-child(11) { transform: rotate(-1.9deg); }
+    .polaroid-card:nth-child(12) { transform: rotate(2.7deg); }
+    .polaroid-card:hover {
+      transform: rotate(0deg) scale(1.06) !important;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.55);
+      z-index: 10;
+    }
+    .polaroid-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+    .polaroid-caption {
+      text-align: center;
+      color: #555;
+      font-size: 0.7rem;
+      font-family: 'Ma Shan Zheng', serif;
+      padding-top: 5px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Film strip */
+    .film-strip-hint {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: -8px 0 12px;
+      letter-spacing: 0.03em;
+    }
+    .film-strip-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 12px 20px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(14,165,233,0.35) transparent;
+      margin-bottom: 52px;
+    }
+    .film-strip-scroll::-webkit-scrollbar { height: 3px; }
+    .film-strip-scroll::-webkit-scrollbar-track { background: transparent; }
+    .film-strip-scroll::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.35); border-radius: 2px; }
+    .film-photo {
+      flex-shrink: 0;
+      height: 200px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.25s;
+      background: #000;
+    }
+    .film-photo:hover { border-color: var(--ocean); transform: translateY(-5px); }
+    .film-photo .film-still { height: 100%; width: auto; display: block; object-fit: cover; transition: opacity 0.2s; }
+    .film-photo .live-dot {
+      position: absolute;
+      bottom: 7px; right: 7px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--ocean);
+      box-shadow: 0 0 8px var(--ocean);
+      animation: live-pulse 2s infinite;
+      pointer-events: none;
+    }
+    @keyframes live-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+    .film-photo .live-video-wrap {
+      position: absolute; inset: 0;
+      display: none;
+      pointer-events: none;
+    }
+    .film-photo .live-video-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    .film-photo.live-playing .film-still { opacity: 0; }
+    .film-photo.live-playing .live-video-wrap { display: block; }
+    .film-photo.live-playing .live-dot { background: #f97316; box-shadow: 0 0 8px #f97316; animation: none; }
+
+    /* Other videos */
+    .sanya-video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .sanya-video-item video {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      background: #000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .sanya-video-label {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 8px 0 0;
+    }
+
     /* ═══════════════════ RESPONSIVE ═══════════════════ */
     @media (max-width: 600px) {
       .tl-time { min-width: 90px; font-size: 0.72rem; }
       .day-body { padding: 18px; }
       .day-header { padding: 16px 18px; }
       .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
+      .sanya-video-grid { grid-template-columns: 1fr; }
+      .polaroid-card { width: 140px; }
+      .film-photo { height: 150px; }
     }
   </style>
 </head>
@@ -642,6 +834,146 @@
     </ul>
   </div>
 
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║          游 玩 实 录                  ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+
+  <div class="sanya-trip-divider reveal">✦ 游玩实录 · 阳光 海浪 一家人 ✦</div>
+
+  <div class="sanya-trip-stats reveal">
+    <div class="sanya-stat-item">
+      <div class="sanya-stat-num">58</div>
+      <div class="sanya-stat-label">📸 张照片</div>
+    </div>
+    <div class="sanya-stat-item">
+      <div class="sanya-stat-num">5</div>
+      <div class="sanya-stat-label">🎬 段视频</div>
+    </div>
+    <div class="sanya-stat-item">
+      <div class="sanya-stat-num">5天4宿</div>
+      <div class="sanya-stat-label">🌴 三亚</div>
+    </div>
+    <div class="sanya-stat-item">
+      <div class="sanya-stat-num">一家三口</div>
+      <div class="sanya-stat-label">👨‍👩‍👧 温馨</div>
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>视频留念</div>
+  <div class="sanya-video-hero reveal">
+    <video controls preload="metadata" playsinline>
+      <source src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-video-01.mp4" type="video/mp4">
+    </video>
+    <div class="sanya-video-hero-caption">🌊 点击播放 · 带走一片海</div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>定格时光</div>
+  <div class="polaroid-wall">
+    <div class="polaroid-card" data-photo="2"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-02.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">☀️ 阳光正好</div></div>
+    <div class="polaroid-card" data-photo="6"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-06.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🌴 椰风习习</div></div>
+    <div class="polaroid-card" data-photo="10"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-10.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🌊 大海呼唤</div></div>
+    <div class="polaroid-card" data-photo="14"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-14.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🤿 探索海底</div></div>
+    <div class="polaroid-card" data-photo="18"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-18.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🏝️ 蜈支洲岛</div></div>
+    <div class="polaroid-card" data-photo="22"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-22.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🌅 黄昏漫步</div></div>
+    <div class="polaroid-card" data-photo="26"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-26.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🍖 海鲜大餐</div></div>
+    <div class="polaroid-card" data-photo="30"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-30.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🎡 热带公园</div></div>
+    <div class="polaroid-card" data-photo="36"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-36.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">✨ 美好瞬间</div></div>
+    <div class="polaroid-card" data-photo="42"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-42.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🌺 花海如梦</div></div>
+    <div class="polaroid-card" data-photo="50"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-50.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🌙 海边的夜</div></div>
+    <div class="polaroid-card" data-photo="56"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-56.jpg" alt="三亚留影" loading="lazy"><div class="polaroid-caption">🐚 带走的记忆</div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎞️</span>胶片相册</div>
+  <p class="film-strip-hint">← 左右滑动翻看 · 蓝点 = Live Photo，点击播放</p>
+  <div class="film-strip-scroll" id="filmStrip">
+    <div class="film-photo" data-photo="1" data-live="sanya-live-01.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-01.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="2" data-live="sanya-live-02.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-02.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="3" data-live="sanya-live-03.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-03.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="4" data-live="sanya-live-04.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-04.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="5" data-live="sanya-live-05.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-05.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="6"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-06.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="7"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-07.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="8" data-live="sanya-live-08.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-08.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="9"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-09.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="10"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-10.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="11"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-11.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="12"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-12.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="13"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-13.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="14" data-live="sanya-live-14.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-14.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="15"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-15.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="16" data-live="sanya-live-16.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-16.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="17" data-live="sanya-live-17.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-17.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="18" data-live="sanya-live-18.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-18.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="19"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-19.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="20"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-20.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="21" data-live="sanya-live-21.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-21.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="22" data-live="sanya-live-22.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-22.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="23"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-23.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="24"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-24.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="25" data-live="sanya-live-25.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-25.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="26" data-live="sanya-live-26.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-26.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="27"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-27.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="28"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-28.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="29"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-29.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="30"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-30.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="31"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-31.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="32" data-live="sanya-live-32.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-32.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="33"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-33.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="34"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-34.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="35"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-35.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="36"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-36.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="37"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-37.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="38"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-38.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="39"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-39.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="40"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-40.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="41" data-live="sanya-live-41.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-41.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="42"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-42.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="43" data-live="sanya-live-43.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-43.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="44" data-live="sanya-live-44.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-44.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="45"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-45.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="46"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-46.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="47"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-47.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="48"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-48.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="49"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-49.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="50" data-live="sanya-live-50.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-50.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="51"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-51.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="52"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-52.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="53"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-53.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="54" data-live="sanya-live-54.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-54.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+    <div class="film-photo" data-photo="55"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-55.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="56"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-56.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="57"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-57.jpg" loading="lazy"></div>
+    <div class="film-photo" data-photo="58" data-live="sanya-live-58.mp4"><img class="film-still" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-58.jpg" loading="lazy"><div class="live-dot"></div><div class="live-video-wrap"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>片段回忆</div>
+  <div class="sanya-video-grid reveal">
+    <div class="sanya-video-item">
+      <video controls preload="metadata" playsinline>
+        <source src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-video-02.mp4" type="video/mp4">
+      </video>
+      <div class="sanya-video-label">🏖️ 海边片段</div>
+    </div>
+    <div class="sanya-video-item">
+      <video controls preload="metadata" playsinline>
+        <source src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-video-03.mp4" type="video/mp4">
+      </video>
+      <div class="sanya-video-label">🌊 海浪时刻</div>
+    </div>
+    <div class="sanya-video-item">
+      <video controls preload="metadata" playsinline>
+        <source src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-video-04.mp4" type="video/mp4">
+      </video>
+      <div class="sanya-video-label">🐠 水下探险</div>
+    </div>
+    <div class="sanya-video-item">
+      <video controls preload="metadata" playsinline>
+        <source src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-video-05.mp4" type="video/mp4">
+      </video>
+      <div class="sanya-video-label">🌴 椰林漫步</div>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -679,6 +1011,13 @@
   const lbImg = document.getElementById('lbImg');
   const lbCounter = document.getElementById('lbCounter');
   let allImgs = [], cur = 0;
+  let tripMode = false;
+
+  /* All 58 trip photo URLs */
+  const TRIP_PHOTOS = Array.from({length: 58}, (_, i) =>
+    `https://sanya-1256297898.cos.ap-beijing.myqcloud.com/sanya-photo-${String(i+1).padStart(2,'0')}.jpg`
+  );
+  let tripCur = 0;
 
   function collectImgs() {
     allImgs = Array.from(document.querySelectorAll('.img-wrap img'));
@@ -686,10 +1025,21 @@
 
   function openLb(idx) {
     collectImgs();
+    tripMode = false;
     cur = idx;
     lbImg.src = allImgs[cur].src;
     lbImg.alt = allImgs[cur].alt;
     lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openTripLb(photoNum) {
+    tripMode = true;
+    tripCur = photoNum - 1;
+    lbImg.src = TRIP_PHOTOS[tripCur];
+    lbImg.alt = `三亚游玩照片 ${photoNum}`;
+    lbCounter.textContent = `${tripCur + 1} / ${TRIP_PHOTOS.length}`;
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -700,20 +1050,76 @@
   }
 
   function navigate(dir) {
-    cur = (cur + dir + allImgs.length) % allImgs.length;
-    lbImg.style.opacity = '0';
-    setTimeout(() => {
-      lbImg.src = allImgs[cur].src;
-      lbImg.alt = allImgs[cur].alt;
-      lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
-      lbImg.style.opacity = '1';
-    }, 150);
+    if (tripMode) {
+      tripCur = (tripCur + dir + TRIP_PHOTOS.length) % TRIP_PHOTOS.length;
+      lbImg.style.opacity = '0';
+      setTimeout(() => {
+        lbImg.src = TRIP_PHOTOS[tripCur];
+        lbImg.alt = `三亚游玩照片 ${tripCur + 1}`;
+        lbCounter.textContent = `${tripCur + 1} / ${TRIP_PHOTOS.length}`;
+        lbImg.style.opacity = '1';
+      }, 150);
+    } else {
+      cur = (cur + dir + allImgs.length) % allImgs.length;
+      lbImg.style.opacity = '0';
+      setTimeout(() => {
+        lbImg.src = allImgs[cur].src;
+        lbImg.alt = allImgs[cur].alt;
+        lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+        lbImg.style.opacity = '1';
+      }, 150);
+    }
   }
 
   lbImg.style.transition = 'opacity 0.15s';
 
   document.querySelectorAll('.img-wrap').forEach((wrap, i) => {
     wrap.addEventListener('click', () => { collectImgs(); openLb(i); });
+  });
+
+  /* Polaroid lightbox */
+  document.querySelectorAll('.polaroid-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const photoNum = parseInt(card.dataset.photo, 10);
+      openTripLb(photoNum);
+    });
+  });
+
+  /* Film strip: click opens lightbox; live-dot click toggles live photo */
+  document.querySelectorAll('.film-photo').forEach(fp => {
+    const liveWrap = fp.querySelector('.live-video-wrap');
+    const liveDot = fp.querySelector('.live-dot');
+    const liveFile = fp.dataset.live;
+
+    /* Click anywhere opens lightbox */
+    fp.addEventListener('click', e => {
+      /* If clicked on live-dot, toggle live photo instead */
+      if (liveDot && liveDot.contains(e.target)) {
+        e.stopPropagation();
+        if (fp.classList.contains('live-playing')) {
+          fp.classList.remove('live-playing');
+          const v = liveWrap.querySelector('video');
+          if (v) { v.pause(); v.remove(); }
+        } else if (liveFile) {
+          const v = document.createElement('video');
+          v.src = `https://sanya-1256297898.cos.ap-beijing.myqcloud.com/${liveFile}`;
+          v.autoplay = true;
+          v.muted = true;
+          v.loop = false;
+          v.playsInline = true;
+          liveWrap.appendChild(v);
+          fp.classList.add('live-playing');
+          v.play();
+          v.addEventListener('ended', () => {
+            fp.classList.remove('live-playing');
+            v.remove();
+          });
+        }
+        return;
+      }
+      const photoNum = parseInt(fp.dataset.photo, 10);
+      openTripLb(photoNum);
+    });
   });
 
   document.getElementById('lbClose').addEventListener('click', closeLb);
