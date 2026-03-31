@@ -12,6 +12,7 @@
 |------|------|----------|------|
 | 跟着爸爸去中国钓鱼 | `fishing/` | [evan-lei.github.io/fishing/](https://evan-lei.github.io/fishing/) | 幼儿园互动课件，带孩子认识中国各地的鱼 🎣 |
 | 跟着爸爸去三亚 | `sanya/` | [evan-lei.github.io/sanya/](https://evan-lei.github.io/sanya/) | 三亚旅行全攻略，含行程、景点地图、物品清单 🌴 |
+| 跟着爸爸去沙漠 | `desert/` | [evan-lei.github.io/desert/](https://evan-lei.github.io/desert/) | 北京出发，翁牛特旗沙漠 3 天 2 夜亲子探险 🏜️ |
 
 ---
 
@@ -26,7 +27,9 @@ evan-lei.github.io/
 │   ├── index.html
 │   ├── source/
 │   └── 幼儿课需求.md
-└── sanya/                              # 三亚旅游攻略
+├── sanya/                              # 跟着爸爸去三亚
+│   └── index.html
+└── desert/                             # 跟着爸爸去沙漠
     └── index.html
 ```
 
