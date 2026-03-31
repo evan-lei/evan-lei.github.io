@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跟着爸爸去中国钓鱼 🎣</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', cursive;
+  overflow: hidden;
+  width: 100vw; height: 100vh;
+  background: #111;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===== 幻灯片引擎 ===== */
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0;
+  transform: scale(0.96) translateY(20px);
+  transition: opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1);
+  pointer-events: none; overflow: hidden;
+}
+.slide.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+.slide.exit  { opacity: 0; transform: scale(1.04) translateY(-20px); }
+
+/* ===== 导航 ===== */
+#nav {
+  position: fixed; bottom: 22px; right: 24px;
+  z-index: 9999;
+  display: flex; gap: 10px; align-items: center;
+}
+.nav-btn {
+  background: rgba(255,255,255,0.92); border: none; border-radius: 50%;
+  width: 46px; height: 46px; font-size: 20px; cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 3px 12px rgba(0,0,0,.25);
+  font-family: inherit; display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover { transform: scale(1.15); box-shadow: 0 5px 18px rgba(0,0,0,.35); }
+#slide-num {
+  background: rgba(0,0,0,.45); color: white;
+  padding: 7px 16px; border-radius: 22px;
+  font-size: 15px; font-weight: bold; font-family: inherit;
+}
+#hint {
+  position: fixed; bottom: 26px; left: 24px;
+  color: rgba(255,255,255,.45); font-size: 13px; z-index: 9999;
+}
+#fullscreen-btn {
+  position: fixed; top: 18px; right: 20px;
+  background: rgba(0,0,0,.35); color: white; border: none;
+  border-radius: 10px; padding: 8px 16px;
+  font-size: 14px; cursor: pointer; z-index: 9999;
+  font-family: inherit;
+}
+
+/* ===== 通用元素 ===== */
+.slide-title {
+  font-size: clamp(34px, 6vw, 82px); font-weight: 900;
+  text-align: center; text-shadow: 3px 4px 0 rgba(0,0,0,.18);
+  margin-bottom: 14px; line-height: 1.2;
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+.slide-sub {
+  font-size: clamp(18px, 2.8vw, 38px); text-align: center;
+  opacity: .9; text-shadow: 2px 2px 0 rgba(0,0,0,.12);
+  animation: popIn .8s .18s cubic-bezier(.34,1.56,.64,1) both;
+}
+.fish-card {
+  background: rgba(255,255,255,.22); border-radius: 22px;
+  padding: clamp(14px,2vw,26px) clamp(18px,3vw,38px);
+  text-align: center;
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255,255,255,.35);
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+.fish-card .fish-icon { font-size: clamp(60px,9vw,110px); display: block; }
+.fish-card .fish-name { font-size: clamp(20px,3vw,36px); color: white; font-weight: 900; margin-top: 8px; text-shadow: 2px 2px 0 rgba(0,0,0,.2); }
+.fish-card .fish-fact { font-size: clamp(13px,1.8vw,22px); color: rgba(255,255,255,.88); margin-top: 5px; }
+
+.q-box {
+  background: rgba(255,220,0,.22); border: 3px solid #FFD700;
+  border-radius: 22px; padding: 14px 32px;
+  font-size: clamp(18px,2.8vw,36px); color: #FFF9C4; font-weight: 900;
+  margin-top: 18px; animation: pulse-scale 2.2s ease-in-out infinite;
+}
+
+.cards-row { display: flex; gap: clamp(12px,2.5vw,38px); justify-content: center; flex-wrap: wrap; margin: 18px 0; }
+
+/* ===== 全局动画 ===== */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.4) rotate(-6deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-3deg); }
+  50%     { transform: translateY(-18px) rotate(3deg); }
+}
+@keyframes swimR {
+  0%   { transform: translateX(-200px) scaleX(1); }
+  100% { transform: translateX(calc(100vw + 200px)) scaleX(1); }
+}
+@keyframes swimL {
+  0%   { transform: translateX(calc(100vw + 200px)) scaleX(-1); }
+  100% { transform: translateX(-200px) scaleX(-1); }
+}
+@keyframes bubble-up {
+  0%   { bottom: -30px; opacity: .7; transform: translateX(0) scale(1); }
+  50%  { opacity: .5; transform: translateX(12px) scale(1.2); }
+  100% { bottom: 110%; opacity: 0; transform: translateX(-12px) scale(.6); }
+}
+@keyframes snow-fall {
+  0%   { top: -30px; transform: translateX(0) rotate(0deg); opacity: .9; }
+  100% { top: 110%; transform: translateX(40px) rotate(540deg); opacity: .2; }
+}
+@keyframes wave-anim {
+  0%,100% { transform: rotate(-4deg) translateY(0); }
+  50%     { transform: rotate(4deg) translateY(-10px); }
+}
+@keyframes pulse-scale {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.09); }
+}
+@keyframes celebrate {
+  0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(6deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes shake-x {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-10px); }
+  40%     { transform: translateX(10px); }
+  60%     { transform: translateX(-6px); }
+  80%     { transform: translateX(6px); }
+}
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+@keyframes star-pop {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  60% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.floating { animation: float 3.2s ease-in-out infinite; display: inline-block; }
+.pulsing  { animation: pulse-scale 2.2s ease-in-out infinite; display: inline-block; }
+.d1 { animation-delay: .15s; } .d2 { animation-delay: .3s; } .d3 { animation-delay: .45s; }
+.d4 { animation-delay: .6s; }  .d5 { animation-delay: .75s; }
+
+/* ======================================================== */
+/* SLIDE 1 — 封面 */
+/* ======================================================== */
+#s1 {
+  background: linear-gradient(170deg, #87CEEB 0%, #56CCF2 55%, #27AE60 55%, #1E8449 100%);
+}
+#s1 .water-band {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+  background: linear-gradient(180deg, #2980B9 0%, #1A5276 100%);
+  z-index: 1;
+}
+#s1 .content { position: relative; z-index: 3; text-align: center; }
+#s1 .main-title {
+  font-size: clamp(38px, 6.5vw, 92px); color: #FFF; font-weight: 900;
+  text-shadow: 4px 5px 0 #155724, 0 0 30px rgba(255,255,255,.4);
+  line-height: 1.15; animation: popIn 1s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s1 .sub-title {
+  font-size: clamp(18px, 3vw, 42px); color: #FFFDE7;
+  text-shadow: 2px 2px 0 rgba(0,0,0,.25); margin: 12px 0;
+  animation: popIn 1s .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s1 .icons-row {
+  font-size: clamp(52px, 8.5vw, 108px); display: flex; gap: 20px;
+  justify-content: center; margin-top: 18px;
+  animation: popIn 1s .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s1 .fish-swim {
+  position: absolute; z-index: 2;
+  font-size: clamp(28px, 4vw, 58px);
+}
+#s1 .fish-swim.f1 { bottom: 28%; animation: swimR 9s linear infinite; }
+#s1 .fish-swim.f2 { bottom: 20%; animation: swimR 13s 4s linear infinite; }
+#s1 .fish-swim.f3 { bottom: 33%; animation: swimL 11s 2s linear infinite; }
+#s1 .cloud { position: absolute; font-size: clamp(36px,5vw,70px); top: 6%; animation: float 6s ease-in-out infinite; }
+
+/* ======================================================== */
+/* SLIDE 2 — 中国地图 */
+/* ======================================================== */
+#s2 { background: linear-gradient(140deg, #FFFDE7 0%, #FFF8E1 60%, #FFF3E0 100%); }
+#s2 .slide-title { color: #C62828; }
+#s2 .map-layout { display: flex; gap: clamp(15px,3vw,40px); align-items: center; flex-wrap: wrap; justify-content: center; }
+#s2 .map-svg { width: min(44vw, 340px); height: min(44vw, 340px); animation: popIn .9s .2s both; }
+#s2 .map-facts { display: flex; flex-direction: column; gap: 10px; animation: popIn .9s .4s both; }
+#s2 .fact {
+  background: white; border-radius: 14px; padding: 10px 18px;
+  font-size: clamp(14px,1.9vw,24px); box-shadow: 0 4px 14px rgba(0,0,0,.1);
+  display: flex; align-items: center; gap: 10px; font-weight: 700; color: #333;
+}
+
+/* ======================================================== */
+/* SLIDE 3 — 新疆 */
+/* ======================================================== */
+#s3 {
+  background: linear-gradient(155deg, #FF8C00 0%, #FFB347 40%, #FFD700 70%, #87CEEB 100%);
+}
+#s3 .slide-title { color: #4A1942; }
+#s3 .scene { display: flex; gap: clamp(12px,2.5vw,35px); justify-content: center; flex-wrap: wrap; margin: 18px 0; }
+#s3 .scene-item { text-align: center; animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both; }
+#s3 .scene-item .icon { font-size: clamp(58px,8.5vw,105px); display: block; }
+#s3 .scene-item .label { font-size: clamp(15px,2vw,24px); color: #3E2723; font-weight: 700; margin-top: 6px; }
+#s3 .sand { position: absolute; bottom: 0; left: 0; right: 0; height: 20%; background: linear-gradient(0deg, #C19A6B, #DEB887); z-index: 0; border-radius: 50% 50% 0 0 / 30% 30% 0 0; }
+#s3 .content-wrap { position: relative; z-index: 2; text-align: center; }
+
+/* ======================================================== */
+/* ======================================================== */
+/* 图片浏览器 Modal */
+/* ======================================================== */
+#gallery-modal {
+  display: none;
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(0,0,0,.92);
+  backdrop-filter: blur(8px);
+  flex-direction: column; align-items: center; justify-content: center;
+}
+#gallery-modal.open { display: flex; }
+
+#gallery-modal .gal-close {
+  position: absolute; top: 18px; right: 22px;
+  background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.35);
+  color: white; font-size: 22px; width: 46px; height: 46px;
+  border-radius: 50%; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+#gallery-modal .gal-close:hover { background: rgba(255,255,255,.32); }
+
+#gallery-modal .gal-img-wrap {
+  width: min(88vw, 1000px); height: min(58vh, 580px);
+  position: relative; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  background: #111;
+}
+#gallery-modal .gal-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .4s ease, transform .4s ease;
+}
+#gallery-modal .gal-img-wrap video {
+  width: 100%; height: 100%; object-fit: contain;
+  background: #000; border-radius: 18px;
+  outline: none;
+}
+#gallery-modal .gal-thumb.vid-thumb {
+  background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(18px,2.5vw,26px);
+  position: relative;
+}
+#gallery-modal .gal-thumb.vid-thumb::after {
+  content: '▶';
+  position: absolute; font-size: 14px;
+  color: white; text-shadow: 0 1px 4px rgba(0,0,0,.8);
+}
+#gallery-modal .gal-img-wrap .placeholder-slot {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 4px dashed rgba(255,255,255,.35);
+  border-radius: 18px; color: rgba(255,255,255,.7);
+  font-size: clamp(18px,2.5vw,30px); gap: 16px; padding: 30px;
+  text-align: center;
+}
+#gallery-modal .gal-img-wrap .placeholder-slot .ph-icon { font-size: clamp(60px,8vw,100px); }
+
+#gallery-modal .gal-caption {
+  margin-top: 16px; color: white; font-size: clamp(18px,2.5vw,32px);
+  font-weight: 900; text-shadow: 2px 2px 0 rgba(0,0,0,.4);
+  text-align: center; min-height: 1.4em;
+}
+#gallery-modal .gal-sub {
+  color: rgba(255,255,255,.65); font-size: clamp(13px,1.8vw,20px);
+  text-align: center; margin-top: 4px;
+}
+
+/* 左右箭头 */
+#gallery-modal .gal-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.3);
+  color: white; font-size: 26px; width: 52px; height: 52px; border-radius: 50%;
+  cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .25s;
+  z-index: 2;
+}
+#gallery-modal .gal-arrow:hover { background: rgba(255,255,255,.38); transform: translateY(-50%) scale(1.1); }
+#gallery-modal .gal-arrow.left { left: -64px; }
+#gallery-modal .gal-arrow.right { right: -64px; }
+
+/* 缩略图条 */
+#gallery-modal .gal-thumbs {
+  display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; justify-content: center;
+}
+#gallery-modal .gal-thumb {
+  width: clamp(44px,6vw,68px); height: clamp(34px,4.5vw,52px);
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  border: 2.5px solid rgba(255,255,255,.25); transition: all .2s;
+  flex-shrink: 0;
+}
+#gallery-modal .gal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+#gallery-modal .gal-thumb.active { border-color: white; transform: scale(1.12); box-shadow: 0 0 0 2px #FFD700; }
+#gallery-modal .gal-thumb.ph-thumb {
+  background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;
+  font-size: clamp(18px,2.5vw,28px); border-style: dashed;
+}
+
+/* 触发按钮 */
+.gallery-open-btn {
+  background: linear-gradient(135deg, #FF8C00, #FF4500);
+  border: none; border-radius: 50px; color: white;
+  font-family: inherit; font-weight: 900;
+  font-size: clamp(16px,2.2vw,28px);
+  padding: clamp(10px,1.5vw,16px) clamp(22px,3.5vw,42px);
+  cursor: pointer; margin-top: 18px;
+  box-shadow: 0 6px 20px rgba(255,100,0,.45);
+  transition: transform .2s, box-shadow .2s;
+  animation: popIn .9s .4s cubic-bezier(.34,1.56,.64,1) both;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.gallery-open-btn:hover { transform: scale(1.07); box-shadow: 0 10px 28px rgba(255,100,0,.55); }
+
+/* SLIDE 4 — 新疆的鱼 */
+/* ======================================================== */
+#s4 {
+  background: linear-gradient(180deg, #0099F7 0%, #0055CC 50%, #001E5E 100%);
+}
+#s4 .slide-title { color: #E3F2FD; }
+.bubbles-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.bbl {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+  animation: bubble-up linear infinite;
+}
+#s4 .cards-wrap { position: relative; z-index: 2; display: flex; gap: clamp(14px,3vw,42px); justify-content: center; flex-wrap: wrap; }
+
+/* ======================================================== */
+/* SLIDE 5 — 黑龙江 */
+/* ======================================================== */
+#s5 { background: linear-gradient(170deg, #E3F2FD 0%, #BBDEFB 40%, #90CAF9 70%, #42A5F5 100%); }
+#s5 .slide-title { color: #0D47A1; }
+#s5 .snowflakes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+#s5 .sf { position: absolute; top: -30px; animation: snow-fall linear infinite; }
+#s5 .content-wrap { position: relative; z-index: 3; text-align: center; }
+#s5 .ice-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 22%; background: linear-gradient(0deg, #B3E5FC, #E1F5FE); border-radius: 50% 50% 0 0 / 20% 20% 0 0; z-index: 2; }
+#s5 .scene { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+#s5 .scene-item { text-align: center; animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both; }
+#s5 .scene-item .icon { font-size: clamp(55px,8vw,100px); display: block; }
+#s5 .scene-item .label { font-size: clamp(14px,2vw,24px); color: #1A237E; font-weight: 700; margin-top: 6px; }
+
+/* ======================================================== */
+/* SLIDE 6 — 东北的鱼 */
+/* ======================================================== */
+#s6 { background: linear-gradient(180deg, #1A237E 0%, #283593 40%, #1565C0 100%); }
+#s6 .slide-title { color: #E3F2FD; }
+
+/* ======================================================== */
+/* SLIDE 7 — 四川 */
+/* ======================================================== */
+#s7 {
+  background: linear-gradient(155deg, #1B5E20 0%, #2E7D32 40%, #43A047 70%, #66BB6A 100%);
+}
+#s7 .slide-title { color: #F9FBE7; text-shadow: 3px 3px 0 rgba(0,0,0,.25); }
+#s7 .scene { display: flex; gap: clamp(12px,2.5vw,38px); justify-content: center; flex-wrap: wrap; margin: 18px 0; }
+#s7 .scene-item { text-align: center; animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both; }
+#s7 .scene-item .icon { font-size: clamp(58px,8.5vw,105px); display: block; }
+#s7 .scene-item .label { font-size: clamp(15px,2vw,24px); color: #F9FBE7; font-weight: 700; margin-top: 6px; }
+#s7 .bamboo-bg { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: space-around; font-size: clamp(60px,9vw,120px); opacity: .15; z-index: 0; pointer-events: none; }
+#s7 .content-wrap { position: relative; z-index: 2; text-align: center; }
+
+/* ======================================================== */
+/* ======================================================== */
+/* 熊猫识别互动页 */
+/* ======================================================== */
+#s_panda { background: linear-gradient(160deg, #1B5E20 0%, #2E7D32 40%, #43A047 70%, #66BB6A 100%); }
+#s_panda .panda-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(10px,2vw,18px);
+  width: min(88vw, 760px); margin: 10px auto 0;
+}
+#s_panda .panda-card {
+  background: white; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 6px 22px rgba(0,0,0,.28);
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s_panda .panda-card img {
+  width: 100%; height: clamp(108px,15vw,190px);
+  object-fit: cover; display: block;
+}
+#s_panda .panda-label {
+  font-size: clamp(16px,2.5vw,32px); font-weight: 900;
+  text-align: center; padding: 9px 6px 11px; color: white;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+#s_panda .panda-grid.revealed .panda-label { opacity: 1; transform: translateY(0); }
+.panda-reveal-btn {
+  background: linear-gradient(135deg, #FF6B35, #FFD700);
+  border: none; border-radius: 50px; color: white;
+  font-family: inherit; font-weight: 900;
+  font-size: clamp(16px,2.2vw,28px);
+  padding: clamp(10px,1.5vw,16px) clamp(22px,4vw,50px);
+  cursor: pointer; margin-top: 14px;
+  box-shadow: 0 6px 22px rgba(255,100,0,.4);
+  transition: transform .2s, box-shadow .2s;
+  animation: pulse-scale 2s ease-in-out infinite;
+  display: inline-block;
+}
+.panda-reveal-btn:hover { transform: scale(1.08); }
+.panda-fact {
+  font-size: clamp(14px,2vw,26px); color: #FFF9C4; font-weight: 700;
+  text-align: center; margin-top: 12px; padding: 12px 20px;
+  background: rgba(0,0,0,.22); border-radius: 16px;
+  opacity: 0; transition: opacity .7s ease;
+  max-width: min(88vw, 760px); line-height: 1.6;
+}
+.panda-fact.visible { opacity: 1; }
+
+/* SLIDE 8 — 四川的鱼 */
+/* ======================================================== */
+#s8 { background: linear-gradient(180deg, #004D40 0%, #00695C 50%, #00897B 100%); }
+#s8 .slide-title { color: #E0F2F1; }
+
+/* ======================================================== */
+/* SLIDE 9 — 海南 */
+/* ======================================================== */
+#s9 { background: linear-gradient(180deg, #0288D1 0%, #0277BD 40%, #01579B 100%); }
+#s9 .slide-title { color: white; }
+#s9 .sun { position: absolute; top: 8%; right: 10%; font-size: clamp(55px,8vw,100px); animation: pulse-scale 3s ease-in-out infinite; z-index: 2; }
+#s9 .wave-decor { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1; }
+#s9 .wave-decor svg { animation: wave-anim 4s ease-in-out infinite; width: 100%; }
+#s9 .content-wrap { position: relative; z-index: 3; text-align: center; }
+#s9 .scene { display: flex; gap: clamp(12px,2.5vw,38px); justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+#s9 .scene-item { text-align: center; animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both; }
+#s9 .scene-item .icon { font-size: clamp(58px,8.5vw,105px); display: block; }
+#s9 .scene-item .label { font-size: clamp(15px,2vw,24px); color: #E1F5FE; font-weight: 700; margin-top: 6px; }
+
+/* ======================================================== */
+/* SLIDE 10 — 海里的鱼 */
+/* ======================================================== */
+#s10 { background: radial-gradient(ellipse at top, #006994 0%, #004466 50%, #001122 100%); }
+#s10 .slide-title { color: #B3E5FC; }
+
+/* ======================================================== */
+/* SLIDE 11 — 中国真的很大 */
+/* ======================================================== */
+#s11 { background: linear-gradient(135deg, #C62828 0%, #E53935 40%, #FF5722 100%); }
+#s11 .slide-title { color: white; text-shadow: 3px 4px 0 rgba(0,0,0,.25); }
+#s11 .locations-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  width: min(82vw, 620px); margin: 18px auto 0;
+}
+#s11 .loc {
+  background: rgba(255,255,255,.2); border-radius: 18px; padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+  border: 2px solid rgba(255,255,255,.4);
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+  font-size: clamp(15px,2.2vw,28px); color: white; font-weight: 700;
+}
+#s11 .loc .l-icon { font-size: clamp(32px,4.5vw,52px); flex-shrink: 0; }
+#s11 .map-recap { width: min(70vw,340px); height: auto; animation: popIn .9s .2s both; margin-bottom: 12px; }
+
+/* ======================================================== */
+/* SLIDE 12 — 互动投票 */
+/* ======================================================== */
+#s12 { background: linear-gradient(135deg, #7B1FA2 0%, #D81B60 50%, #FF6F00 100%); }
+#s12 .slide-title { color: white; }
+#s12 .vote-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  width: min(84vw, 660px); margin: 18px auto 0;
+}
+#s12 .vote-btn {
+  background: rgba(255,255,255,.2); border: 3px solid rgba(255,255,255,.45); border-radius: 22px;
+  padding: 18px 10px; text-align: center; cursor: pointer;
+  transition: all .3s; color: white; font-family: inherit;
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s12 .vote-btn:hover { background: rgba(255,255,255,.38); transform: scale(1.06); border-color: white; }
+#s12 .vote-btn.voted { background: rgba(255,255,0,.35); border-color: #FFD700; transform: scale(1.06); }
+#s12 .v-icon { font-size: clamp(45px,7vw,80px); display: block; margin-bottom: 8px; }
+#s12 .v-text { font-size: clamp(16px,2.5vw,30px); font-weight: 900; }
+#s12 .v-count { font-size: clamp(22px,3.2vw,42px); color: #FFD700; margin-top: 5px; display: block; font-weight: 900; }
+#s12 .reset-btn {
+  position: absolute; bottom: 80px; right: 24px;
+  background: rgba(255,255,255,.25); border: 2px solid rgba(255,255,255,.5); color: white;
+  border-radius: 12px; padding: 7px 16px; font-size: 14px;
+  cursor: pointer; font-family: inherit; z-index: 10;
+}
+
+/* ======================================================== */
+/* SLIDE 13 — 路亚装备 */
+/* ======================================================== */
+#s13 { background: linear-gradient(160deg, #6D4C41 0%, #A1887F 50%, #8D6E63 100%); }
+#s13 .slide-title { color: #FFF8E1; }
+#s13 .gear-row { display: flex; gap: clamp(14px,3vw,45px); justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+#s13 .gear-item {
+  text-align: center; background: rgba(255,255,255,.18); border-radius: 22px;
+  padding: clamp(16px,2.5vw,30px) clamp(22px,4vw,50px);
+  border: 2px solid rgba(255,255,255,.3);
+  animation: popIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s13 .gear-icon { font-size: clamp(62px,9vw,115px); display: block; margin-bottom: 10px; }
+#s13 .gear-name { font-size: clamp(18px,2.8vw,34px); color: white; font-weight: 900; }
+#s13 .gear-desc { font-size: clamp(13px,1.8vw,22px); color: rgba(255,255,255,.8); margin-top: 5px; }
+#s13 .tip-box {
+  background: rgba(255,220,0,.25); border: 3px solid #FFD700; border-radius: 18px;
+  padding: 12px 28px; font-size: clamp(16px,2.2vw,28px);
+  color: #FFF9C4; font-weight: 700; margin-top: 10px;
+  animation: popIn .8s .4s both;
+}
+
+/* ======================================================== */
+/* SLIDE 14 — 总结 */
+/* ======================================================== */
+#s14 { background: linear-gradient(160deg, #F57F17 0%, #FF6F00 50%, #BF360C 100%); }
+#s14 .slide-title { color: white; }
+#s14 .fish-parade {
+  font-size: clamp(55px,8.5vw,108px);
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  margin: 14px 0; animation: popIn .9s .2s both;
+}
+#s14 .fish-parade span { display: inline-block; animation: float 3.5s ease-in-out infinite; }
+#s14 .ending {
+  font-size: clamp(30px,5vw,68px); color: white; font-weight: 900;
+  text-shadow: 3px 3px 0 rgba(0,0,0,.25); margin-top: 16px;
+  animation: celebrate 1.2s .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+#s14 .stars { font-size: clamp(30px,4.5vw,60px); animation: popIn .9s .8s both; display: block; }
+#s14 .confetti { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+#s14 .conf-piece { position: absolute; animation: snow-fall linear infinite; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<div id="hint">← → 键盘翻页 &nbsp;|&nbsp; 点击右下角按钮</div>
+<button id="fullscreen-btn" onclick="toggleFullscreen()">⛶ 全屏</button>
+
+<div id="nav">
+  <button class="nav-btn" onclick="prevSlide()">◀</button>
+  <div id="slide-num">1 / 14</div>
+  <button class="nav-btn" onclick="nextSlide()">▶</button>
+</div>
+
+<!-- ===================== SLIDE 1: 封面 ===================== -->
+<div class="slide active" id="s1">
+  <div class="water-band"></div>
+  <div class="cloud" style="left:8%">☁️</div>
+  <div class="cloud" style="left:35%; animation-delay:.8s">☁️</div>
+  <div class="cloud" style="left:65%; animation-delay:1.6s">☁️</div>
+  <div class="cloud" style="left:82%; animation-delay:2.4s; font-size:clamp(28px,4vw,55px)">☁️</div>
+  <div class="fish-swim f1">🐟</div>
+  <div class="fish-swim f2">🐠</div>
+  <div class="fish-swim f3">🐡</div>
+  <div class="content">
+    <div class="main-title">跟着爸爸去中国钓鱼</div>
+    <div class="sub-title">中国有多大？哪里有什么鱼？</div>
+    <div class="icons-row">
+      <span class="floating">🎣</span>
+      <span class="floating d2">🐟</span>
+      <span class="floating d3">🗺️</span>
+      <span class="floating d4">🐠</span>
+      <span class="floating d5">🌊</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 2: 中国地图 ===================== -->
+<div class="slide" id="s2">
+  <div class="slide-title">🗺️ 中国很大很大！</div>
+  <div class="map-layout">
+    <svg class="map-svg" viewBox="0 0 400 370" xmlns="http://www.w3.org/2000/svg">
+      <!-- China simplified shape -->
+      <path d="M 65,45 L 90,28 L 160,22 L 230,25 L 295,18 L 355,38 L 382,72 L 378,110 L 392,145 L 375,185 L 388,225 L 358,268 L 330,305 L 288,332 L 248,348 L 205,352 L 158,338 L 118,315 L 80,278 L 52,240 L 35,195 L 38,148 L 48,108 L 55,70 Z"
+        fill="#A8D5A2" stroke="#2E7D32" stroke-width="3.5" stroke-linejoin="round"/>
+      <!-- Xinjiang -->
+      <ellipse cx="108" cy="108" rx="72" ry="62" fill="#F5A623" opacity=".9" stroke="#E65100" stroke-width="2"/>
+      <text x="108" y="102" text-anchor="middle" font-size="14" font-weight="bold" fill="#3E2723" font-family="inherit">新疆</text>
+      <text x="108" y="122" text-anchor="middle" font-size="22">🏔️</text>
+      <!-- Heilongjiang -->
+      <ellipse cx="318" cy="62" rx="56" ry="38" fill="#4FC3F7" opacity=".9" stroke="#0277BD" stroke-width="2"/>
+      <text x="318" y="56" text-anchor="middle" font-size="13" font-weight="bold" fill="#01579B" font-family="inherit">黑龙江</text>
+      <text x="318" y="74" text-anchor="middle" font-size="18">❄️</text>
+      <!-- Sichuan -->
+      <ellipse cx="215" cy="218" rx="58" ry="46" fill="#66BB6A" opacity=".9" stroke="#2E7D32" stroke-width="2"/>
+      <text x="215" y="212" text-anchor="middle" font-size="14" font-weight="bold" fill="#1B5E20" font-family="inherit">四川</text>
+      <text x="215" y="230" text-anchor="middle" font-size="18">🐼</text>
+      <!-- Hainan -->
+      <ellipse cx="308" cy="298" rx="56" ry="38" fill="#FF7043" opacity=".9" stroke="#BF360C" stroke-width="2"/>
+      <text x="308" y="292" text-anchor="middle" font-size="14" font-weight="bold" fill="#BF360C" font-family="inherit">海南</text>
+      <text x="308" y="310" text-anchor="middle" font-size="18">🌊</text>
+      <!-- lines connecting to center -->
+      <line x1="108" y1="108" x2="215" y2="218" stroke="white" stroke-width="2" stroke-dasharray="8,5" opacity=".5"/>
+      <line x1="318" y1="62" x2="215" y2="218" stroke="white" stroke-width="2" stroke-dasharray="8,5" opacity=".5"/>
+      <line x1="308" y1="298" x2="215" y2="218" stroke="white" stroke-width="2" stroke-dasharray="8,5" opacity=".5"/>
+    </svg>
+    <div class="map-facts">
+      <div class="fact">❄️ 北边 &nbsp;— 黑龙江，很冷！</div>
+      <div class="fact" style="animation-delay:.15s">🏔️ 西边 &nbsp;— 新疆，沙漠雪山！</div>
+      <div class="fact" style="animation-delay:.3s">🐼 中间 &nbsp;— 四川，大山熊猫！</div>
+      <div class="fact" style="animation-delay:.45s">🌊 南边 &nbsp;— 海南，大海！</div>
+      <div class="fact" style="animation-delay:.6s; background:#E8F5E9;">🐟 每个地方都有不同的鱼！</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 3: 新疆 ===================== -->
+<div class="slide" id="s3">
+  <div class="sand"></div>
+  <div class="content-wrap">
+    <div class="slide-title">第一站 🧭 新疆</div>
+    <div class="slide-sub">中国最西边的地方！</div>
+    <div class="scene">
+      <div class="scene-item">
+        <span class="icon floating">🏔️</span>
+        <p class="label">雪山</p>
+      </div>
+      <div class="scene-item d1">
+        <span class="icon floating d1">🌋</span>
+        <p class="label">火焰山</p>
+      </div>
+      <div class="scene-item d2">
+        <span class="icon floating d2">🏜️</span>
+        <p class="label">大沙漠</p>
+      </div>
+      <div class="scene-item d3">
+        <span class="icon floating d3">🌿</span>
+        <p class="label">草原</p>
+      </div>
+      <div class="scene-item d4">
+        <span class="icon floating d4">🐫</span>
+        <p class="label">骆驼</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:4px">
+      <button class="gallery-open-btn" onclick="openGallery(event, 3)">
+        📷 看看真实的新疆！
+      </button>
+      <div class="q-box" style="margin-top:0">那里有什么鱼呢？🤔</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 新疆图片浏览器 ===================== -->
+<div id="gallery-modal">
+  <button class="gal-close" onclick="closeGallery()">✕</button>
+  <div style="position:relative;display:flex;align-items:center">
+    <button class="gal-arrow left" onclick="galPrev()">◀</button>
+    <div class="gal-img-wrap" id="gal-main"></div>
+    <button class="gal-arrow right" onclick="galNext()">▶</button>
+  </div>
+  <div class="gal-caption" id="gal-caption"></div>
+  <div class="gal-sub" id="gal-sub"></div>
+  <div class="gal-thumbs" id="gal-thumbs"></div>
+</div>
+
+<!-- ===================== SLIDE 4: 新疆的鱼 ===================== -->
+<div class="slide" id="s4">
+  <div class="bubbles-bg" id="bubbles4"></div>
+  <div class="slide-title">新疆可以钓什么鱼？</div>
+  <div class="cards-wrap">
+    <div class="fish-card">
+      <span class="fish-icon floating">🦈</span>
+      <div class="fish-name">狗鱼</div>
+      <div class="fish-fact">嘴巴很大！游得很快！</div>
+      <div class="fish-fact">是非常厉害的鱼 💪</div>
+    </div>
+    <div class="fish-card d2">
+      <span class="fish-icon floating d2">🐠</span>
+      <div class="fish-name">五道黑</div>
+      <div class="fish-fact">身上有五条黑色条纹！</div>
+      <div class="fish-fact">像小斑马一样 🦓</div>
+    </div>
+  </div>
+  <div class="q-box" style="margin-top:16px">你们觉得哪条鱼更厉害？举手！✋</div>
+  <button class="gallery-open-btn" style="background:linear-gradient(135deg,#0055CC,#0099F7)" onclick="openGallery(event,4)">
+    📷 看看真实的鱼！
+  </button>
+</div>
+
+<!-- ===================== SLIDE 5: 黑龙江 ===================== -->
+<div class="slide" id="s5">
+  <div class="snowflakes" id="snowflakes"></div>
+  <div class="ice-floor"></div>
+  <div class="content-wrap">
+    <div class="slide-title">第二站 🧭 黑龙江</div>
+    <div class="slide-sub">中国最北边 — 超级冷！🥶</div>
+    <div class="scene">
+      <div class="scene-item">
+        <span class="icon floating">❄️</span>
+        <p class="label">大雪</p>
+      </div>
+      <div class="scene-item d1">
+        <span class="icon floating d1">🧊</span>
+        <p class="label">冰河</p>
+      </div>
+      <div class="scene-item d2">
+        <span class="icon floating d2">🌨️</span>
+        <p class="label">冬天</p>
+      </div>
+      <div class="scene-item d3">
+        <span class="icon floating d3">⛏️</span>
+        <p class="label">凿冰洞</p>
+      </div>
+    </div>
+    <div class="q-box" style="background:rgba(0,150,255,.2);border-color:#64B5F6;color:#E3F2FD">
+      河水结冰了！要在冰上打个洞才能钓鱼！🕳️
+    </div>
+    <button class="gallery-open-btn" style="background:linear-gradient(135deg,#0D47A1,#42A5F5)" onclick="openGallery(event,5)">
+      📷 看看黑龙江的大雪！
+    </button>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 6: 东北的鱼 ===================== -->
+<div class="slide" id="s6">
+  <div class="bubbles-bg" id="bubbles6"></div>
+  <div class="slide-title" style="color:#E3F2FD">东北可以钓到什么大鱼？</div>
+  <div class="cards-row" style="position:relative;z-index:2">
+    <div class="fish-card">
+      <span class="fish-icon floating">🐟</span>
+      <div class="fish-name">马口鱼</div>
+      <div class="fish-fact">嘴巴像马一样大！</div>
+      <div class="fish-fact">很活泼，会跳出水面 🌊</div>
+    </div>
+    <div class="fish-card d2">
+      <span class="fish-icon floating d2">🦈</span>
+      <div class="fish-name">哲罗鲑</div>
+      <div class="fish-fact">超级大的鱼！</div>
+      <div class="fish-fact">可以长这么大！</div>
+      <div style="font-size:clamp(24px,4vw,48px);margin-top:8px;color:white">（张开双手 👐）</div>
+    </div>
+  </div>
+  <div class="q-box" style="position:relative;z-index:2;margin-top:16px">小朋友你们知道怎么在冰上钓鱼吗? 👐</div>
+  <button class="gallery-open-btn" style="background:linear-gradient(135deg,#1A237E,#1565C0)" onclick="openGallery(event,6)">
+    📷 看看真实的冰钓！
+  </button>
+</div>
+
+<!-- ===================== SLIDE 7: 四川 ===================== -->
+<div class="slide" id="s7">
+  <div class="bamboo-bg">🎋🎋🎋🎋🎋🎋🎋🎋🎋🎋</div>
+  <div class="content-wrap">
+    <div class="slide-title">第三站 🧭 四川</div>
+    <div class="slide-sub">大山里的省份！🐼</div>
+    <div class="scene">
+      <div class="scene-item">
+        <span class="icon floating">⛰️</span>
+        <p class="label">很多大山</p>
+      </div>
+      <div class="scene-item d1">
+        <span class="icon floating d1">🐼</span>
+        <p class="label">可爱的熊猫</p>
+      </div>
+      <div class="scene-item d2">
+        <span class="icon floating d2">🏞️</span>
+        <p class="label">清澈溪流</p>
+      </div>
+      <div class="scene-item d3">
+        <span class="icon floating d3">🎋</span>
+        <p class="label">竹子林</p>
+      </div>
+    </div>
+    <div class="q-box" style="background:rgba(0,0,0,.15);border-color:#A5D6A7;color:#F9FBE7">
+      山里的水超级清！也可以钓鱼！🎣
+    </div>
+    <button class="gallery-open-btn" style="background:linear-gradient(135deg,#1B5E20,#43A047)" onclick="openGallery(event,7)">
+      📷 看看真实的四川！
+    </button>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 7.5: 认识熊猫互动 ===================== -->
+<div class="slide" id="s_panda">
+  <div class="bamboo-bg">🎋🎋🎋🎋🎋🎋🎋🎋🎋🎋</div>
+  <div style="position:relative;z-index:2;text-align:center;width:100%;display:flex;flex-direction:column;align-items:center">
+    <div class="slide-title" style="color:#F9FBE7">你能认出来吗？🤔</div>
+    <div class="slide-sub" style="color:#DCEDC8;margin-bottom:4px">指一指，哪个是哪个？</div>
+    <div class="panda-grid" id="pandaGrid">
+      <div class="panda-card d1">
+        <img src="https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/15.jpg"
+             alt="大熊猫"
+             onerror="this.style.minHeight='120px';this.style.background='#E8F5E9'">
+        <div class="panda-label" style="background:#C62828">大熊猫 🐼</div>
+      </div>
+      <div class="panda-card d2">
+        <img src="https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/17.jpg" alt="小熊猫">
+        <div class="panda-label" style="background:#E65100">小熊猫 🦊</div>
+      </div>
+      <div class="panda-card d3">
+        <img src="https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/14.jpg" alt="小大熊猫">
+        <div class="panda-label" style="background:#1565C0">小大熊猫 = 小时候的大熊猫</div>
+      </div>
+      <div class="panda-card d4">
+        <img src="https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/16.jpg" alt="大小熊猫">
+        <div class="panda-label" style="background:#6A1B9A">大小熊猫 = 长大的小熊猫</div>
+      </div>
+    </div>
+    <button class="panda-reveal-btn" id="pandaRevealBtn" onclick="revealPandas(event)">
+      👀 公布答案！
+    </button>
+    <div class="panda-fact" id="pandaFact">
+      🧩 拆开名字就明白了！<br>
+      <span style="color:#FFCC80">「小大熊猫」= 小时候的大熊猫 = 大熊猫 baby 👶🐼</span><br>
+      <span style="color:#CE93D8">「大小熊猫」= 长大的小熊猫 = 成年小熊猫 🦊</span><br>
+      而且 大熊猫🐻 和 小熊猫🦝 根本不是同一种动物哦！
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 8: 四川的鱼 ===================== -->
+<div class="slide" id="s8">
+  <div class="bubbles-bg" id="bubbles8"></div>
+  <div class="slide-title">四川山里的鱼</div>
+  <div class="cards-row" style="position:relative;z-index:2">
+    <div class="fish-card">
+      <span class="fish-icon floating">🐟</span>
+      <div class="fish-name">军鱼</div>
+      <div class="fish-fact">生活在山里的河流中！</div>
+      <div class="fish-fact">游得飞快 ⚡</div>
+    </div>
+    <div class="fish-card d2">
+      <span class="fish-icon floating d2">🐡</span>
+      <div class="fish-name">青波</div>
+      <div class="fish-fact">身体圆圆的！</div>
+      <div class="fish-fact">也叫"乌鳞鱼" 🔵</div>
+    </div>
+  </div>
+  <div class="q-box" style="position:relative;z-index:2;margin-top:16px;background:rgba(0,200,150,.2);border-color:#80CBC4;color:#E0F2F1">
+    山里的水快不快？你们知道为啥山里容易有急流不？！💦
+  </div>
+  <button class="gallery-open-btn" style="background:linear-gradient(135deg,#004D40,#00897B)" onclick="openGallery(event,8)">
+    📷 看看急流的样子！
+  </button>
+</div>
+
+<!-- ===================== SLIDE 9: 海南 ===================== -->
+<div class="slide" id="s9">
+  <div class="sun">☀️</div>
+  <div class="wave-decor">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="height:120px">
+      <path d="M0,60 C150,100 350,0 600,60 C850,120 1050,20 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.15)"/>
+      <path d="M0,80 C200,40 400,100 600,80 C800,60 1000,100 1200,80 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)"/>
+    </svg>
+  </div>
+  <div class="content-wrap">
+    <div class="slide-title">第四站 🧭 海南</div>
+    <div class="slide-sub" style="color:#E1F5FE">中国最南边 — 有大海！</div>
+    <div class="scene">
+      <div class="scene-item">
+        <span class="icon floating">🌊</span>
+        <p class="label">大海</p>
+      </div>
+      <div class="scene-item d1">
+        <span class="icon floating d1">🏖️</span>
+        <p class="label">沙滩</p>
+      </div>
+      <div class="scene-item d2">
+        <span class="icon floating d2">🚢</span>
+        <p class="label">大轮船</p>
+      </div>
+      <div class="scene-item d3">
+        <span class="icon floating d3">🐚</span>
+        <p class="label">贝壳</p>
+      </div>
+    </div>
+    <div class="q-box" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.6);color:white">
+      海水是咸的还是甜的？🤔
+    </div>
+    <button class="gallery-open-btn" style="background:linear-gradient(135deg,#01579B,#0288D1)" onclick="openGallery(event,9)">
+      📷 看看真实的大海！
+    </button>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 10: 海里的鱼 ===================== -->
+<div class="slide" id="s10">
+  <div class="bubbles-bg" id="bubbles10"></div>
+  <div class="slide-title">海里的大鱼！</div>
+  <div class="cards-row" style="position:relative;z-index:2">
+    <div class="fish-card">
+      <span class="fish-icon floating">🐟</span>
+      <div class="fish-name">海鲈鱼</div>
+      <div class="fish-fact">海里最常钓到的鱼！</div>
+      <div class="fish-fact">肉很好吃 😋</div>
+    </div>
+    <div class="fish-card d2">
+      <span class="fish-icon floating d2">🐡</span>
+      <div class="fish-name">石斑鱼</div>
+      <div class="fish-fact">身上有花斑纹！</div>
+      <div class="fish-fact">比河里的鱼更大更重 🏋️</div>
+    </div>
+  </div>
+  <div class="q-box" style="position:relative;z-index:2;margin-top:16px">
+    你们吃过海里的鱼吗？🦞
+  </div>
+  <button class="gallery-open-btn" style="background:linear-gradient(135deg,#004466,#006994)" onclick="openGallery(event,10)">
+    📷 看看真实的海鱼！
+  </button>
+</div>
+
+<!-- ===================== SLIDE 11: 中国真的很大 ===================== -->
+<div class="slide" id="s11">
+  <div class="slide-title">中国真的很大！</div>
+  <div class="slide-sub" style="color:#FFE0B2">今天我们去了四个地方！</div>
+  <div class="locations-grid">
+    <div class="loc d1">
+      <span class="l-icon">🏔️</span>
+      <div>
+        <div>新疆</div>
+        <div style="font-size:.75em;opacity:.8;font-weight:400">最西边 · 狗鱼 🦈</div>
+      </div>
+    </div>
+    <div class="loc d2">
+      <span class="l-icon">❄️</span>
+      <div>
+        <div>黑龙江</div>
+        <div style="font-size:.75em;opacity:.8;font-weight:400">最北边 · 哲罗鲑 🐟</div>
+      </div>
+    </div>
+    <div class="loc d3">
+      <span class="l-icon">🐼</span>
+      <div>
+        <div>四川</div>
+        <div style="font-size:.75em;opacity:.8;font-weight:400">中间 · 军鱼 🐡</div>
+      </div>
+    </div>
+    <div class="loc d4">
+      <span class="l-icon">🌊</span>
+      <div>
+        <div>海南</div>
+        <div style="font-size:.75em;opacity:.8;font-weight:400">最南边 · 海鲈鱼 🐠</div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:clamp(24px,4vw,52px);color:white;font-weight:900;margin-top:18px;text-shadow:2px 2px 0 rgba(0,0,0,.2);animation:celebrate 1s .5s both">
+    中国是不是超级大？！🇨🇳
+  </div>
+  <button class="gallery-open-btn" style="background:linear-gradient(135deg,#B71C1C,#E53935);margin-top:14px" onclick="openGallery(event,11)">
+    📷 看看我们的中国有多大！
+  </button>
+</div>
+
+<!-- ===================== SLIDE 12: 互动投票 ===================== -->
+<div class="slide" id="s12">
+  <div class="slide-title">你想去哪里钓鱼？✋</div>
+  <div class="vote-grid">
+    <button class="vote-btn d1" onclick="vote(this,0)">
+      <span class="v-icon">🏔️</span>
+      <span class="v-text">新疆<br>钓狗鱼</span>
+      <span class="v-count" id="v0">0 人</span>
+    </button>
+    <button class="vote-btn d2" onclick="vote(this,1)">
+      <span class="v-icon">❄️</span>
+      <span class="v-text">黑龙江<br>冰上钓鱼</span>
+      <span class="v-count" id="v1">0 人</span>
+    </button>
+    <button class="vote-btn d3" onclick="vote(this,2)">
+      <span class="v-icon">🐼</span>
+      <span class="v-text">四川<br>山里钓鱼</span>
+      <span class="v-count" id="v2">0 人</span>
+    </button>
+    <button class="vote-btn d4" onclick="vote(this,3)">
+      <span class="v-icon">🌊</span>
+      <span class="v-text">海南<br>海边钓鱼</span>
+      <span class="v-count" id="v3">0 人</span>
+    </button>
+  </div>
+  <button class="reset-btn" onclick="resetVotes()">🔄 重置</button>
+</div>
+
+<!-- ===================== SLIDE 13: 路亚装备 ===================== -->
+<div class="slide" id="s13">
+  <div class="slide-title">钓鱼用什么？🎣</div>
+  <div class="gear-row">
+    <div class="gear-item">
+      <span class="gear-icon floating">🎣</span>
+      <div class="gear-name">鱼竿</div>
+      <div class="gear-desc">长长的竿子</div>
+    </div>
+    <div class="gear-item d2">
+      <span class="gear-icon floating d2">🪝</span>
+      <div class="gear-name">路亚饵</div>
+      <div class="gear-desc">假鱼！鱼会来咬它</div>
+    </div>
+    <div class="gear-item d3">
+      <span class="gear-icon floating d3">🎏</span>
+      <div class="gear-name">鱼线</div>
+      <div class="gear-desc">细细的线</div>
+    </div>
+  </div>
+  <div class="tip-box">
+    💡 路亚是一种假鱼做的鱼饵<br>
+    扔进水里，鱼以为是真鱼，就会来咬！
+  </div>
+  <div style="font-size:clamp(22px,3.5vw,44px);color:#FFF9C4;margin-top:14px;font-weight:700;animation:popIn .9s .6s both">
+    （叔叔现在拿出实物给大家看！👀）
+  </div>
+</div>
+
+<!-- ===================== SLIDE 14: 总结 ===================== -->
+<div class="slide" id="s14">
+  <div class="confetti" id="confetti14"></div>
+  <div class="slide-title" style="position:relative;z-index:2">中国各地都有鱼！🐟</div>
+  <div class="fish-parade" style="position:relative;z-index:2">
+    <span style="animation-delay:0s">🦈</span>
+    <span style="animation-delay:.3s">🐠</span>
+    <span style="animation-delay:.6s">🐟</span>
+    <span style="animation-delay:.9s">🐡</span>
+    <span style="animation-delay:1.2s">🐟</span>
+    <span style="animation-delay:1.5s">🐠</span>
+  </div>
+  <div style="font-size:clamp(16px,2.5vw,30px);color:#FFE0B2;font-weight:700;text-align:center;line-height:1.8;animation:slideUp .8s .3s both;position:relative;z-index:2">
+    中国很大 · 每个地方都不一样<br>
+    每个地方都有不同的鱼 🗺️
+  </div>
+  <div class="ending" style="position:relative;z-index:2">
+    等你们长大了，也去钓鱼吧！🎣
+  </div>
+  <div class="stars" style="position:relative;z-index:2">⭐⭐⭐ 谢谢小朋友们！⭐⭐⭐</div>
+</div>
+
+<script>
+// ===== 幻灯片系统 =====
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let isAnimating = false;
+
+function goTo(n) {
+  if (isAnimating) return;
+  if (n < 0 || n >= total) return;
+  isAnimating = true;
+
+  // 离开熊猫页时重置互动状态
+  if (slides[current] === document.getElementById('s_panda')) {
+    document.getElementById('pandaGrid').classList.remove('revealed');
+    document.getElementById('pandaRevealBtn').style.display = 'inline-block';
+    document.getElementById('pandaFact').classList.remove('visible');
+  }
+
+  const prev = slides[current];
+  const next = slides[n];
+
+  prev.classList.remove('active');
+  prev.classList.add('exit');
+  setTimeout(() => prev.classList.remove('exit'), 600);
+
+  next.classList.add('active');
+  current = n;
+  document.getElementById('slide-num').textContent = `${current + 1} / ${total}`;
+
+  playTick();
+  onSlideEnter(current);
+
+  setTimeout(() => { isAnimating = false; }, 600);
+}
+
+function nextSlide() { goTo(current + 1); }
+function prevSlide() { goTo(current - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+});
+
+// ===== 触摸滑动 =====
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (dx < -50) nextSlide();
+  if (dx > 50) prevSlide();
+});
+
+// ===== 全屏 =====
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// ===== 音效（Web Audio API） =====
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, type, dur, vol=0.18) {
+  try {
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start(); osc.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+function playTick() {
+  playTone(880, 'sine', 0.12, 0.12);
+}
+function playSplash() {
+  try {
+    const ctx = getAudio();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.06));
+    }
+    const src = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass'; filter.frequency.value = 800;
+    src.buffer = buf; src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    src.start();
+  } catch(e) {}
+}
+function playWind() {
+  try {
+    const ctx = getAudio();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.3));
+    }
+    const src = ctx.createBufferSource();
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 400;
+    const gain = ctx.createGain();
+    src.buffer = buf; src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    src.start();
+  } catch(e) {}
+}
+function playCelebrate() {
+  [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => playTone(f, 'triangle', 0.3, 0.2), i * 120));
+}
+
+function onSlideEnter(n) {
+  if ([3,4,5,6,7,8,9,10].includes(n)) playSplash();
+  if (n === 4) playWind();
+  if (n === 13) playCelebrate();
+}
+
+// ===== 气泡生成 =====
+function makeBubbles(containerId, count=18) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('div');
+    b.className = 'bbl';
+    const size = 8 + Math.random() * 28;
+    b.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random() * 100}%;
+      animation-duration:${3 + Math.random() * 5}s;
+      animation-delay:${Math.random() * 5}s;
+    `;
+    el.appendChild(b);
+  }
+}
+makeBubbles('bubbles4', 20);
+makeBubbles('bubbles6', 20);
+makeBubbles('bubbles8', 18);
+makeBubbles('bubbles10', 22);
+
+// ===== 雪花生成 =====
+function makeSnow(containerId, count=30) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const flakes = ['❄️','❅','❆','✻','✼'];
+  for (let i = 0; i < count; i++) {
+    const sf = document.createElement('div');
+    sf.className = 'sf';
+    const size = 12 + Math.random() * 24;
+    sf.style.cssText = `
+      left:${Math.random() * 100}%;
+      font-size:${size}px;
+      animation-duration:${4 + Math.random() * 6}s;
+      animation-delay:${Math.random() * 6}s;
+    `;
+    sf.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+    el.appendChild(sf);
+  }
+}
+makeSnow('snowflakes', 35);
+
+// ===== 彩色纸片 =====
+function makeConfetti(containerId, count=40) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const emojis = ['🎊','🎉','⭐','🌟','✨','🎈','🎀','🐟','🐠'];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'conf-piece';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.cssText = `
+      left:${Math.random() * 100}%;
+      font-size:${14 + Math.random() * 22}px;
+      animation-duration:${4 + Math.random() * 5}s;
+      animation-delay:${Math.random() * 4}s;
+    `;
+    el.appendChild(p);
+  }
+}
+makeConfetti('confetti14', 45);
+
+// ===== 投票系统 =====
+const votes = [0, 0, 0, 0];
+function vote(btn, idx) {
+  votes[idx]++;
+  document.getElementById('v' + idx).textContent = votes[idx] + ' 人';
+  btn.classList.add('voted');
+  playTone(660, 'sine', 0.2, 0.15);
+  btn.style.animation = 'pulse-scale .5s ease-in-out';
+  setTimeout(() => { btn.style.animation = ''; }, 500);
+}
+function resetVotes() {
+  votes.fill(0);
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('v' + i).textContent = '0 人';
+    document.querySelectorAll('#s12 .vote-btn')[i].classList.remove('voted');
+  }
+}
+
+// ===== 点击屏幕前进（排除导航和按钮） =====
+document.addEventListener('click', e => {
+  if (e.target.closest('#nav') || e.target.closest('#fullscreen-btn') ||
+      e.target.closest('#s12') || e.target.closest('#hint')) return;
+  if (e.target.closest('#gallery-modal')) return;  // 图片浏览器内的点击不翻页
+  nextSlide();
+});
+
+// ===== 熊猫识别互动 =====
+function revealPandas(e) {
+  e.stopPropagation();
+  document.getElementById('pandaGrid').classList.add('revealed');
+  document.getElementById('pandaRevealBtn').style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('pandaFact').classList.add('visible');
+  }, 700);
+  playCelebrate();
+}
+
+// ===== 新疆图片浏览器 =====
+// ===== 每页独立相册数据 =====
+const galData = {
+  3: [
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/0.JPEG',
+      title: '天山雪山 🏔️',
+      sub: '新疆 · 天山山脉 — 常年积雪，美极了！'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/11.jpeg',
+      title: '火焰山 🌋',
+      sub: '新疆吐鲁番 · 《西游记》里就有它！'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/2.jpeg',
+      title: '赛里木湖 💎',
+      sub: '新疆 · 大西洋最后一滴眼泪，蓝得像宝石！'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/1.JPEG',
+      title: '魔鬼城 🌿',
+      sub: '新疆 · 水倒在地上就会消失'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/3.jpeg',
+      title: '沙漠 🌊',
+      sub: '新疆 · 可以开车 UTV 撒欢'
+    },
+    {
+      src: "https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/4.mp4",
+      title: '米诺在新疆 📸',
+      sub: '最美大新疆'
+    }
+  ],
+  4: [
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/5.jpeg',
+      title: '狗鱼 🦈',
+      sub: '淡水中的猎手！嘴巴超大，游速极快，最长可达1.5米！'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/7.jpeg',
+      title: '五道黑（河鲈）🐠',
+      sub: '身上有5条黑色条纹，像斑马一样！新疆清澈河流里的美丽鱼。'
+    },
+    { 
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/6.MP4',
+      title: '新疆的烤鱼很好吃 🍵', 
+      sub: '碳烤狗鱼、五道黑！'
+    }
+  ],
+  5: [
+    { 
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/10.mp4', 
+      title: '东北雪景 📷', 
+      sub: '东北给世界一个昂扬的冬天'
+    }
+  ],
+  6: [
+    { 
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/8.JPEG', 
+      title: '冰钓 📷', 
+      sub: '在冰上面打个洞'
+    },
+    { 
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/9.MOV', 
+      title: '小米诺冰钓 📷', 
+      sub: '看着冷不冷啊'
+    }
+  ],
+  7: [
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/18.jpeg', 
+      title: '川西美景',
+      sub: '高山草地雪山'
+    },
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/12.MOV', 
+      title: '大熊猫 📷',
+      sub: '爱吃竹子的大熊猫'
+    },
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/13.MOV', 
+      title: '巴适得很 📷',
+      sub: '小小米诺逛四川'
+    }
+  ],
+  8: [
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/19.MOV',
+      title: '急流📷',
+      sub: '可以漂流，同时这么急的流里还藏着鱼'
+    }
+  ],
+  9: [
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/20.mov', 
+      title: '广阔无边的海边 📷',
+       sub: '大海是不平静的，永远都有浪' 
+      },
+         { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/21.JPEG', 
+      title: '大海还有沙滩 📷',
+       sub: '你们喜欢玩沙子不' 
+      },
+         { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/22.JPEG', 
+      title: '我们可以坐船出海 📷',
+       sub: '出海之后就可以钓海里的大鱼咯' 
+      }
+  ],
+  10: [
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/23.jpeg',
+      title: '石斑鱼🐟',
+      sub: '肉质细嫩，低脂高蛋白，含丰富氨基酸及维生素，被誉为“海鸡肉”'
+    },
+    {
+      src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/24.jpg',
+      title: '龙趸（龙胆石斑）🐡',
+      sub: '珊瑚礁里最大的鱼！体重可达400公斤，比好几个小朋友加起来还重！'
+    },
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/25.jpeg', 
+    title: '大鲨鱼 🦈', 
+    sub: '去大海里面玩需要注意安全' }
+  ],
+  11: [
+    { src: 'https://minho-1256297898.cos.ap-beijing.myqcloud.com/source/26.mp4', title: '我们的祖国 🇨🇳', sub: '中国陆地面积约为960万平方公里（或959.7-960万平方千米），居世界第三' }
+  ]
+};
+
+let galIdx = 0;
+let currentGalSlide = 3;
+
+function currentPhotos() { return galData[currentGalSlide] || []; }
+
+function buildGallery() {
+  const thumbsEl = document.getElementById('gal-thumbs');
+  thumbsEl.innerHTML = '';
+
+  currentPhotos().forEach((p, i) => {
+    const thumb = document.createElement('div');
+    const isVid = isVideo(p.src);
+    thumb.className = 'gal-thumb'
+      + (i === galIdx ? ' active' : '')
+      + (isVid ? ' vid-thumb' : '')
+      + (!p.src ? ' ph-thumb' : '');
+    thumb.onclick = () => galGoTo(i);
+    if (p.src && !isVid) {
+      const img = document.createElement('img');
+      img.src = p.src; img.alt = p.title;
+      thumb.appendChild(img);
+    } else if (isVid) {
+      thumb.textContent = '🎬';
+    } else {
+      thumb.textContent = '📷';
+    }
+    thumbsEl.appendChild(thumb);
+  });
+
+  renderGalMain();
+}
+
+function isVideo(src) {
+  return src && /\.(mp4|webm|mov|m4v)$/i.test(src);
+}
+
+function stopCurrentVideo() {
+  const v = document.querySelector('#gal-main video');
+  if (v) { v.pause(); v.currentTime = 0; }
+}
+
+function renderGalMain() {
+  stopCurrentVideo();
+  const mainEl = document.getElementById('gal-main');
+  const p = currentPhotos()[galIdx];
+  mainEl.innerHTML = '';
+
+  if (p.src && isVideo(p.src)) {
+    const vid = document.createElement('video');
+    vid.src = p.src;
+    vid.controls = true;
+    vid.autoplay = true;
+    vid.playsInline = true;
+    vid.preload = 'metadata';
+    vid.style.opacity = '0';
+    vid.style.transition = 'opacity .4s';
+    vid.oncanplay = () => { vid.style.opacity = '1'; };
+    mainEl.appendChild(vid);
+  } else if (p.src) {
+    const img = document.createElement('img');
+    img.src = p.src; img.alt = p.title;
+    img.style.opacity = '0';
+    img.onload = () => { img.style.opacity = '1'; };
+    mainEl.appendChild(img);
+  } else {
+    const ph = document.createElement('div');
+    ph.className = 'placeholder-slot';
+    ph.innerHTML = `
+      <span class="ph-icon">📷</span>
+      <div style="font-size:clamp(20px,3vw,34px);font-weight:900;color:white">把你的照片放这里！</div>
+      <div style="font-size:clamp(14px,1.8vw,22px);opacity:.7;max-width:420px;line-height:1.6">
+        在 HTML 文件里找到 <code style="background:rgba(255,255,255,.15);padding:2px 8px;border-radius:6px">src: null</code> 那行，<br>
+        改成你儿子照片的本地路径，比如：<br>
+        <code style="background:rgba(255,255,255,.15);padding:4px 12px;border-radius:6px;margin-top:8px;display:inline-block">src: 'file:///Users/你/Desktop/儿子照片.jpg'</code>
+      </div>`;
+    mainEl.appendChild(ph);
+  }
+
+  document.getElementById('gal-caption').textContent = p.title;
+  document.getElementById('gal-sub').textContent = p.sub;
+
+  document.querySelectorAll('.gal-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === galIdx);
+  });
+}
+
+function galGoTo(i) {
+  galIdx = (i + currentPhotos().length) % currentPhotos().length;
+  renderGalMain();
+  playTick();
+}
+function galNext() { galGoTo(galIdx + 1); }
+function galPrev() { galGoTo(galIdx - 1); }
+
+function openGallery(e, slideNum) {
+  e.stopPropagation();
+  currentGalSlide = slideNum || 3;
+  galIdx = 0;
+  buildGallery();
+  document.getElementById('gallery-modal').classList.add('open');
+  document.body.style.cursor = 'default';
+}
+function closeGallery() {
+  stopCurrentVideo();
+  document.getElementById('gallery-modal').classList.remove('open');
+  document.body.style.cursor = 'pointer';
+}
+
+// 图片浏览器键盘支持
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('gallery-modal').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') galNext();
+  if (e.key === 'ArrowLeft') galPrev();
+  if (e.key === 'Escape') closeGallery();
+  e.stopImmediatePropagation();  // 阻止同元素上的其他监听器（包括翻页）
+  e.preventDefault();
+}, true);
+
+// 点击modal背景关闭
+document.getElementById('gallery-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('gallery-modal')) closeGallery();
+});
+
+// 初始化
+onSlideEnter(0);
+</script>
+</body>
+</html>
