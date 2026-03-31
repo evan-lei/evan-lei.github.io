@@ -10,513 +10,724 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ocean:  #0ea5e9;
-      --teal:   #14b8a6;
-      --coral:  #f97316;
-      --sand:   #fbbf24;
-      --dark:   #0c1929;
-      --panel:  #112236;
-      --border: #1e3a55;
-      --text:   #e2eaf4;
-      --muted:  #7a9bb5;
+      --ocean: #0ea5e9;
+      --teal:  #14b8a6;
+      --coral: #f97316;
+      --sand:  #fbbf24;
+      --dark:  #060f1a;
+      --panel: #0d1f33;
+      --panel2:#0a1929;
+      --border:#1a3550;
+      --text:  #ddeeff;
+      --muted: #6a8fa8;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      min-height: 100vh;
       background: var(--dark);
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text);
+      overflow-x: hidden;
     }
 
-    /* ── Hero ── */
+    /* ═══════════════════ HERO ═══════════════════ */
     .hero {
       position: relative;
-      padding: 80px 24px 60px;
-      text-align: center;
+      height: 100svh;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
-      background: linear-gradient(160deg, #07263d 0%, #0c3a5c 50%, #082438 100%);
+      background: radial-gradient(ellipse 120% 80% at 50% 110%, #0c3a60 0%, #03111f 60%);
     }
 
-    .hero::before {
-      content: '';
+    /* 粒子泡泡 */
+    .bubbles { position: absolute; inset: 0; pointer-events: none; }
+    .bubble {
       position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(14,165,233,0.18) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 35% at 80% 20%, rgba(249,115,22,0.15) 0%, transparent 70%);
-      pointer-events: none;
+      bottom: -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(14,165,233,0.5), rgba(14,165,233,0.05));
+      border: 1px solid rgba(14,165,233,0.25);
+      animation: rise linear infinite;
     }
+    @keyframes rise {
+      to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* 动态光晕 */
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+    .hero-glow.g1 { width: 500px; height: 300px; background: rgba(14,165,233,0.18); top: 30%; left: -10%; }
+    .hero-glow.g2 { width: 400px; height: 250px; background: rgba(249,115,22,0.12); top: 10%; right: -5%; animation-delay: -3s; }
+    .hero-glow.g3 { width: 600px; height: 200px; background: rgba(20,184,166,0.14); bottom: 15%; left: 20%; animation-delay: -1.5s; }
+    @keyframes pulse { from { opacity: 0.6; transform: scale(1); } to { opacity: 1; transform: scale(1.15); } }
+
+    .hero-content { position: relative; text-align: center; padding: 0 24px; z-index: 2; }
 
     .hero-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      padding: 4px 14px;
+      letter-spacing: 0.15em;
+      padding: 5px 16px;
       border-radius: 20px;
       border: 1px solid rgba(14,165,233,0.5);
       color: var(--ocean);
-      margin-bottom: 20px;
+      background: rgba(14,165,233,0.08);
+      margin-bottom: 24px;
+      animation: fadeDown 0.8s ease both;
     }
 
     .hero h1 {
       font-family: 'Ma Shan Zheng', cursive;
-      font-size: clamp(2.4rem, 8vw, 5rem);
-      background: linear-gradient(135deg, #fff 20%, var(--ocean) 60%, var(--sand) 100%);
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      background: linear-gradient(135deg, #ffffff 0%, #7dd3fc 40%, var(--teal) 70%, var(--sand) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 1.2;
-      margin-bottom: 16px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      animation: fadeDown 0.8s 0.15s ease both;
+      text-shadow: none;
     }
 
     .hero-meta {
       display: flex;
       justify-content: center;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
-      margin-top: 20px;
+      animation: fadeDown 0.8s 0.3s ease both;
     }
 
     .hero-meta span {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
     }
 
-    .hero-meta span em { color: var(--sand); font-style: normal; font-weight: 600; }
+    .hero-meta em { color: var(--sand); font-style: normal; font-weight: 600; }
 
-    .waves {
+    .scroll-hint {
       position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      overflow: hidden;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      animation: fadeDown 1s 0.8s ease both;
     }
 
-    .waves svg { display: block; width: 100%; height: 100%; }
-
-    /* ── Layout ── */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
+    .scroll-hint .mouse {
+      width: 22px; height: 34px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      position: relative;
     }
+    .scroll-hint .mouse::before {
+      content: '';
+      position: absolute;
+      top: 5px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 8px;
+      background: var(--ocean);
+      border-radius: 2px;
+      animation: scrollDown 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollDown { 0%,100%{top:5px;opacity:1} 60%{top:14px;opacity:0} }
 
-    /* ── Section headings ── */
+    /* wave divider */
+    .wave-divider { display: block; width: 100%; height: 70px; margin-bottom: -2px; }
+
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ═══════════════════ LAYOUT ═══════════════════ */
+    .container { max-width: 960px; margin: 0 auto; padding: 60px 24px 100px; }
+
+    /* ═══════════════════ SECTION TITLE ═══════════════════ */
     .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--ocean);
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-      padding-bottom: 12px;
+      gap: 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ocean);
+      margin-bottom: 28px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, var(--ocean), var(--teal));
+      border-radius: 2px;
     }
 
-    .section-title .icon { font-size: 1.4rem; }
-
-    /* ── Overview images ── */
+    /* ═══════════════════ IMAGE GRID ═══════════════════ */
     .img-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 12px;
       margin-bottom: 48px;
     }
+    .img-grid.cols-1 { grid-template-columns: 1fr; }
 
-    .img-grid img {
-      width: 100%;
-      border-radius: 12px;
-      object-fit: cover;
-      aspect-ratio: 16/10;
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .img-grid img:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    }
-
-    .img-full img {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      margin-bottom: 12px;
-    }
-
-    /* ── Checklist ── */
-    .checklist-card {
+      cursor: zoom-in;
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 48px;
-      text-align: center;
     }
-
-    .checklist-card img {
-      max-width: 100%;
-      border-radius: 10px;
+    .img-wrap img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 4/3;
+      transition: transform 0.4s ease;
     }
+    .img-grid.cols-1 .img-wrap img { aspect-ratio: 16/9; }
+    .img-wrap:hover img { transform: scale(1.06); }
 
-    /* ── Day timeline ── */
-    .days { margin-bottom: 48px; }
+    .img-wrap .zoom-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s;
+    }
+    .img-wrap .zoom-icon::after {
+      content: '🔍';
+      font-size: 1.8rem;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .img-wrap:hover .zoom-icon { background: rgba(0,0,0,0.25); }
+    .img-wrap:hover .zoom-icon::after { opacity: 1; transform: scale(1); }
+
+    /* ═══════════════════ DAY CARDS ═══════════════════ */
+    .days { margin-bottom: 56px; }
 
     .day-card {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      margin-bottom: 20px;
+      border-radius: 20px;
+      margin-bottom: 24px;
       overflow: hidden;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .day-card:hover {
+      border-color: rgba(14,165,233,0.4);
+      box-shadow: 0 8px 40px rgba(14,165,233,0.08);
     }
 
     .day-header {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 18px 24px;
-      background: linear-gradient(90deg, rgba(14,165,233,0.12) 0%, transparent 100%);
+      gap: 18px;
+      padding: 20px 28px;
+      background: linear-gradient(90deg, rgba(14,165,233,0.1) 0%, rgba(14,165,233,0.03) 60%, transparent 100%);
       border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      user-select: none;
     }
 
     .day-number {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+      width: 48px; height: 48px;
+      border-radius: 14px;
       background: linear-gradient(135deg, var(--ocean), var(--teal));
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       flex-shrink: 0;
-      box-shadow: 0 0 16px rgba(14,165,233,0.4);
+      box-shadow: 0 4px 18px rgba(14,165,233,0.45);
+      color: #fff;
     }
 
-    .day-title { font-size: 1rem; font-weight: 600; }
-    .day-subtitle { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+    .day-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .day-subtitle { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
 
-    .day-body { padding: 20px 24px 24px; }
+    .day-body { padding: 24px 28px 28px; }
 
-    .timeline { position: relative; padding-left: 24px; }
-
+    /* ═══════════════════ TIMELINE ═══════════════════ */
+    .timeline { position: relative; padding-left: 28px; margin-bottom: 20px; }
     .timeline::before {
       content: '';
       position: absolute;
-      left: 6px; top: 8px; bottom: 8px;
+      left: 7px; top: 8px; bottom: 8px;
       width: 2px;
-      background: linear-gradient(to bottom, var(--ocean), var(--teal));
-      opacity: 0.4;
+      background: linear-gradient(to bottom, var(--ocean), var(--teal), transparent);
       border-radius: 2px;
     }
 
     .tl-item {
       position: relative;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
-      gap: 12px;
-      align-items: baseline;
+      gap: 14px;
+      align-items: flex-start;
     }
-
     .tl-item::before {
       content: '';
       position: absolute;
-      left: -20px;
-      top: 7px;
-      width: 8px;
-      height: 8px;
+      left: -22px; top: 7px;
+      width: 10px; height: 10px;
       border-radius: 50%;
-      background: var(--ocean);
-      box-shadow: 0 0 6px rgba(14,165,233,0.7);
-      flex-shrink: 0;
+      background: var(--dark);
+      border: 2px solid var(--ocean);
+      box-shadow: 0 0 8px rgba(14,165,233,0.6);
     }
 
     .tl-time {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--sand);
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
-      min-width: 110px;
+      min-width: 116px;
       font-variant-numeric: tabular-nums;
+      padding-top: 2px;
     }
 
-    .tl-text {
-      font-size: 0.9rem;
-      color: var(--text);
-      line-height: 1.5;
-    }
+    .tl-text { font-size: 0.92rem; line-height: 1.6; }
 
+    /* ═══════════════════ DAY IMAGES ═══════════════════ */
     .day-imgs {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 20px;
     }
+    .day-imgs .img-wrap img { aspect-ratio: 4/3; }
 
-    .day-imgs img {
-      width: 100%;
-      border-radius: 10px;
-      object-fit: cover;
-      aspect-ratio: 4/3;
+    /* ═══════════════════ CHECKLIST ═══════════════════ */
+    .checklist-card {
+      background: var(--panel2);
       border: 1px solid var(--border);
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 56px;
+      text-align: center;
     }
+    .checklist-card .img-wrap { display: inline-block; width: 100%; max-width: 680px; cursor: zoom-in; }
+    .checklist-card .img-wrap img { aspect-ratio: auto; height: auto; }
 
-    .day-imgs img:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-    }
-
-    /* ── Tips ── */
+    /* ═══════════════════ TIPS ═══════════════════ */
     .tips-card {
-      background: var(--panel);
-      border: 1px solid rgba(249,115,22,0.35);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 48px;
+      background: var(--panel2);
+      border: 1px solid rgba(249,115,22,0.3);
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
     }
-
-    .tips-card .section-title { color: var(--coral); border-color: rgba(249,115,22,0.25); }
+    .tips-card .section-title { color: var(--coral); }
+    .tips-card .section-title::after { background: linear-gradient(90deg, var(--coral), var(--sand)); }
 
     .tips-list { list-style: none; }
-
     .tips-list li {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      line-height: 1.6;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.92rem;
+      line-height: 1.7;
     }
+    .tips-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .tips-list li .tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
 
-    .tips-list li:last-child { border-bottom: none; }
-    .tips-list li::before { content: '🌊'; flex-shrink: 0; }
+    /* ═══════════════════ SCROLL REVEAL ═══════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── Backup attractions ── */
-    .backup-img {
-      width: 100%;
+    /* ═══════════════════ LIGHTBOX ═══════════════════ */
+    .lb-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    .lb-overlay.open { opacity: 1; pointer-events: all; }
+
+    .lb-img {
+      max-width: 92vw;
+      max-height: 90svh;
       border-radius: 12px;
-      border: 1px solid var(--border);
+      box-shadow: 0 0 80px rgba(0,0,0,0.8);
+      transform: scale(0.92);
+      transition: transform 0.3s;
+      object-fit: contain;
+      display: block;
+    }
+    .lb-overlay.open .lb-img { transform: scale(1); }
+
+    .lb-close {
+      position: fixed;
+      top: 20px; right: 24px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.15); }
+
+    .lb-nav {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.15); }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+
+    .lb-counter {
+      position: fixed;
+      bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
     }
 
-    /* ── Footer ── */
+    /* ═══════════════════ FOOTER ═══════════════════ */
     footer {
       text-align: center;
-      padding: 32px 24px;
+      padding: 36px 24px;
       color: var(--muted);
       font-size: 0.8rem;
       border-top: 1px solid var(--border);
     }
-
     footer a { color: var(--ocean); text-decoration: none; }
 
-    /* ── Responsive ── */
+    /* ═══════════════════ RESPONSIVE ═══════════════════ */
     @media (max-width: 600px) {
       .tl-time { min-width: 90px; font-size: 0.72rem; }
-      .day-body { padding: 16px; }
+      .day-body { padding: 18px; }
+      .day-header { padding: 16px 18px; }
+      .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <div class="hero">
+<!-- ═══ LIGHTBOX ═══ -->
+<div class="lb-overlay" id="lb">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow g1"></div>
+  <div class="hero-glow g2"></div>
+  <div class="hero-glow g3"></div>
+  <div class="bubbles" id="bubbles"></div>
+  <div class="hero-content">
     <div class="hero-badge">🌴 旅游攻略</div>
     <h1>跟着爸爸去三亚</h1>
     <div class="hero-meta">
       <span>📅 时间：<em>03.25 — 03.29</em></span>
       <span>🏝️ 目的地：<em>三亚，海南</em></span>
-    </div>
-    <div class="waves">
-      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z"
-              fill="#0c1929" opacity="1"/>
-      </svg>
+      <span>✈️ 交通：<em>飞机</em></span>
     </div>
   </div>
+  <div class="scroll-hint">
+    <div class="mouse"></div>
+    <span>向下滚动</span>
+  </div>
+  <svg class="wave-divider" viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,35 C240,70 480,0 720,35 C960,70 1200,10 1440,35 L1440,70 L0,70 Z" fill="#060f1a"/>
+  </svg>
+</section>
 
-  <div class="container">
+<div class="container">
 
-    <!-- 1. 主要区域预览 -->
-    <div class="section-title"><span class="icon">🗺️</span>三亚主要区域预览</div>
-    <div class="img-grid">
-      <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/01-sanya-map.jpeg" alt="三亚区域地图" loading="lazy">
-      <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/02-sanya-area.png" alt="三亚区域预览" loading="lazy">
-    </div>
+  <!-- 1. 区域预览 -->
+  <div class="section-title reveal"><span>🗺️</span>三亚主要区域预览</div>
+  <div class="img-grid reveal">
+    <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/01-sanya-map.jpeg" alt="三亚区域地图" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/02-sanya-area.png" alt="三亚区域预览" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
 
-    <!-- 2. 主要景点分布 -->
-    <div class="section-title"><span class="icon">📍</span>主要景点分布预览</div>
-    <div class="img-full" style="margin-bottom:48px">
-      <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/03-sanya-attractions.png" alt="三亚景点分布" loading="lazy">
-    </div>
+  <!-- 2. 景点分布 -->
+  <div class="section-title reveal"><span>📍</span>主要景点分布预览</div>
+  <div class="img-grid cols-1 reveal" style="margin-bottom:56px">
+    <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/03-sanya-attractions.png" alt="三亚景点分布" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
 
-    <!-- 3. 物品清单 -->
-    <div class="section-title"><span class="icon">🎒</span>出行物品清单</div>
-    <div class="checklist-card">
-      <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/04-checklist.jpg" alt="三亚出游物品清单" loading="lazy">
-    </div>
+  <!-- 3. 物品清单 -->
+  <div class="section-title reveal"><span>🎒</span>出行物品清单</div>
+  <div class="checklist-card reveal">
+    <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/04-checklist.jpg" alt="三亚出游物品清单" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
 
-    <!-- 4. 行程安排 -->
-    <div class="section-title"><span class="icon">🗓️</span>行程安排</div>
-    <div class="days">
+  <!-- 4. 行程 -->
+  <div class="section-title reveal"><span>🗓️</span>行程安排</div>
+  <div class="days">
 
-      <!-- 第一天 -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-number">1</div>
-          <div>
-            <div class="day-title">第一天 · 抵达三亚</div>
-            <div class="day-subtitle">飞机 → 入住亚龙湾 → 海滩 → 夜市</div>
-          </div>
+    <div class="day-card reveal">
+      <div class="day-header">
+        <div class="day-number">1</div>
+        <div><div class="day-title">第一天 · 抵达三亚</div><div class="day-subtitle">飞机 → 入住亚龙湾 → 海滩 → 夜市</div></div>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-time">07:35 – 11:45</span><span class="tl-text">飞机出发，抵达三亚</span></div>
+          <div class="tl-item"><span class="tl-time">12:00 – 15:00</span><span class="tl-text">取车 + 吃饭 + 入住酒店（亚龙湾）</span></div>
+          <div class="tl-item"><span class="tl-time">15:00 – 19:00</span><span class="tl-text">亚龙湾海滩</span></div>
+          <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">吃饭、逛夜市</span></div>
+          <div class="tl-item"><span class="tl-time">21:00</span><span class="tl-text">回酒店休息</span></div>
         </div>
-        <div class="day-body">
-          <div class="timeline">
-            <div class="tl-item"><span class="tl-time">07:35 – 11:45</span><span class="tl-text">飞机出发，抵达三亚</span></div>
-            <div class="tl-item"><span class="tl-time">12:00 – 15:00</span><span class="tl-text">取车 + 吃饭 + 入住酒店（亚龙湾）</span></div>
-            <div class="tl-item"><span class="tl-time">15:00 – 19:00</span><span class="tl-text">亚龙湾海滩</span></div>
-            <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">吃饭、逛夜市</span></div>
-            <div class="tl-item"><span class="tl-time">21:00</span><span class="tl-text">回酒店休息</span></div>
-          </div>
-          <div class="day-imgs">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/05-day1-yalong-bay.jpg" alt="亚龙湾海滩" loading="lazy">
-          </div>
+        <div class="day-imgs">
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/05-day1-yalong-bay.jpg" alt="亚龙湾海滩" loading="lazy"><div class="zoom-icon"></div></div>
         </div>
       </div>
-
-      <!-- 第二天 -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-number">2</div>
-          <div>
-            <div class="day-title">第二天 · 森林公园 + 免税城 + 烧烤</div>
-            <div class="day-subtitle">热带天堂森林公园 → 国际免税城 → 艾迪逊海滩烧烤</div>
-          </div>
-        </div>
-        <div class="day-body">
-          <div class="timeline">
-            <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
-            <div class="tl-item"><span class="tl-time">09:00 – 15:00</span><span class="tl-text">热带天堂森林公园（⚠️ 提前购票，自带食物）</span></div>
-            <div class="tl-item"><span class="tl-time">15:00 – 17:00</span><span class="tl-text">三亚国际免税城</span></div>
-            <div class="tl-item"><span class="tl-time">17:00 – 20:00</span><span class="tl-text">三亚艾迪逊酒店·海滩烧烤（⚠️ 提前预定）</span></div>
-            <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
-          </div>
-          <div class="day-imgs">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/06-day2-forest-park.png" alt="热带天堂森林公园" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/07-day2-duty-free.jpg" alt="三亚国际免税城" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/08-day2-bbq.jpg" alt="艾迪逊海滩烧烤" loading="lazy">
-          </div>
-        </div>
-      </div>
-
-      <!-- 第三天 -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-number">3</div>
-          <div>
-            <div class="day-title">第三天 · 鹿回头 + 大东海</div>
-            <div class="day-subtitle">自由活动 → 鹿回头风景区 → 大东海旅游区 → 夜市</div>
-          </div>
-        </div>
-        <div class="day-body">
-          <div class="timeline">
-            <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
-            <div class="tl-item"><span class="tl-time">09:00 – 11:00</span><span class="tl-text">自由活动</span></div>
-            <div class="tl-item"><span class="tl-time">11:00 – 12:00</span><span class="tl-text">吃饭</span></div>
-            <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">鹿回头风景区</span></div>
-            <div class="tl-item"><span class="tl-time">16:00 – 19:00</span><span class="tl-text">大东海旅游区</span></div>
-            <div class="tl-item"><span class="tl-time">19:00 – 20:00</span><span class="tl-text">大东海夜市</span></div>
-            <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
-          </div>
-          <div class="day-imgs">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/09-day3-luhuitu.jpg" alt="鹿回头风景区" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/10-day3-dadonghai.jpg" alt="大东海旅游区" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/11-day3-night-market.png" alt="大东海夜市" loading="lazy">
-          </div>
-        </div>
-      </div>
-
-      <!-- 第四天 -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-number">4</div>
-          <div>
-            <div class="day-title">第四天 · 蜈支洲岛</div>
-            <div class="day-subtitle">全天蜈支洲岛 → 晚餐 → 回酒店</div>
-          </div>
-        </div>
-        <div class="day-body">
-          <div class="timeline">
-            <div class="tl-item"><span class="tl-time">08:00 – 08:30</span><span class="tl-text">早餐</span></div>
-            <div class="tl-item"><span class="tl-time">08:30 – 17:00</span><span class="tl-text">蜈支洲岛（全天游览）</span></div>
-            <div class="tl-item"><span class="tl-time">17:00 – 19:00</span><span class="tl-text">吃饭</span></div>
-            <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">回酒店</span></div>
-          </div>
-          <div class="day-imgs">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/12-day4-wuzhizhou1.jpg" alt="蜈支洲岛" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/13-day4-wuzhizhou2.jpg" alt="蜈支洲岛风景" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/14-day4-wuzhizhou3.jpg" alt="蜈支洲岛海景" loading="lazy">
-          </div>
-        </div>
-      </div>
-
-      <!-- 第五天 -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-number">5</div>
-          <div>
-            <div class="day-title">第五天 · 返程</div>
-            <div class="day-subtitle">退房 → 椰梦长廊 → 免税店 → 飞机回</div>
-          </div>
-        </div>
-        <div class="day-body">
-          <div class="timeline">
-            <div class="tl-item"><span class="tl-time">08:00 – 12:00</span><span class="tl-text">吃饭、收拾东西、退房</span></div>
-            <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">椰梦长廊（备选：亚特兰蒂斯水世界）</span></div>
-            <div class="tl-item"><span class="tl-time">16:00 – 18:00</span><span class="tl-text">吃饭、还车</span></div>
-            <div class="tl-item"><span class="tl-time">18:00 – 20:00</span><span class="tl-text">机场免税店购物</span></div>
-            <div class="tl-item"><span class="tl-time">20:10 – 23:55</span><span class="tl-text">飞机返回</span></div>
-          </div>
-          <div class="day-imgs">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/15-day5-coconut.jpg" alt="椰梦长廊" loading="lazy">
-            <img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/16-day5-return.jpg" alt="返程" loading="lazy">
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /days -->
-
-    <!-- 5. 网友推荐备选景点 -->
-    <div class="section-title"><span class="icon">⭐</span>网友推荐（备选景点）</div>
-    <div class="img-full" style="margin-bottom: 48px">
-      <img class="backup-img" src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/17-bonus-tips.webp" alt="网友推荐备选景点" loading="lazy">
     </div>
 
-    <!-- 贴士 -->
-    <div class="tips-card">
-      <div class="section-title"><span class="icon">💡</span>出行小贴士</div>
-      <ul class="tips-list">
-        <li>热带天堂森林公园建议<strong>提前在线购票</strong>，并自带食物和饮水</li>
-        <li>艾迪逊酒店海滩烧烤需要<strong>提前预订</strong>，位置紧俏</li>
-        <li>蜈支洲岛建议预留整天，岛上水上项目丰富，不要安排其他行程</li>
-        <li>租车出行更自由，还车时间需与航班时间留有充足余量</li>
-        <li>三月末天气温热，防晒霜、太阳镜、遮阳帽必备</li>
-        <li>机场免税店购物建议提前列好购物清单，在免税 App 上先看好价格</li>
-      </ul>
+    <div class="day-card reveal">
+      <div class="day-header">
+        <div class="day-number">2</div>
+        <div><div class="day-title">第二天 · 森林公园 + 免税城 + 烧烤</div><div class="day-subtitle">热带天堂森林公园 → 国际免税城 → 艾迪逊海滩烧烤</div></div>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
+          <div class="tl-item"><span class="tl-time">09:00 – 15:00</span><span class="tl-text">热带天堂森林公园（⚠️ 提前购票，自带食物）</span></div>
+          <div class="tl-item"><span class="tl-time">15:00 – 17:00</span><span class="tl-text">三亚国际免税城</span></div>
+          <div class="tl-item"><span class="tl-time">17:00 – 20:00</span><span class="tl-text">三亚艾迪逊酒店·海滩烧烤（⚠️ 提前预定）</span></div>
+          <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+        </div>
+        <div class="day-imgs">
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/06-day2-forest-park.png" alt="热带天堂森林公园" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/07-day2-duty-free.jpg" alt="三亚国际免税城" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/08-day2-bbq.jpg" alt="艾迪逊海滩烧烤" loading="lazy"><div class="zoom-icon"></div></div>
+        </div>
+      </div>
     </div>
 
-  </div><!-- /container -->
+    <div class="day-card reveal">
+      <div class="day-header">
+        <div class="day-number">3</div>
+        <div><div class="day-title">第三天 · 鹿回头 + 大东海</div><div class="day-subtitle">自由活动 → 鹿回头风景区 → 大东海旅游区 → 夜市</div></div>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
+          <div class="tl-item"><span class="tl-time">09:00 – 11:00</span><span class="tl-text">自由活动</span></div>
+          <div class="tl-item"><span class="tl-time">11:00 – 12:00</span><span class="tl-text">吃饭</span></div>
+          <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">鹿回头风景区</span></div>
+          <div class="tl-item"><span class="tl-time">16:00 – 19:00</span><span class="tl-text">大东海旅游区</span></div>
+          <div class="tl-item"><span class="tl-time">19:00 – 20:00</span><span class="tl-text">大东海夜市</span></div>
+          <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+        </div>
+        <div class="day-imgs">
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/09-day3-luhuitu.jpg" alt="鹿回头风景区" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/10-day3-dadonghai.jpg" alt="大东海旅游区" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/11-day3-night-market.png" alt="大东海夜市" loading="lazy"><div class="zoom-icon"></div></div>
+        </div>
+      </div>
+    </div>
 
-  <footer>
-    <p>三亚旅行全攻略 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
-  </footer>
+    <div class="day-card reveal">
+      <div class="day-header">
+        <div class="day-number">4</div>
+        <div><div class="day-title">第四天 · 蜈支洲岛</div><div class="day-subtitle">全天蜈支洲岛 → 晚餐 → 回酒店</div></div>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-time">08:00 – 08:30</span><span class="tl-text">早餐</span></div>
+          <div class="tl-item"><span class="tl-time">08:30 – 17:00</span><span class="tl-text">蜈支洲岛（全天游览）</span></div>
+          <div class="tl-item"><span class="tl-time">17:00 – 19:00</span><span class="tl-text">吃饭</span></div>
+          <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+        </div>
+        <div class="day-imgs">
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/12-day4-wuzhizhou1.jpg" alt="蜈支洲岛" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/13-day4-wuzhizhou2.jpg" alt="蜈支洲岛风景" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/14-day4-wuzhizhou3.jpg" alt="蜈支洲岛海景" loading="lazy"><div class="zoom-icon"></div></div>
+        </div>
+      </div>
+    </div>
 
+    <div class="day-card reveal">
+      <div class="day-header">
+        <div class="day-number">5</div>
+        <div><div class="day-title">第五天 · 返程</div><div class="day-subtitle">退房 → 椰梦长廊 → 免税店 → 飞机回</div></div>
+      </div>
+      <div class="day-body">
+        <div class="timeline">
+          <div class="tl-item"><span class="tl-time">08:00 – 12:00</span><span class="tl-text">吃饭、收拾东西、退房</span></div>
+          <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">椰梦长廊（备选：亚特兰蒂斯水世界）</span></div>
+          <div class="tl-item"><span class="tl-time">16:00 – 18:00</span><span class="tl-text">吃饭、还车</span></div>
+          <div class="tl-item"><span class="tl-time">18:00 – 20:00</span><span class="tl-text">机场免税店购物</span></div>
+          <div class="tl-item"><span class="tl-time">20:10 – 23:55</span><span class="tl-text">飞机返回</span></div>
+        </div>
+        <div class="day-imgs">
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/15-day5-coconut.jpg" alt="椰梦长廊" loading="lazy"><div class="zoom-icon"></div></div>
+          <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/16-day5-return.jpg" alt="返程" loading="lazy"><div class="zoom-icon"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 5. 网友推荐 -->
+  <div class="section-title reveal"><span>⭐</span>网友推荐（备选景点）</div>
+  <div class="img-grid cols-1 reveal" style="margin-bottom:56px">
+    <div class="img-wrap"><img src="https://sanya-1256297898.cos.ap-beijing.myqcloud.com/17-bonus-tips.webp" alt="网友推荐备选景点" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <!-- 贴士 -->
+  <div class="tips-card reveal">
+    <div class="section-title"><span>💡</span>出行小贴士</div>
+    <ul class="tips-list">
+      <li><span class="tip-icon">🎫</span>热带天堂森林公园建议<strong>提前在线购票</strong>，并自带食物和饮水</li>
+      <li><span class="tip-icon">🍖</span>艾迪逊酒店海滩烧烤需要<strong>提前预订</strong>，位置紧俏</li>
+      <li><span class="tip-icon">🏝️</span>蜈支洲岛建议预留整天，岛上水上项目丰富，不要安排其他行程</li>
+      <li><span class="tip-icon">🚗</span>租车出行更自由，还车时间需与航班时间留有充足余量</li>
+      <li><span class="tip-icon">☀️</span>三月末天气温热，防晒霜、太阳镜、遮阳帽必备</li>
+      <li><span class="tip-icon">🛒</span>机场免税店购物建议提前列好购物清单，在免税 App 上先看好价格</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>三亚旅行全攻略 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
+</footer>
+
+<script>
+  /* ── 气泡动画 ── */
+  const bubblesEl = document.getElementById('bubbles');
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 8 + Math.random() * 28;
+    b.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${8+Math.random()*14}s;
+      animation-delay:${-Math.random()*20}s;
+      opacity:${0.15+Math.random()*0.35};
+    `;
+    bubblesEl.appendChild(b);
+  }
+
+  /* ── Scroll Reveal ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.08 + 's';
+    observer.observe(el);
+  });
+
+  /* ── Lightbox ── */
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCounter = document.getElementById('lbCounter');
+  let allImgs = [], cur = 0;
+
+  function collectImgs() {
+    allImgs = Array.from(document.querySelectorAll('.img-wrap img'));
+  }
+
+  function openLb(idx) {
+    collectImgs();
+    cur = idx;
+    lbImg.src = allImgs[cur].src;
+    lbImg.alt = allImgs[cur].alt;
+    lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function navigate(dir) {
+    cur = (cur + dir + allImgs.length) % allImgs.length;
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+      lbImg.src = allImgs[cur].src;
+      lbImg.alt = allImgs[cur].alt;
+      lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+      lbImg.style.opacity = '1';
+    }, 150);
+  }
+
+  lbImg.style.transition = 'opacity 0.15s';
+
+  document.querySelectorAll('.img-wrap').forEach((wrap, i) => {
+    wrap.addEventListener('click', () => { collectImgs(); openLb(i); });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', () => navigate(-1));
+  document.getElementById('lbNext').addEventListener('click', () => navigate(1));
+
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+</script>
 </body>
 </html>
