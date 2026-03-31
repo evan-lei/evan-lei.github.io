@@ -87,9 +87,10 @@ git push pages main
 2. 将 HTML 主文件命名为 `index.html` 放入目录
 3. 素材放 `<项目名>/source/`，HTML 内用相对路径 `./source/` 引用
 4. **在根目录 `index.html` 的 `.grid` 里新增一张 `.card`**，指向 `./<项目名>/`
-5. 提交推送：
+5. **在根目录 `README.md` 的"项目列表"表格里新增一行**，包含项目名、目录、访问链接和简介；同时更新"目录结构"代码块
+6. 提交推送：
    ```bash
-   git add <项目名>/ index.html
+   git add <项目名>/ index.html README.md
    git commit -m "add <项目名>"
    git push pages main
    ```
