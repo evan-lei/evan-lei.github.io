@@ -396,6 +396,226 @@
       .day-header { padding: 16px 18px; }
       .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
     }
+
+    /* ═══════════════════ 游玩实录 ═══════════════════ */
+
+    /* 分隔线 */
+    .trip-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 64px 0 56px;
+    }
+    .trip-divider::before, .trip-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .trip-divider span {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.5rem;
+      color: var(--sand);
+      white-space: nowrap;
+      text-shadow: 0 0 20px rgba(245,158,11,0.5);
+    }
+
+    /* 统计栏 */
+    .trip-stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .stat-item {
+      flex: 1;
+      min-width: 120px;
+      padding: 22px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--sand), var(--rust));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* 无人机主视频 */
+    .drone-video-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 48px;
+      border: 1px solid var(--border);
+      background: #000;
+      cursor: pointer;
+    }
+    .drone-video-wrap video {
+      width: 100%;
+      display: block;
+      max-height: 540px;
+      object-fit: cover;
+    }
+    .drone-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(8,4,0,0.8) 100%);
+      pointer-events: none;
+    }
+    .drone-label {
+      position: absolute;
+      bottom: 24px; left: 28px;
+      pointer-events: none;
+    }
+    .drone-label .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(245,158,11,0.5);
+      color: var(--sand);
+      background: rgba(0,0,0,0.4);
+      margin-bottom: 8px;
+    }
+    .drone-label h3 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1.8rem;
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+
+    /* Live Photo 相册 */
+    .photo-grid {
+      columns: 3;
+      column-gap: 10px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 700px) { .photo-grid { columns: 2; } }
+    @media (max-width: 420px) { .photo-grid { columns: 1; } }
+
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      cursor: zoom-in;
+      margin-bottom: 10px;
+      break-inside: avoid;
+      background: var(--panel);
+    }
+    .photo-card img.photo-still {
+      width: 100%;
+      display: block;
+      transition: opacity 0.3s, transform 0.4s;
+    }
+    .photo-card video.photo-live {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .photo-card:hover img.photo-still { transform: scale(1.04); }
+    .photo-card.live-active video.photo-live { opacity: 1; }
+
+    .live-badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(245,158,11,0.4);
+      color: var(--sand);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .photo-card:hover .live-badge { opacity: 1; }
+
+    .photo-zoom-hint {
+      position: absolute;
+      inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s;
+    }
+    .photo-zoom-hint::after {
+      content: '🔍';
+      font-size: 1.6rem;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .photo-card:hover .photo-zoom-hint { background: rgba(0,0,0,0.2); }
+    .photo-card:hover .photo-zoom-hint::after { opacity: 1; transform: scale(1); }
+
+    /* 主视频 + 其他视频 */
+    .main-video-wrap {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      margin-bottom: 20px;
+    }
+    .main-video-wrap video {
+      width: 100%;
+      display: block;
+    }
+    .main-video-label {
+      padding: 14px 20px;
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .main-video-label em { color: var(--sand); font-style: normal; }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 56px;
+    }
+    .video-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .video-card:hover { border-color: rgba(245,158,11,0.4); }
+    .video-card video { width: 100%; display: block; }
+    .video-card-label {
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
@@ -535,6 +755,106 @@
 
 </div>
 
+<!-- ═══════════════════ 游玩实录 ═══════════════════ -->
+<div class="container">
+
+  <div class="trip-divider reveal"><span>✦ 游玩实录 · 我们的沙漠故事 ✦</span></div>
+
+  <!-- 统计栏 -->
+  <div class="trip-stats reveal">
+    <div class="stat-item"><div class="stat-num">24</div><div class="stat-label">📸 张照片</div></div>
+    <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">🎬 段视频</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">👨‍👩‍👧 家人</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">🏜️ 天沙漠</div></div>
+  </div>
+
+  <!-- 无人机航拍 -->
+  <div class="section-title reveal"><span>🚁</span>无人机·俯瞰沙漠</div>
+  <div class="drone-video-wrap reveal">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-drone.mp4" type="video/mp4">
+    </video>
+    <div class="drone-overlay"></div>
+    <div class="drone-label">
+      <div class="tag">🚁 DJI 航拍</div>
+      <h3>大漠孤烟，长河落日</h3>
+    </div>
+  </div>
+
+  <!-- 照片墙 -->
+  <div class="section-title reveal"><span>📸</span>照片墙（悬停看 Live Photo）</div>
+  <div class="photo-grid">
+    <div class="photo-card" data-live="trip-live-01.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-01.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-02.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-02.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-03.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-03.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-04.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-04.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-05.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-05.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-06.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-06.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-07.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-07.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-08.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-08.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-09.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-09.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-10.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-10.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-11.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-11.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-12.jpg" loading="lazy"><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-13.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-13.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-14.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-14.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-15.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-15.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-16.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-16.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-17.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-17.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-18.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-18.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-19.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-19.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-20.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-20.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-21.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-21.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-22.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-22.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-23.jpg" loading="lazy"><div class="photo-zoom-hint"></div></div>
+    <div class="photo-card" data-live="trip-live-24.mp4"><img class="photo-still" src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-photo-24.jpg" loading="lazy"><div class="live-badge">LIVE</div><div class="photo-zoom-hint"></div></div>
+  </div>
+
+  <!-- 主视频 -->
+  <div class="section-title reveal"><span>🎞️</span>旅程回忆</div>
+  <div class="main-video-wrap reveal">
+    <video controls preload="metadata" playsinline>
+      <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-main.mp4" type="video/mp4">
+    </video>
+    <div class="main-video-label">🎬 <em>旅程完整记录</em> · 点击播放</div>
+  </div>
+
+  <!-- 其他视频 -->
+  <div class="video-grid reveal">
+    <div class="video-card">
+      <video controls preload="metadata" playsinline>
+        <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-01.mp4" type="video/mp4">
+      </video>
+      <div class="video-card-label">🏜️ 片段 01</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata" playsinline>
+        <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-02.mp4" type="video/mp4">
+      </video>
+      <div class="video-card-label">🏜️ 片段 02</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata" playsinline>
+        <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-03.mp4" type="video/mp4">
+      </video>
+      <div class="video-card-label">🏜️ 片段 03</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata" playsinline>
+        <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-04.mp4" type="video/mp4">
+      </video>
+      <div class="video-card-label">🏜️ 片段 04</div>
+    </div>
+    <div class="video-card">
+      <video controls preload="metadata" playsinline>
+        <source src="https://desert-1256297898.cos.ap-beijing.myqcloud.com/trip-video-05.mp4" type="video/mp4">
+      </video>
+      <div class="video-card-label">🏜️ 片段 05</div>
+    </div>
+  </div>
+
+</div>
+
 <footer>
   <p>翁牛特旗沙漠探险 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
 </footer>
@@ -642,6 +962,45 @@
     if (e.key === 'ArrowLeft') navigate(-1);
     if (e.key === 'ArrowRight') navigate(1);
   });
+
+  /* ── Live Photo 悬停播放 ── */
+  document.querySelectorAll('.photo-card[data-live]').forEach(card => {
+    const liveFile = card.dataset.live;
+    const base = 'https://desert-1256297898.cos.ap-beijing.myqcloud.com/';
+    let video = null;
+
+    card.addEventListener('mouseenter', () => {
+      if (!video) {
+        video = document.createElement('video');
+        video.className = 'photo-live';
+        video.src = base + liveFile;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        card.insertBefore(video, card.querySelector('.live-badge'));
+      }
+      video.play().catch(() => {});
+      card.classList.add('live-active');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (video) { video.pause(); video.currentTime = 0; }
+      card.classList.remove('live-active');
+    });
+  });
+
+  /* ── 照片墙灯箱 ── */
+  const photoCards = Array.from(document.querySelectorAll('.photo-card'));
+  const photoImgs = photoCards.map(c => c.querySelector('img.photo-still'));
+
+  photoCards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      allImgs = photoImgs;
+      openLb(i);
+    });
+  });
+
 </script>
 </body>
 </html>
