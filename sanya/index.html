@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三亚 5 天 4 宿旅游攻略</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ocean:  #0ea5e9;
+      --teal:   #14b8a6;
+      --coral:  #f97316;
+      --sand:   #fbbf24;
+      --dark:   #0c1929;
+      --panel:  #112236;
+      --border: #1e3a55;
+      --text:   #e2eaf4;
+      --muted:  #7a9bb5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: var(--dark);
+      font-family: 'Noto Sans SC', sans-serif;
+      color: var(--text);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      padding: 80px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(160deg, #07263d 0%, #0c3a5c 50%, #082438 100%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(14,165,233,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 35% at 80% 20%, rgba(249,115,22,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(14,165,233,0.5);
+      color: var(--ocean);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      background: linear-gradient(135deg, #fff 20%, var(--ocean) 60%, var(--sand) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .hero-meta span em { color: var(--sand); font-style: normal; font-weight: 600; }
+
+    .waves {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      overflow: hidden;
+    }
+
+    .waves svg { display: block; width: 100%; height: 100%; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Section headings ── */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ocean);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title .icon { font-size: 1.4rem; }
+
+    /* ── Overview images ── */
+    .img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .img-grid img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      aspect-ratio: 16/10;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .img-grid img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .img-full img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    /* ── Checklist ── */
+    .checklist-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .checklist-card img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    /* ── Day timeline ── */
+    .days { margin-bottom: 48px; }
+
+    .day-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      background: linear-gradient(90deg, rgba(14,165,233,0.12) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .day-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--ocean), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(14,165,233,0.4);
+    }
+
+    .day-title { font-size: 1rem; font-weight: 600; }
+    .day-subtitle { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+
+    .day-body { padding: 20px 24px 24px; }
+
+    .timeline { position: relative; padding-left: 24px; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--ocean), var(--teal));
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ocean);
+      box-shadow: 0 0 6px rgba(14,165,233,0.7);
+      flex-shrink: 0;
+    }
+
+    .tl-time {
+      font-size: 0.78rem;
+      color: var(--sand);
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 110px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tl-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .day-imgs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .day-imgs img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .day-imgs img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+
+    /* ── Tips ── */
+    .tips-card {
+      background: var(--panel);
+      border: 1px solid rgba(249,115,22,0.35);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+
+    .tips-card .section-title { color: var(--coral); border-color: rgba(249,115,22,0.25); }
+
+    .tips-list { list-style: none; }
+
+    .tips-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .tips-list li:last-child { border-bottom: none; }
+    .tips-list li::before { content: '🌊'; flex-shrink: 0; }
+
+    /* ── Backup attractions ── */
+    .backup-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--ocean); text-decoration: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .tl-time { min-width: 90px; font-size: 0.72rem; }
+      .day-body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">🌴 旅游攻略</div>
+    <h1>三亚 5 天 4 宿</h1>
+    <div class="hero-meta">
+      <span>📅 时间：<em>2023.03.25 — 2023.03.29</em></span>
+      <span>🏝️ 目的地：<em>三亚，海南</em></span>
+    </div>
+    <div class="waves">
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z"
+              fill="#0c1929" opacity="1"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- 1. 主要区域预览 -->
+    <div class="section-title"><span class="icon">🗺️</span>三亚主要区域预览</div>
+    <div class="img-grid">
+      <img src="https://s.momocdn.com/s1/u/iiaggffc/vchat547/1.jpeg" alt="三亚区域地图" loading="lazy">
+      <img src="https://p1-q.mafengwo.net/s18/M00/F9/D4/CoUBYGDAOv6AUQuCAAQDQFHresw965.png?imageView2%2F2%2Fw%2F680%2Fq%2F90" alt="三亚区域预览" loading="lazy">
+    </div>
+
+    <!-- 2. 主要景点分布 -->
+    <div class="section-title"><span class="icon">📍</span>主要景点分布预览</div>
+    <div class="img-full" style="margin-bottom:48px">
+      <img src="https://p1-q.mafengwo.net/s11/M00/4A/51/wKgBEFsk1qCAIZ3zAASnpCCZKLI556.png?imageView2%2F2%2Fw%2F680%2Fq%2F90" alt="三亚景点分布" loading="lazy">
+    </div>
+
+    <!-- 3. 物品清单 -->
+    <div class="section-title"><span class="icon">🎒</span>出行物品清单</div>
+    <div class="checklist-card">
+      <img src="https://s.momocdn.com/s1/u/iiaggffc/vchat547/三亚出游.jpg" alt="三亚出游物品清单" loading="lazy">
+    </div>
+
+    <!-- 4. 行程安排 -->
+    <div class="section-title"><span class="icon">🗓️</span>行程安排</div>
+    <div class="days">
+
+      <!-- 第一天 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-number">1</div>
+          <div>
+            <div class="day-title">第一天 · 抵达三亚</div>
+            <div class="day-subtitle">飞机 → 入住亚龙湾 → 海滩 → 夜市</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-time">07:35 – 11:45</span><span class="tl-text">飞机出发，抵达三亚</span></div>
+            <div class="tl-item"><span class="tl-time">12:00 – 15:00</span><span class="tl-text">取车 + 吃饭 + 入住酒店（亚龙湾）</span></div>
+            <div class="tl-item"><span class="tl-time">15:00 – 19:00</span><span class="tl-text">亚龙湾海滩</span></div>
+            <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">吃饭、逛夜市</span></div>
+            <div class="tl-item"><span class="tl-time">21:00</span><span class="tl-text">回酒店休息</span></div>
+          </div>
+          <div class="day-imgs">
+            <img src="http://pic.ylwpark.com/image/201503/30/5518b70991785.jpg" alt="亚龙湾海滩" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二天 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-number">2</div>
+          <div>
+            <div class="day-title">第二天 · 森林公园 + 免税城 + 烧烤</div>
+            <div class="day-subtitle">热带天堂森林公园 → 国际免税城 → 艾迪逊海滩烧烤</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
+            <div class="tl-item"><span class="tl-time">09:00 – 15:00</span><span class="tl-text">热带天堂森林公园（⚠️ 提前购票，自带食物）</span></div>
+            <div class="tl-item"><span class="tl-time">15:00 – 17:00</span><span class="tl-text">三亚国际免税城</span></div>
+            <div class="tl-item"><span class="tl-time">17:00 – 20:00</span><span class="tl-text">三亚艾迪逊酒店·海滩烧烤（⚠️ 提前预定）</span></div>
+            <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+          </div>
+          <div class="day-imgs">
+            <img src="https://pic5.40017.cn/04/002/6c/64/rBTJUl1t3HWAKBBsAAOmQgN11TM652.png" alt="热带天堂森林公园" loading="lazy">
+            <img src="https://www.visitsanya.com/upload/2022-09/166262627719305900.jpg" alt="三亚国际免税城" loading="lazy">
+            <img src="https://dimg04.c-ctrip.com/images/01052120009c5fypz8641.jpg" alt="艾迪逊海滩烧烤" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三天 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-number">3</div>
+          <div>
+            <div class="day-title">第三天 · 鹿回头 + 大东海</div>
+            <div class="day-subtitle">自由活动 → 鹿回头风景区 → 大东海旅游区 → 夜市</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-time">08:00 – 09:00</span><span class="tl-text">早餐</span></div>
+            <div class="tl-item"><span class="tl-time">09:00 – 11:00</span><span class="tl-text">自由活动</span></div>
+            <div class="tl-item"><span class="tl-time">11:00 – 12:00</span><span class="tl-text">吃饭</span></div>
+            <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">鹿回头风景区</span></div>
+            <div class="tl-item"><span class="tl-time">16:00 – 19:00</span><span class="tl-text">大东海旅游区</span></div>
+            <div class="tl-item"><span class="tl-time">19:00 – 20:00</span><span class="tl-text">大东海夜市</span></div>
+            <div class="tl-item"><span class="tl-time">20:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+          </div>
+          <div class="day-imgs">
+            <img src="https://youimg1.tripcdn.com/target/0103z12000947hwt65611.jpg?proc=source%2Ftrip" alt="鹿回头风景区" loading="lazy">
+            <img src="http://www.57jz.com/img/tour/2011217235113417.jpg" alt="大东海旅游区" loading="lazy">
+            <img src="http://5b0988e595225.cdn.sohucs.com/images/20190131/396e943a8e804ee8b7b364eb1795d4cf.png" alt="大东海夜市" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第四天 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-number">4</div>
+          <div>
+            <div class="day-title">第四天 · 蜈支洲岛</div>
+            <div class="day-subtitle">全天蜈支洲岛 → 晚餐 → 回酒店</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-time">08:00 – 08:30</span><span class="tl-text">早餐</span></div>
+            <div class="tl-item"><span class="tl-time">08:30 – 17:00</span><span class="tl-text">蜈支洲岛（全天游览）</span></div>
+            <div class="tl-item"><span class="tl-time">17:00 – 19:00</span><span class="tl-text">吃饭</span></div>
+            <div class="tl-item"><span class="tl-time">19:00 – 21:00</span><span class="tl-text">回酒店</span></div>
+          </div>
+          <div class="day-imgs">
+            <img src="https://youimg1.c-ctrip.com/target/01006120008r0zknw4B04_D_750_420.jpg?proc=autoorient" alt="蜈支洲岛" loading="lazy">
+            <img src="http://www.oct-cts.com/images/up_scenery/UploadImage/40069/largeImg/2020120910025684-756.jpg" alt="蜈支洲岛风景" loading="lazy">
+            <img src="https://dimg04.c-ctrip.com/images/350813000000tm1eeC8CA_C_500_280_Q80.jpg" alt="蜈支洲岛海景" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <!-- 第五天 -->
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-number">5</div>
+          <div>
+            <div class="day-title">第五天 · 返程</div>
+            <div class="day-subtitle">退房 → 椰梦长廊 → 免税店 → 飞机回</div>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="timeline">
+            <div class="tl-item"><span class="tl-time">08:00 – 12:00</span><span class="tl-text">吃饭、收拾东西、退房</span></div>
+            <div class="tl-item"><span class="tl-time">12:00 – 16:00</span><span class="tl-text">椰梦长廊（备选：亚特兰蒂斯水世界）</span></div>
+            <div class="tl-item"><span class="tl-time">16:00 – 18:00</span><span class="tl-text">吃饭、还车</span></div>
+            <div class="tl-item"><span class="tl-time">18:00 – 20:00</span><span class="tl-text">机场免税店购物</span></div>
+            <div class="tl-item"><span class="tl-time">20:10 – 23:55</span><span class="tl-text">飞机返回</span></div>
+          </div>
+          <div class="day-imgs">
+            <img src="https://youimg1.c-ctrip.com/target/100d10000000ojmdm7C8B_D_750_420.jpg?proc=autoorient" alt="椰梦长廊" loading="lazy">
+            <img src="https://youimg1.c-ctrip.com/target/350e15000000y9owcB206_D_750_420.jpg?proc=autoorient" alt="返程" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /days -->
+
+    <!-- 5. 网友推荐备选景点 -->
+    <div class="section-title"><span class="icon">⭐</span>网友推荐（备选景点）</div>
+    <div class="img-full" style="margin-bottom: 48px">
+      <img class="backup-img" src="https://pic2.zhimg.com/80/v2-11463f8840798ec6e7fe68edc89d7ec9_1440w.webp" alt="网友推荐备选景点" loading="lazy">
+    </div>
+
+    <!-- 贴士 -->
+    <div class="tips-card">
+      <div class="section-title"><span class="icon">💡</span>出行小贴士</div>
+      <ul class="tips-list">
+        <li>热带天堂森林公园建议<strong>提前在线购票</strong>，并自带食物和饮水</li>
+        <li>艾迪逊酒店海滩烧烤需要<strong>提前预订</strong>，位置紧俏</li>
+        <li>蜈支洲岛建议预留整天，岛上水上项目丰富，不要安排其他行程</li>
+        <li>租车出行更自由，还车时间需与航班时间留有充足余量</li>
+        <li>三月末天气温热，防晒霜、太阳镜、遮阳帽必备</li>
+        <li>机场免税店购物建议提前列好购物清单，在免税 App 上先看好价格</li>
+      </ul>
+    </div>
+
+  </div><!-- /container -->
+
+  <footer>
+    <p>整理自 2023 三亚旅行 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
+  </footer>
+
+</body>
+</html>
