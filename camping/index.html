@@ -269,6 +269,42 @@
       padding: 8px 12px;
       border-radius: 0 6px 6px 0;
     }
+    .copy-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 8px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .copy-text {
+      flex: 1;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text);
+      word-break: break-all;
+      font-family: monospace;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--sage);
+      background: rgba(82,183,136,0.12);
+      color: var(--sage);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: rgba(82,183,136,0.25); }
+    .copy-btn:active { transform: scale(0.95); }
+    .copy-btn.copied {
+      background: rgba(82,183,136,0.35);
+      color: var(--leaf);
+      border-color: var(--leaf);
+    }
 
     /* ═══════════════════ IMAGES ═══════════════════ */
     .img-wrap {
@@ -482,8 +518,11 @@
       <div class="info-value">北京市露营地人气榜入围 · 人均 ¥184</div>
     </div>
     <div class="info-tip">
-      🔗 预订方式：复制以下链接，去抖音打开 →
-      <code style="font-size:0.75rem; word-break:break-all; opacity:0.8;">8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm</code>
+      🔗 预订方式：去抖音打开，点击下方按钮一键复制
+      <div class="copy-block" id="douyinCopy">
+        <span class="copy-text">8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm</span>
+        <button class="copy-btn" onclick="copyDouyin()">📋 点击复制</button>
+      </div>
     </div>
   </div>
 
@@ -674,6 +713,28 @@
     if (e.key === 'ArrowLeft') navigate(-1);
     if (e.key === 'ArrowRight') navigate(1);
   });
+
+  /* ── 一键复制抖音口令 ── */
+  function copyDouyin() {
+    const text = document.querySelector('.copy-text').textContent.trim();
+    const btn = document.querySelector('.copy-btn');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ 已复制！';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '📋 点击复制';
+        btn.classList.remove('copied');
+      }, 2500);
+    }).catch(() => {
+      /* 降级：选中文本 */
+      const range = document.createRange();
+      range.selectNode(document.querySelector('.copy-text'));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      btn.textContent = '👆 请手动复制';
+      setTimeout(() => { btn.textContent = '📋 点击复制'; }, 2500);
+    });
+  }
 </script>
 </body>
 </html>
