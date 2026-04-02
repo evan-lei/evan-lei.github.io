@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>跟着爸爸去露营</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest: #2d6a4f;
+      --sage:   #52b788;
+      --leaf:   #95d5b2;
+      --moss:   #1b4332;
+      --dark:   #081c15;
+      --panel:  #112218;
+      --panel2: #0d1a12;
+      --border: #1e3a29;
+      --text:   #d8f3dc;
+      --muted:  #74b09a;
+      --earth:  #c9a46e;
+      --gold:   #f4a261;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      font-family: 'Noto Sans SC', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════ HERO ═══════════════════ */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse 140% 80% at 50% 110%, #0a2e1a 0%, #040e08 70%);
+    }
+
+    /* 萤火虫 canvas */
+    #fireflyCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-glow-1 {
+      width: 500px; height: 500px;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(82,183,136,0.12) 0%, transparent 70%);
+    }
+    .hero-glow-2 {
+      width: 300px; height: 300px;
+      bottom: 80px; right: 15%;
+      background: radial-gradient(circle, rgba(149,213,178,0.08) 0%, transparent 70%);
+      animation: float-glow 7s ease-in-out infinite;
+    }
+    @keyframes float-glow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* 树冠剪影 SVG 底部 */
+    .hero-trees {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero-eyebrow {
+      font-size: clamp(0.75rem, 2vw, 0.9rem);
+      letter-spacing: 0.3em;
+      color: var(--sage);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+
+    .hero-title {
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: clamp(2.8rem, 10vw, 6rem);
+      line-height: 1.1;
+      background: linear-gradient(135deg, #95d5b2 0%, #52b788 50%, #f4a261 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 40px rgba(82,183,136,0.3));
+    }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-tag {
+      padding: 6px 16px;
+      border: 1px solid rgba(82,183,136,0.35);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      color: var(--sage);
+      background: rgba(82,183,136,0.06);
+      backdrop-filter: blur(6px);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      opacity: 0.6;
+      animation: hint-fade 2.5s ease-in-out infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--sage), transparent);
+    }
+    @keyframes hint-fade {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.8; transform: translateX(-50%) translateY(5px); }
+    }
+
+    /* ═══════════════════ LAYOUT ═══════════════════ */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Section title */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      color: var(--leaf);
+      margin: 52px 0 24px;
+    }
+    .section-title span {
+      font-size: 1.4em;
+      line-height: 1;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(82,183,136,0.4), transparent);
+    }
+
+    /* Camp divider */
+    .camp-divider {
+      text-align: center;
+      margin: 64px 0 36px;
+      position: relative;
+    }
+    .camp-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--forest), var(--forest), transparent);
+    }
+    .camp-divider-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--dark);
+      padding: 0 20px;
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--sage);
+    }
+    .camp-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--forest);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--leaf);
+    }
+
+    /* Info card */
+    .info-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px 24px;
+    }
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .info-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .info-value {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .info-value.highlight {
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .info-value.free {
+      color: var(--sage);
+      font-weight: 600;
+    }
+    .info-tip {
+      grid-column: 1 / -1;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: rgba(82,183,136,0.06);
+      border-left: 2px solid var(--sage);
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ═══════════════════ IMAGES ═══════════════════ */
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: zoom-in;
+      background: var(--panel);
+    }
+    .img-wrap img {
+      width: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .img-wrap:hover img { transform: scale(1.05); }
+    .zoom-icon {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .zoom-icon::after {
+      content: '⛶';
+      font-size: 2rem;
+      color: rgba(255,255,255,0.85);
+      opacity: 0;
+      transition: opacity 0.3s;
+      transform: scale(0.8);
+    }
+    .img-wrap:hover .zoom-icon { background: rgba(0,0,0,0.18); }
+    .img-wrap:hover .zoom-icon::after { opacity: 1; transform: scale(1); }
+
+    /* Map image (wide) */
+    .map-wrap {
+      margin-bottom: 24px;
+    }
+    .map-wrap .img-wrap img { aspect-ratio: 16/7; object-fit: cover; }
+
+    /* Photo grid 3-col */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    /* Video */
+    .video-wrap {
+      margin-bottom: 48px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    .video-wrap video {
+      width: 100%;
+      display: block;
+      max-height: 480px;
+      object-fit: cover;
+    }
+    .video-label {
+      text-align: center;
+      padding: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: rgba(0,0,0,0.25);
+    }
+
+    /* ═══════════════════ REVEAL ═══════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ═══════════════════ LIGHTBOX ═══════════════════ */
+    .lb-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    .lb-overlay.open { opacity: 1; pointer-events: all; }
+    .lb-img {
+      max-width: 92vw; max-height: 90svh;
+      border-radius: 10px;
+      box-shadow: 0 0 80px rgba(0,0,0,0.8);
+      transform: scale(0.92);
+      transition: transform 0.3s;
+      object-fit: contain; display: block;
+    }
+    .lb-overlay.open .lb-img { transform: scale(1); }
+    .lb-close {
+      position: fixed; top: 20px; right: 24px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.5); color: #fff;
+      font-size: 1.4rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; line-height: 1;
+    }
+    .lb-close:hover { background: rgba(255,255,255,0.15); }
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.5); color: #fff;
+      font-size: 1.5rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.15); }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+    .lb-counter {
+      position: fixed; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════ FOOTER ═══════════════════ */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+    footer a { color: var(--sage); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .info-card { padding: 18px; }
+      .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lb">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="fireflyCanvas"></canvas>
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Family · Nature · Adventure</div>
+    <h1 class="hero-title">跟着爸爸去露营</h1>
+    <p class="hero-sub">离开城市的喧嚣，搭一顶帐篷，听虫鸣，数星星，陪米诺感受大自然最真实的样子。</p>
+    <div class="hero-tags">
+      <span class="hero-tag">⛺ 2 处营地</span>
+      <span class="hero-tag">🏔️ 密云 · 兴隆</span>
+      <span class="hero-tag">🌿 亲子户外</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">向下滚动</div>
+
+  <!-- 树冠剪影 -->
+  <svg class="hero-trees" viewBox="0 0 1440 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,200 L0,130 Q80,80 160,110 Q200,60 240,90 Q280,40 340,70 Q380,20 440,55 Q480,5 540,45 Q600,15 660,50 Q720,0 800,40 Q860,10 920,50 Q980,20 1040,60 Q1100,30 1160,70 Q1220,40 1280,80 Q1340,50 1380,100 Q1420,80 1440,110 L1440,200 Z" fill="#040e08"/>
+    <path d="M0,200 L0,160 Q60,130 120,150 Q160,110 200,135 Q250,95 300,125 Q350,90 420,120 Q480,80 550,115 Q620,75 700,110 Q760,70 840,108 Q900,80 980,115 Q1040,85 1100,120 Q1160,95 1220,130 Q1280,100 1340,140 Q1390,120 1440,145 L1440,200 Z" fill="rgba(17,34,24,0.7)"/>
+  </svg>
+</section>
+
+<div class="container">
+
+  <!-- ════ 营地一：野鸭露营地 ════ -->
+  <div class="camp-divider reveal">
+    <div class="camp-divider-badge">
+      <div class="camp-num">01</div>
+      野鸭露营地
+    </div>
+  </div>
+
+  <div class="info-card reveal">
+    <div class="info-item">
+      <div class="info-label">📍 地点</div>
+      <div class="info-value">密云区野鸭露营地</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🚗 距离</div>
+      <div class="info-value">约 70 公里 · 55 分钟</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">💰 费用</div>
+      <div class="info-value highlight">¥168 / 辆（车位费）</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">⭐ 人气</div>
+      <div class="info-value">北京市露营地人气榜入围 · 人均 ¥184</div>
+    </div>
+    <div class="info-tip">
+      🔗 预订方式：复制以下链接，去抖音打开 →
+      <code style="font-size:0.75rem; word-break:break-all; opacity:0.8;">8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm</code>
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
+  <div class="map-wrap reveal">
+    <div class="img-wrap"><img src="./source/1.png" alt="野鸭露营地路线" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>实地环境</div>
+  <div class="photo-grid reveal">
+    <div class="img-wrap"><img src="./source/2.jpg" alt="野鸭露营地环境 1" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="./source/3.jpg" alt="野鸭露营地环境 2" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="./source/4.jpg" alt="野鸭露营地环境 3" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>营地视频</div>
+  <div class="video-wrap reveal">
+    <video controls preload="metadata" playsinline>
+      <source src="./source/5.mp4" type="video/mp4">
+    </video>
+    <div class="video-label">🌿 野鸭露营地 · 点击播放</div>
+  </div>
+
+  <!-- ════ 营地二：黄土岭 ════ -->
+  <div class="camp-divider reveal">
+    <div class="camp-divider-badge">
+      <div class="camp-num">02</div>
+      黄土岭
+    </div>
+  </div>
+
+  <div class="info-card reveal">
+    <div class="info-item">
+      <div class="info-label">📍 地点</div>
+      <div class="info-value">兴隆三道河镇黄土岭村</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🚗 距离</div>
+      <div class="info-value">约 150 公里 · 两个半小时</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">💰 费用</div>
+      <div class="info-value free">🎉 完全免费</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🏕️ 场地</div>
+      <div class="info-value">纯户外场地，自带装备</div>
+    </div>
+    <div class="info-tip">
+      🌟 纯野外营地，无任何收费，适合有一定户外经验的家庭，记得自带垃圾袋，保护环境。
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
+  <div class="map-wrap reveal">
+    <div class="img-wrap"><img src="./source/6.png" alt="黄土岭路线" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>实地环境</div>
+  <div class="photo-grid reveal">
+    <div class="img-wrap"><img src="./source/7.jpg" alt="黄土岭环境 1" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="./source/8.jpg" alt="黄土岭环境 2" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="./source/9.jpg" alt="黄土岭环境 3" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>营地视频</div>
+  <div class="video-wrap reveal">
+    <video controls preload="metadata" playsinline>
+      <source src="./source/10.mp4" type="video/mp4">
+    </video>
+    <div class="video-label">🏔️ 黄土岭 · 点击播放</div>
+  </div>
+
+</div>
+
+<footer>
+  <p>跟着爸爸去露营 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
+</footer>
+
+<script>
+  /* ── 萤火虫动效 ── */
+  const canvas = document.getElementById('fireflyCanvas');
+  const ctx = canvas.getContext('2d');
+  let fireflies = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 55; i++) {
+    fireflies.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: 1 + Math.random() * 1.5,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random(),
+      alphaDir: Math.random() > 0.5 ? 1 : -1,
+      alphaSpeed: 0.008 + Math.random() * 0.012,
+      hue: 100 + Math.random() * 60,
+    });
+  }
+
+  function animateFireflies() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    fireflies.forEach(f => {
+      f.x += f.vx;
+      f.y += f.vy;
+      f.alpha += f.alphaDir * f.alphaSpeed;
+      if (f.alpha >= 1 || f.alpha <= 0) f.alphaDir *= -1;
+      if (f.x < 0) f.x = canvas.width;
+      if (f.x > canvas.width) f.x = 0;
+      if (f.y < 0) f.y = canvas.height;
+      if (f.y > canvas.height) f.y = 0;
+
+      ctx.save();
+      ctx.globalAlpha = f.alpha * 0.85;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = `hsl(${f.hue}, 80%, 65%)`;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${f.hue}, 80%, 70%)`;
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(animateFireflies);
+  }
+  animateFireflies();
+
+  /* ── Scroll Reveal ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 3) * 0.07 + 's';
+    observer.observe(el);
+  });
+
+  /* ── Lightbox ── */
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCounter = document.getElementById('lbCounter');
+  let allImgs = [], cur = 0;
+
+  function collectImgs() {
+    allImgs = Array.from(document.querySelectorAll('.img-wrap img'));
+  }
+  function openLb(idx) {
+    collectImgs();
+    cur = idx;
+    lbImg.src = allImgs[cur].src;
+    lbImg.alt = allImgs[cur].alt;
+    lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function navigate(dir) {
+    cur = (cur + dir + allImgs.length) % allImgs.length;
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+      lbImg.src = allImgs[cur].src;
+      lbImg.alt = allImgs[cur].alt;
+      lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
+      lbImg.style.opacity = '1';
+    }, 150);
+  }
+  lbImg.style.transition = 'opacity 0.15s';
+
+  document.querySelectorAll('.img-wrap').forEach((w, i) => {
+    w.addEventListener('click', () => openLb(i));
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', () => navigate(-1));
+  document.getElementById('lbNext').addEventListener('click', () => navigate(1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+</script>
+</body>
+</html>
