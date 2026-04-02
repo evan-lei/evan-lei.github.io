@@ -3,3 +3,7 @@
 *.zip
 /幼儿课需求.md
 跟着爸爸去中国钓鱼.html
+
+# 素材文件已上传至腾讯云 COS，不需要进 git
+fishing/source/
+camping/source/
