@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>跟着爸爸去露营</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;600;700&display=swap');
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -15,932 +14,723 @@
       --leaf:   #95d5b2;
       --moss:   #1b4332;
       --dark:   #081c15;
-      --panel:  #112218;
-      --panel2: #0d1a12;
-      --border: #1e3a29;
+      --panel:  rgba(17,34,24,0.85);
+      --border: rgba(82,183,136,0.25);
       --text:   #d8f3dc;
       --muted:  #74b09a;
       --earth:  #c9a46e;
       --gold:   #f4a261;
     }
 
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--dark);
+    html, body {
+      width: 100vw; height: 100vh;
+      overflow: hidden;
       font-family: 'Noto Sans SC', sans-serif;
       color: var(--text);
-      overflow-x: hidden;
+      background: var(--dark);
+      user-select: none;
     }
 
-    /* ═══════════════════ HERO ═══════════════════ */
-    .hero {
-      position: relative;
-      height: 100svh;
-      min-height: 520px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: radial-gradient(ellipse 140% 80% at 50% 110%, #0a2e1a 0%, #040e08 70%);
+    /* ══════════════════ SLIDE ENGINE ══════════════════ */
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0;
+      transform: scale(0.97) translateY(16px);
+      transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+      pointer-events: none; overflow: hidden;
+    }
+    .slide.active  { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
+    .slide.exit    { opacity: 0; transform: scale(1.03) translateY(-16px); }
+
+    /* ══════════════════ NAVIGATION ══════════════════ */
+    #nav {
+      position: fixed; bottom: 22px; right: 24px;
+      z-index: 9999; display: flex; gap: 10px; align-items: center;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,0.92); border: none; border-radius: 50%;
+      width: 46px; height: 46px; font-size: 20px; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 3px 12px rgba(0,0,0,.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-btn:hover { transform: scale(1.15); }
+    #slide-num {
+      background: rgba(0,0,0,.45); color: white;
+      padding: 7px 16px; border-radius: 22px;
+      font-size: 14px; font-weight: 700; font-family: 'Noto Sans SC', sans-serif;
+    }
+    #hint {
+      position: fixed; bottom: 28px; left: 24px;
+      color: rgba(255,255,255,.4); font-size: 12px; z-index: 9999;
     }
 
-    /* 萤火虫 canvas */
-    #fireflyCanvas {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    /* ══════════════════ SLIDE 1 — COVER ══════════════════ */
+    #s1 {
+      background: radial-gradient(ellipse 140% 80% at 50% 110%, #0a2e1a 0%, #020a05 70%);
     }
-
-    .hero-glow {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
+    #s1 canvas { position: absolute; inset: 0; pointer-events: none; }
+    .cover-content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+    .cover-eyebrow {
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      letter-spacing: 0.35em; color: var(--sage);
+      text-transform: uppercase; margin-bottom: 16px; opacity: 0.8;
     }
-    .hero-glow-1 {
-      width: 500px; height: 500px;
-      top: -120px; left: 50%;
-      transform: translateX(-50%);
-      background: radial-gradient(circle, rgba(82,183,136,0.12) 0%, transparent 70%);
-    }
-    .hero-glow-2 {
-      width: 300px; height: 300px;
-      bottom: 80px; right: 15%;
-      background: radial-gradient(circle, rgba(149,213,178,0.08) 0%, transparent 70%);
-      animation: float-glow 7s ease-in-out infinite;
-    }
-    @keyframes float-glow {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    /* 树冠剪影 SVG 底部 */
-    .hero-trees {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .hero-eyebrow {
-      font-size: clamp(0.75rem, 2vw, 0.9rem);
-      letter-spacing: 0.3em;
-      color: var(--sage);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      opacity: 0.85;
-    }
-
-    .hero-title {
+    .cover-title {
       font-family: 'Ma Shan Zheng', serif;
-      font-size: clamp(2.8rem, 10vw, 6rem);
-      line-height: 1.1;
+      font-size: clamp(3rem, 10vw, 7rem);
       background: linear-gradient(135deg, #95d5b2 0%, #52b788 50%, #f4a261 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 0 40px rgba(82,183,136,0.3));
+      filter: drop-shadow(0 0 40px rgba(82,183,136,0.25));
+      line-height: 1.1; margin-bottom: 24px;
     }
-
-    .hero-sub {
-      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-      color: var(--muted);
-      max-width: 480px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
+    .cover-camps {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      max-width: 640px; margin: 0 auto 32px;
     }
-
-    .hero-tags {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .hero-tag {
-      padding: 6px 16px;
+    .cover-camp-tag {
+      padding: 8px 18px;
       border: 1px solid rgba(82,183,136,0.35);
-      border-radius: 20px;
-      font-size: 0.82rem;
-      color: var(--sage);
-      background: rgba(82,183,136,0.06);
-      backdrop-filter: blur(6px);
+      border-radius: 24px; font-size: clamp(0.75rem, 2vw, 0.9rem);
+      color: var(--leaf); background: rgba(82,183,136,0.08);
+      backdrop-filter: blur(6px); cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .cover-camp-tag:hover {
+      background: rgba(82,183,136,0.2);
+      border-color: rgba(82,183,136,0.7);
+      transform: translateY(-2px);
+    }
+    .cover-hint {
+      font-size: 0.8rem; color: var(--muted); opacity: 0.6;
+    }
+    /* 树冠剪影 */
+    .cover-trees {
+      position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; z-index: 1;
     }
 
-    .scroll-hint {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      opacity: 0.6;
-      animation: hint-fade 2.5s ease-in-out infinite;
+    /* ══════════════════ SLIDE 2-6 — CAMP ══════════════════ */
+    .camp-slide {
+      padding: 0; align-items: stretch;
     }
-    .scroll-hint::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 32px;
-      background: linear-gradient(to bottom, var(--sage), transparent);
-    }
-    @keyframes hint-fade {
-      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-      50% { opacity: 0.8; transform: translateX(-50%) translateY(5px); }
+    .camp-slide-inner {
+      width: 100%; height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
     }
 
-    /* ═══════════════════ LAYOUT ═══════════════════ */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 20px;
+    /* 左侧：信息面板 */
+    .camp-info-panel {
+      display: flex; flex-direction: column;
+      justify-content: center; padding: clamp(28px,5vw,64px);
+      position: relative; z-index: 2;
     }
-
-    /* Section title */
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .camp-number {
+      font-size: clamp(4rem, 10vw, 8rem);
       font-family: 'Ma Shan Zheng', serif;
-      font-size: clamp(1.3rem, 4vw, 1.8rem);
-      color: var(--leaf);
-      margin: 52px 0 24px;
+      line-height: 1; opacity: 0.12;
+      position: absolute; top: clamp(16px,3vh,32px); left: clamp(28px,5vw,64px);
+      pointer-events: none;
     }
-    .section-title span {
-      font-size: 1.4em;
-      line-height: 1;
+    .camp-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
     }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(82,183,136,0.4), transparent);
+    .camp-badge-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
     }
-
-    /* Camp divider */
-    .camp-divider {
-      text-align: center;
-      margin: 64px 0 36px;
-      position: relative;
+    .camp-badge-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
     }
-    .camp-divider::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--forest), var(--forest), transparent);
-    }
-    .camp-divider-badge {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--dark);
-      padding: 0 20px;
+    .camp-name {
       font-family: 'Ma Shan Zheng', serif;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      color: var(--sage);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2; margin-bottom: 20px;
     }
-    .camp-num {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--forest);
-      display: flex; align-items: center; justify-content: center;
+    .camp-warn-badge {
+      display: inline-block;
       font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--leaf);
-    }
-
-    /* Info card */
-    .info-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 28px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px 24px;
-    }
-    .info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .info-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-    .info-value {
-      font-size: 0.95rem;
-      color: var(--text);
-      line-height: 1.5;
-    }
-    .info-value.highlight {
-      color: var(--gold);
-      font-weight: 600;
-    }
-    .info-value.free {
-      color: var(--sage);
-      font-weight: 600;
-    }
-    .info-tip {
-      grid-column: 1 / -1;
-      font-size: 0.8rem;
-      color: var(--muted);
-      background: rgba(82,183,136,0.06);
-      border-left: 2px solid var(--sage);
-      padding: 8px 12px;
-      border-radius: 0 6px 6px 0;
-    }
-    .copy-block {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-top: 8px;
-      background: rgba(0,0,0,0.2);
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-    .copy-text {
-      flex: 1;
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: var(--text);
-      word-break: break-all;
-      font-family: monospace;
-    }
-    .copy-btn {
-      flex-shrink: 0;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--sage);
-      background: rgba(82,183,136,0.12);
-      color: var(--sage);
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      white-space: nowrap;
-    }
-    .copy-btn:hover { background: rgba(82,183,136,0.25); }
-    .copy-btn:active { transform: scale(0.95); }
-    .copy-btn.copied {
-      background: rgba(82,183,136,0.35);
-      color: var(--leaf);
-      border-color: var(--leaf);
-    }
-
-    /* ═══════════════════ IMAGES ═══════════════════ */
-    .img-wrap {
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      cursor: zoom-in;
-      background: var(--panel);
-    }
-    .img-wrap img {
-      width: 100%;
-      display: block;
-      transition: transform 0.4s ease;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-    }
-    .img-wrap:hover img { transform: scale(1.05); }
-    .zoom-icon {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      transition: background 0.3s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .zoom-icon::after {
-      content: '⛶';
-      font-size: 2rem;
-      color: rgba(255,255,255,0.85);
-      opacity: 0;
-      transition: opacity 0.3s;
-      transform: scale(0.8);
-    }
-    .img-wrap:hover .zoom-icon { background: rgba(0,0,0,0.18); }
-    .img-wrap:hover .zoom-icon::after { opacity: 1; transform: scale(1); }
-
-    /* Map image (wide) */
-    .map-wrap {
-      margin-bottom: 24px;
-    }
-    .map-wrap .img-wrap img { aspect-ratio: 16/7; object-fit: cover; }
-
-    /* Photo grid 3-col */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 28px;
-    }
-
-    /* Video */
-    .video-wrap {
-      margin-bottom: 48px;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-    }
-    .video-wrap video {
-      width: 100%;
-      display: block;
-      max-height: 480px;
-      object-fit: cover;
-    }
-    .video-label {
-      text-align: center;
-      padding: 10px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      background: rgba(0,0,0,0.25);
-    }
-
-    /* ═══════════════════ REVEAL ═══════════════════ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* ═══════════════════ LIGHTBOX ═══════════════════ */
-    .lb-overlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.92);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s;
-      backdrop-filter: blur(8px);
-    }
-    .lb-overlay.open { opacity: 1; pointer-events: all; }
-    .lb-img {
-      max-width: 92vw; max-height: 90svh;
-      border-radius: 10px;
-      box-shadow: 0 0 80px rgba(0,0,0,0.8);
-      transform: scale(0.92);
-      transition: transform 0.3s;
-      object-fit: contain; display: block;
-    }
-    .lb-overlay.open .lb-img { transform: scale(1); }
-    .lb-close {
-      position: fixed; top: 20px; right: 24px;
-      width: 44px; height: 44px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.5); color: #fff;
-      font-size: 1.4rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s; line-height: 1;
-    }
-    .lb-close:hover { background: rgba(255,255,255,0.15); }
-    .lb-nav {
-      position: fixed; top: 50%; transform: translateY(-50%);
-      width: 48px; height: 48px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.5); color: #fff;
-      font-size: 1.5rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
-    }
-    .lb-nav:hover { background: rgba(255,255,255,0.15); }
-    .lb-prev { left: 16px; }
-    .lb-next { right: 16px; }
-    .lb-counter {
-      position: fixed; bottom: 20px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem; color: rgba(255,255,255,0.5);
-      letter-spacing: 0.1em;
-    }
-
-    /* ═══════════════════ FOOTER ═══════════════════ */
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      margin-top: 60px;
-    }
-    footer a { color: var(--sage); text-decoration: none; }
-
-    /* 多视频网格 */
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 48px;
-    }
-    .video-grid .video-wrap { margin-bottom: 0; }
-
-    /* 营地标题警告徽标 */
-    .camp-warn {
-      font-family: 'Noto Sans SC', sans-serif;
-      font-size: 0.7rem;
-      background: rgba(244,162,97,0.2);
-      border: 1px solid rgba(244,162,97,0.5);
-      color: var(--gold);
-      padding: 2px 10px;
-      border-radius: 12px;
+      font-size: 0.65rem; background: rgba(244,162,97,0.2);
+      border: 1px solid rgba(244,162,97,0.5); color: var(--gold);
+      padding: 2px 10px; border-radius: 12px; margin-left: 8px;
       vertical-align: middle;
     }
+    .camp-meta {
+      display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px;
+    }
+    .camp-meta-row {
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .camp-meta-label {
+      font-size: 0.68rem; letter-spacing: 0.1em;
+      color: var(--muted); text-transform: uppercase; min-width: 3.5rem;
+      flex-shrink: 0;
+    }
+    .camp-meta-value {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      line-height: 1.4;
+    }
+    .camp-meta-value.free { color: var(--sage); font-weight: 600; }
+    .camp-meta-value.paid { color: var(--gold); font-weight: 600; }
+    .camp-actions { display: flex; flex-direction: column; gap: 10px; }
+    .camp-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px 22px; border-radius: 28px; border: none;
+      font-size: 0.88rem; font-family: 'Noto Sans SC', sans-serif;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      font-weight: 600; letter-spacing: 0.03em;
+    }
+    .camp-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .camp-btn:active { transform: scale(0.96); }
+    .camp-btn-primary {
+      background: linear-gradient(135deg, var(--forest), var(--sage));
+      color: white;
+    }
+    .camp-btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text);
+    }
+    .camp-btn-douyin {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(244,162,97,0.4);
+      color: var(--gold);
+    }
+    .camp-btn-douyin.copied { background: rgba(82,183,136,0.25); color: var(--leaf); border-color: var(--leaf); }
 
-    @media (max-width: 600px) {
-      .photo-grid { grid-template-columns: repeat(2, 1fr); }
-      .video-grid { grid-template-columns: 1fr; }
-      .info-card { padding: 18px; }
-      .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
+    /* 右侧：图片预览 */
+    .camp-preview-panel {
+      position: relative; overflow: hidden;
+    }
+    .camp-preview-grid {
+      display: grid; width: 100%; height: 100%;
+      gap: 3px;
+    }
+    .camp-preview-grid.g1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+    .camp-preview-grid.g2 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .camp-preview-grid.g3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .camp-preview-grid.g3 .thumb:first-child { grid-row: 1 / 3; }
+    .camp-preview-grid.g4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .thumb {
+      overflow: hidden; cursor: pointer; position: relative;
+    }
+    .thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .thumb:hover img { transform: scale(1.06); }
+    .thumb-more {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 700; color: white;
+      backdrop-filter: blur(2px);
+    }
+
+    /* ══════════════════ GALLERY MODAL ══════════════════ */
+    #gallery {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.95);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(12px);
+    }
+    #gallery.open { opacity: 1; pointer-events: all; }
+
+    .gal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; flex-shrink: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .gal-title { font-size: 1rem; font-weight: 600; color: var(--leaf); }
+    .gal-tabs { display: flex; gap: 4px; }
+    .gal-tab {
+      padding: 5px 16px; border-radius: 16px; border: none;
+      font-size: 0.8rem; font-family: 'Noto Sans SC', sans-serif;
+      cursor: pointer; transition: background 0.2s; color: var(--muted);
+      background: transparent;
+    }
+    .gal-tab.active { background: rgba(82,183,136,0.25); color: var(--leaf); }
+    .gal-close {
+      width: 36px; height: 36px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,0.1); color: white;
+      font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gal-close:hover { background: rgba(255,255,255,0.2); }
+
+    /* Main area */
+    .gal-main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; min-height: 0;
+    }
+    .gal-main-img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain; display: block;
+      border-radius: 6px;
+    }
+    .gal-main-video {
+      max-width: 100%; max-height: 100%;
+      border-radius: 6px; display: block;
+    }
+    .gal-nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%; border: none;
+      background: rgba(0,0,0,0.5); color: white; font-size: 1.4rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .gal-nav-btn:hover { background: rgba(255,255,255,0.15); }
+    .gal-nav-prev { left: 12px; }
+    .gal-nav-next { right: 12px; }
+    .gal-counter {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      font-size: 0.75rem; color: rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.4); padding: 3px 12px; border-radius: 12px;
+    }
+
+    /* Thumbnail strip */
+    .gal-strip {
+      display: flex; gap: 6px; padding: 10px 16px;
+      overflow-x: auto; flex-shrink: 0;
+      scrollbar-width: thin; scrollbar-color: var(--forest) transparent;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .gal-strip::-webkit-scrollbar { height: 4px; }
+    .gal-strip::-webkit-scrollbar-thumb { background: var(--forest); border-radius: 2px; }
+    .gal-thumb-item {
+      flex-shrink: 0; width: 72px; height: 54px;
+      border-radius: 6px; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; transition: border-color 0.2s, opacity 0.2s;
+      opacity: 0.6; position: relative;
+    }
+    .gal-thumb-item:hover { opacity: 0.9; }
+    .gal-thumb-item.active { border-color: var(--sage); opacity: 1; }
+    .gal-thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gal-thumb-item.video-thumb::after {
+      content: '▶';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: white;
+      background: rgba(0,0,0,0.4);
+    }
+
+    /* ══════════════════ SLIDE BACKGROUNDS ══════════════════ */
+    #s2 { background: linear-gradient(135deg, #0d2818 0%, #1a3a28 60%, #0a1f10 100%); }
+    #s3 { background: linear-gradient(135deg, #0d2020 0%, #1a3632 60%, #0a1a18 100%); }
+    #s4 { background: linear-gradient(135deg, #1a1a0d 0%, #2a2818 60%, #120f08 100%); }
+    #s5 { background: linear-gradient(135deg, #0d1e2a 0%, #1a2e3a 60%, #08141e 100%); }
+    #s6 { background: linear-gradient(135deg, #1a0d28 0%, #281a3a 60%, #100818 100%); }
+
+    /* ══════════════════ MISC ══════════════════ */
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .anim { animation: popIn 0.6s cubic-bezier(.34,1.56,.64,1) both; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.19s; } .d4 { animation-delay: 0.26s; }
+    .d5 { animation-delay: 0.33s; } .d6 { animation-delay: 0.4s; }
+
+    @media (max-width: 700px) {
+      .camp-slide-inner {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+      .camp-info-panel { padding: 24px 20px 12px; justify-content: flex-start; }
+      .camp-number { display: none; }
+      .camp-name { font-size: 1.8rem; margin-bottom: 12px; }
+      .camp-meta { gap: 6px; margin-bottom: 16px; }
+      .camp-actions { flex-direction: row; flex-wrap: wrap; }
+      .camp-btn { padding: 8px 14px; font-size: 0.78rem; }
+      .camp-preview-grid.g3 .thumb:first-child { grid-row: auto; }
+      .gal-thumb-item { width: 56px; height: 42px; }
     }
   </style>
 </head>
 <body>
 
-<!-- LIGHTBOX -->
-<div class="lb-overlay" id="lb">
-  <button class="lb-close" id="lbClose">✕</button>
-  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
-  <img class="lb-img" id="lbImg" src="" alt="">
-  <button class="lb-nav lb-next" id="lbNext">›</button>
-  <div class="lb-counter" id="lbCounter"></div>
+<!-- ══════════ NAVIGATION ══════════ -->
+<div id="nav">
+  <button class="nav-btn" onclick="prevSlide()">‹</button>
+  <div id="slide-num">1 / 6</div>
+  <button class="nav-btn" onclick="nextSlide()">›</button>
+</div>
+<div id="hint">← → 键翻页 · 点击卡片或按钮查看详情</div>
+
+<!-- ══════════ GALLERY MODAL ══════════ -->
+<div id="gallery">
+  <div class="gal-header">
+    <span class="gal-title" id="galTitle">图片预览</span>
+    <div class="gal-tabs" id="galTabs"></div>
+    <button class="gal-close" onclick="closeGallery()">✕</button>
+  </div>
+  <div class="gal-main" id="galMain">
+    <button class="gal-nav-btn gal-nav-prev" onclick="galNav(-1)">‹</button>
+    <div id="galContent" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></div>
+    <button class="gal-nav-btn gal-nav-next" onclick="galNav(1)">›</button>
+    <div class="gal-counter" id="galCounter"></div>
+  </div>
+  <div class="gal-strip" id="galStrip"></div>
 </div>
 
-<!-- HERO -->
-<section class="hero">
+<!-- ══════════ SLIDE 1 — COVER ══════════ -->
+<div class="slide active" id="s1">
   <canvas id="fireflyCanvas"></canvas>
-  <div class="hero-glow hero-glow-1"></div>
-  <div class="hero-glow hero-glow-2"></div>
 
-  <div class="hero-content">
-    <div class="hero-eyebrow">Family · Nature · Adventure</div>
-    <h1 class="hero-title">跟着爸爸去露营</h1>
-    <p class="hero-sub">离开城市的喧嚣，搭一顶帐篷，听虫鸣，数星星，陪米诺感受大自然最真实的样子。</p>
-    <div class="hero-tags">
-      <span class="hero-tag">⛺ 5 处营地</span>
-      <span class="hero-tag">🏔️ 密云 · 兴隆 · 顺义 · 房山</span>
-      <span class="hero-tag">🌿 亲子户外</span>
+  <div class="cover-content">
+    <div class="cover-eyebrow anim">Family · Nature · Adventure</div>
+    <h1 class="cover-title anim d1">跟着爸爸去露营</h1>
+    <div class="cover-camps">
+      <span class="cover-camp-tag anim d2" onclick="goToSlide(1)">01 · 潮白河怡生园</span>
+      <span class="cover-camp-tag anim d3" onclick="goToSlide(2)">02 · 白河湾</span>
+      <span class="cover-camp-tag anim d4" onclick="goToSlide(3)">03 · 六渡河</span>
+      <span class="cover-camp-tag anim d5" onclick="goToSlide(4)">04 · 野鸭露营地</span>
+      <span class="cover-camp-tag anim d6" onclick="goToSlide(5)">05 · 黄土岭</span>
     </div>
+    <div class="cover-hint anim d6">点击营地名直达 · 或点击右下角箭头翻页</div>
   </div>
 
-  <div class="scroll-hint">向下滚动</div>
-
-  <!-- 树冠剪影 -->
-  <svg class="hero-trees" viewBox="0 0 1440 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0,200 L0,130 Q80,80 160,110 Q200,60 240,90 Q280,40 340,70 Q380,20 440,55 Q480,5 540,45 Q600,15 660,50 Q720,0 800,40 Q860,10 920,50 Q980,20 1040,60 Q1100,30 1160,70 Q1220,40 1280,80 Q1340,50 1380,100 Q1420,80 1440,110 L1440,200 Z" fill="#040e08"/>
-    <path d="M0,200 L0,160 Q60,130 120,150 Q160,110 200,135 Q250,95 300,125 Q350,90 420,120 Q480,80 550,115 Q620,75 700,110 Q760,70 840,108 Q900,80 980,115 Q1040,85 1100,120 Q1160,95 1220,130 Q1280,100 1340,140 Q1390,120 1440,145 L1440,200 Z" fill="rgba(17,34,24,0.7)"/>
+  <svg class="cover-trees" viewBox="0 0 1440 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,180 L0,120 Q80,70 160,100 Q200,50 240,80 Q280,30 340,60 Q380,10 440,45 Q480,0 540,38 Q600,8 660,44 Q720,0 800,36 Q860,6 920,44 Q980,14 1040,52 Q1100,22 1160,62 Q1220,32 1280,72 Q1340,44 1380,90 Q1420,72 1440,100 L1440,180 Z" fill="#020a05"/>
+    <path d="M0,180 L0,148 Q60,118 120,138 Q160,98 200,124 Q250,84 300,114 Q350,80 420,110 Q480,70 550,106 Q620,66 700,100 Q760,60 840,98 Q900,70 980,106 Q1040,76 1100,112 Q1160,86 1220,120 Q1280,92 1340,130 Q1390,110 1440,134 L1440,180 Z" fill="rgba(8,28,21,0.8)"/>
   </svg>
-</section>
-
-<div class="container">
-
-  <!-- ════ 营地一：潮白河怡生园 ════ -->
-  <div class="camp-divider reveal">
-    <div class="camp-divider-badge">
-      <div class="camp-num">01</div>
-      潮白河怡生园
-    </div>
-  </div>
-
-  <div class="info-card reveal">
-    <div class="info-item">
-      <div class="info-label">📍 地点</div>
-      <div class="info-value">牛栏山大桥南边</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🚗 距离</div>
-      <div class="info-value">约 2 公里 · 几分钟</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">💰 费用</div>
-      <div class="info-value free">🎉 完全免费</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🏕️ 场地</div>
-      <div class="info-value">纯户外河边场地，自带装备</div>
-    </div>
-  </div>
-
-  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
-  <div class="map-wrap reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-map.jpeg" alt="潮白河怡生园路线" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>📸</span>实地环境</div>
-  <div class="photo-grid reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-1.jpg" alt="潮白河环境 1" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-2.jpg" alt="潮白河环境 2" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-3.jpg" alt="潮白河环境 3" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-4.jpg" alt="潮白河环境 4" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-5.jpg" alt="潮白河环境 5" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-6.jpg" alt="潮白河环境 6" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-7.jpg" alt="潮白河环境 7" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <!-- ════ 营地二：白河湾 ════ -->
-  <div class="camp-divider reveal">
-    <div class="camp-divider-badge">
-      <div class="camp-num">02</div>
-      白河湾
-    </div>
-  </div>
-
-  <div class="info-card reveal">
-    <div class="info-item">
-      <div class="info-label">📍 地点</div>
-      <div class="info-value">白河湾前安岭村</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🚗 距离</div>
-      <div class="info-value">约 60 公里 · 70 分钟</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">💰 费用</div>
-      <div class="info-value free">🎉 完全免费</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🏕️ 场地</div>
-      <div class="info-value">纯户外场地，自带装备</div>
-    </div>
-  </div>
-
-  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
-  <div class="map-wrap reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-map.png" alt="白河湾路线" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>📸</span>实地环境</div>
-  <div class="photo-grid reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-1.jpeg" alt="白河湾环境 1" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-2.jpg" alt="白河湾环境 2" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-3.jpeg" alt="白河湾环境 3" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-4.jpg" alt="白河湾环境 4" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-5.jpg" alt="白河湾环境 5" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-6.jpg" alt="白河湾环境 6" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-7.jpg" alt="白河湾环境 7" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>🎬</span>营地视频</div>
-  <div class="video-grid reveal">
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v1.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🌊 白河湾片段 1</div>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v2.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🌊 白河湾片段 2</div>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v3.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🌊 白河湾片段 3</div>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v4.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🌊 白河湾片段 4</div>
-    </div>
-  </div>
-
-  <!-- ════ 营地三：六渡河 ════ -->
-  <div class="camp-divider reveal">
-    <div class="camp-divider-badge">
-      <div class="camp-num">03</div>
-      六渡河
-      <span class="camp-warn">⚠️ 可能被封</span>
-    </div>
-  </div>
-
-  <div class="info-card reveal">
-    <div class="info-item">
-      <div class="info-label">📍 地点</div>
-      <div class="info-value">六渡河村</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🚗 距离</div>
-      <div class="info-value">约 32 公里 · 45 分钟</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">💰 费用</div>
-      <div class="info-value free">🎉 完全免费</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🏕️ 场地</div>
-      <div class="info-value">纯户外场地，自带装备</div>
-    </div>
-    <div class="info-tip">
-      ⚠️ 该营地存在被封的风险，出发前请确认是否仍可进入。
-    </div>
-  </div>
-
-  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
-  <div class="map-wrap reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-map.png" alt="六渡河路线" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>📸</span>实地环境</div>
-  <div class="photo-grid reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-1.jpeg" alt="六渡河环境 1" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-2.jpg" alt="六渡河环境 2" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-3.jpg" alt="六渡河环境 3" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-4.jpg" alt="六渡河环境 4" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-5.jpg" alt="六渡河环境 5" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-6.jpg" alt="六渡河环境 6" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-7.jpg" alt="六渡河环境 7" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-8.jpg" alt="六渡河航拍" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>🎬</span>营地视频</div>
-  <div class="video-grid reveal">
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v1.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🏞️ 六渡河片段 1</div>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v2.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🏞️ 六渡河片段 2</div>
-    </div>
-    <div class="video-wrap">
-      <video controls preload="metadata" playsinline>
-        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v3.mp4" type="video/mp4">
-      </video>
-      <div class="video-label">🚁 无人机航拍</div>
-    </div>
-  </div>
-
-  <!-- ════ 营地四：野鸭露营地 ════ -->
-  <div class="camp-divider reveal">
-    <div class="camp-divider-badge">
-      <div class="camp-num">04</div>
-      野鸭露营地
-    </div>
-  </div>
-
-  <div class="info-card reveal">
-    <div class="info-item">
-      <div class="info-label">📍 地点</div>
-      <div class="info-value">密云区野鸭露营地</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🚗 距离</div>
-      <div class="info-value">约 70 公里 · 55 分钟</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">💰 费用</div>
-      <div class="info-value highlight">¥168 / 辆（车位费）</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">⭐ 人气</div>
-      <div class="info-value">北京市露营地人气榜入围 · 人均 ¥184</div>
-    </div>
-    <div class="info-tip">
-      🔗 预订方式：去抖音打开，点击下方按钮一键复制
-      <div class="copy-block" id="douyinCopy">
-        <span class="copy-text">8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm</span>
-        <button class="copy-btn" onclick="copyDouyin()">📋 点击复制</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
-  <div class="map-wrap reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/1.png" alt="野鸭露营地路线" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>📸</span>实地环境</div>
-  <div class="photo-grid reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/2.jpg" alt="野鸭露营地环境 1" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/3.jpg" alt="野鸭露营地环境 2" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/4.jpg" alt="野鸭露营地环境 3" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>🎬</span>营地视频</div>
-  <div class="video-wrap reveal">
-    <video controls preload="metadata" playsinline>
-      <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/5.mp4" type="video/mp4">
-    </video>
-    <div class="video-label">🌿 野鸭露营地 · 点击播放</div>
-  </div>
-
-  <!-- ════ 营地五：黄土岭 ════ -->
-  <div class="camp-divider reveal">
-    <div class="camp-divider-badge">
-      <div class="camp-num">05</div>
-      黄土岭
-    </div>
-  </div>
-
-  <div class="info-card reveal">
-    <div class="info-item">
-      <div class="info-label">📍 地点</div>
-      <div class="info-value">兴隆三道河镇黄土岭村</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🚗 距离</div>
-      <div class="info-value">约 150 公里 · 两个半小时</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">💰 费用</div>
-      <div class="info-value free">🎉 完全免费</div>
-    </div>
-    <div class="info-item">
-      <div class="info-label">🏕️ 场地</div>
-      <div class="info-value">纯户外场地，自带装备</div>
-    </div>
-    <div class="info-tip">
-      🌟 纯野外营地，无任何收费，适合有一定户外经验的家庭，记得自带垃圾袋，保护环境。
-    </div>
-  </div>
-
-  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
-  <div class="map-wrap reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/6.png" alt="黄土岭路线" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>📸</span>实地环境</div>
-  <div class="photo-grid reveal">
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/7.jpg" alt="黄土岭环境 1" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/8.jpg" alt="黄土岭环境 2" loading="lazy"><div class="zoom-icon"></div></div>
-    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/9.jpg" alt="黄土岭环境 3" loading="lazy"><div class="zoom-icon"></div></div>
-  </div>
-
-  <div class="section-title reveal"><span>🎬</span>营地视频</div>
-  <div class="video-wrap reveal">
-    <video controls preload="metadata" playsinline>
-      <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/10.mp4" type="video/mp4">
-    </video>
-    <div class="video-label">🏔️ 黄土岭 · 点击播放</div>
-  </div>
-
 </div>
 
-<footer>
-  <p>跟着爸爸去露营 · <a href="https://evan-lei.github.io/">evan-lei.github.io</a></p>
-</footer>
+<!-- ══════════ SLIDES 2-6 — CAMPS ══════════ -->
+<!-- generated by JS -->
 
 <script>
-  /* ── 萤火虫动效 ── */
-  const canvas = document.getElementById('fireflyCanvas');
-  const ctx = canvas.getContext('2d');
-  let fireflies = [];
+const COS = 'https://camping-1256297898.cos.ap-beijing.myqcloud.com/';
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+const CAMPS = [
+  {
+    id: 'chb', num: '01', name: '潮白河怡生园', warn: null,
+    location: '牛栏山大桥南边',
+    distance: '约 2 公里 · 几分钟',
+    fee: 'free', feeText: '完全免费',
+    tip: '河边户外场地，适合带孩子就近露营，环境清幽。',
+    map: 'chb-map.jpeg',
+    photos: ['chb-1.jpg','chb-2.jpg','chb-3.jpg','chb-4.jpg','chb-5.jpg','chb-6.jpg','chb-7.jpg'],
+    videos: [],
+    douyin: null,
+    accentColor: '#52b788',
+    bgClass: 's2',
+  },
+  {
+    id: 'bhy', num: '02', name: '白河湾', warn: null,
+    location: '白河湾前安岭村',
+    distance: '约 60 公里 · 70 分钟',
+    fee: 'free', feeText: '完全免费',
+    tip: '河道开阔，适合戏水和扎营，自带装备即可。',
+    map: 'bhy-map.png',
+    photos: ['bhy-1.jpeg','bhy-2.jpg','bhy-3.jpeg','bhy-4.jpg','bhy-5.jpg','bhy-6.jpg','bhy-7.jpg'],
+    videos: ['bhy-v1.mp4','bhy-v2.mp4','bhy-v3.mp4','bhy-v4.mp4'],
+    douyin: null,
+    accentColor: '#74b09a',
+    bgClass: 's3',
+  },
+  {
+    id: 'ldh', num: '03', name: '六渡河', warn: '⚠️ 可能被封',
+    location: '六渡河村',
+    distance: '约 32 公里 · 45 分钟',
+    fee: 'free', feeText: '完全免费',
+    tip: '峡谷野外营地，含无人机航拍美景，出发前确认是否可进入。',
+    map: 'ldh-map.png',
+    photos: ['ldh-1.jpeg','ldh-2.jpg','ldh-3.jpg','ldh-4.jpg','ldh-5.jpg','ldh-6.jpg','ldh-7.jpg','ldh-8.jpg'],
+    videos: ['ldh-v1.mp4','ldh-v2.mp4','ldh-v3.mp4'],
+    douyin: null,
+    accentColor: '#c9a46e',
+    bgClass: 's4',
+  },
+  {
+    id: 'yaly', num: '04', name: '野鸭露营地', warn: null,
+    location: '密云区野鸭露营地',
+    distance: '约 70 公里 · 55 分钟',
+    fee: 'paid', feeText: '¥168 / 辆（车位费）',
+    tip: '入围北京市露营地人气榜，人均 ¥184，设施完善。',
+    map: '1.png',
+    photos: ['2.jpg','3.jpg','4.jpg'],
+    videos: ['5.mp4'],
+    douyin: '8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm',
+    accentColor: '#f4a261',
+    bgClass: 's5',
+  },
+  {
+    id: 'htl', num: '05', name: '黄土岭', warn: null,
+    location: '兴隆三道河镇黄土岭村',
+    distance: '约 150 公里 · 两个半小时',
+    fee: 'free', feeText: '完全免费',
+    tip: '山间野外营地，适合有一定户外经验的家庭，记得带垃圾袋。',
+    map: '6.png',
+    photos: ['7.jpg','8.jpg','9.jpg'],
+    videos: ['10.mp4'],
+    douyin: null,
+    accentColor: '#b39ddb',
+    bgClass: 's6',
+  },
+];
+
+/* ─── Build Camp Slides ─── */
+CAMPS.forEach((c, idx) => {
+  const slideId = `s${idx + 2}`;
+  const allMedia = [...c.photos.map(p => ({ type:'photo', src: COS + p })),
+                    ...c.videos.map(v => ({ type:'video', src: COS + v }))];
+
+  const previewPhotos = c.photos.slice(0, 4);
+  const gridClass = previewPhotos.length >= 4 ? 'g4' : previewPhotos.length === 3 ? 'g3' : previewPhotos.length === 2 ? 'g2' : 'g1';
+  const extraCount = c.photos.length - previewPhotos.length + c.videos.length;
+
+  const thumbsHtml = previewPhotos.map((p, i) => {
+    const isLast = i === previewPhotos.length - 1 && extraCount > 0;
+    return `<div class="thumb" onclick="openGallery(${idx}, 0, ${i})">
+      <img src="${COS + p}" loading="lazy">
+      ${isLast ? `<div class="thumb-more">+${extraCount}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const btnHtml = `
+    <button class="camp-btn camp-btn-primary anim d4" onclick="openGallery(${idx}, 0, 0)">
+      📸 查看全部 ${c.photos.length} 张图片${c.videos.length ? ' · ' + c.videos.length + ' 段视频' : ''}
+    </button>
+    ${c.douyin ? `<button class="camp-btn camp-btn-douyin anim d5" id="btn-douyin-${c.id}" onclick="copyDouyin('${c.id}')">
+      🎵 复制抖音口令预订
+    </button>` : ''}
+  `;
+
+  const warnBadge = c.warn ? `<span class="camp-warn-badge">${c.warn}</span>` : '';
+
+  const slide = document.createElement('div');
+  slide.className = 'slide camp-slide';
+  slide.id = slideId;
+  slide.innerHTML = `
+    <div class="camp-slide-inner">
+      <div class="camp-info-panel">
+        <div class="camp-number" style="color:${c.accentColor}">${c.num}</div>
+        <div class="camp-badge anim">
+          <div class="camp-badge-num" style="background:${c.accentColor}22;color:${c.accentColor}">${c.num}</div>
+          <span class="camp-badge-label" style="color:${c.accentColor}">营地</span>
+        </div>
+        <div class="camp-name anim d1" style="color:${c.accentColor}">${c.name}${warnBadge}</div>
+        <div class="camp-meta">
+          <div class="camp-meta-row anim d2">
+            <span class="camp-meta-label">📍 地点</span>
+            <span class="camp-meta-value">${c.location}</span>
+          </div>
+          <div class="camp-meta-row anim d2">
+            <span class="camp-meta-label">🚗 距离</span>
+            <span class="camp-meta-value">${c.distance}</span>
+          </div>
+          <div class="camp-meta-row anim d3">
+            <span class="camp-meta-label">💰 费用</span>
+            <span class="camp-meta-value ${c.fee}">${c.feeText}</span>
+          </div>
+        </div>
+        ${c.tip ? `<div class="camp-meta-row anim d3" style="margin-bottom:20px;opacity:0.65;font-size:0.82rem;line-height:1.6">${c.tip}</div>` : ''}
+        <div class="camp-actions">${btnHtml}</div>
+      </div>
+      <div class="camp-preview-panel">
+        <div class="camp-preview-grid ${gridClass}">${thumbsHtml}</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(slide);
+});
+
+/* ─── Slide Engine ─── */
+const slides = () => document.querySelectorAll('.slide');
+let cur = 0;
+const total = CAMPS.length + 1;
+
+function updateNav() {
+  document.getElementById('slide-num').textContent = `${cur + 1} / ${total}`;
+}
+function goToSlide(idx) {
+  if (idx === cur) return;
+  slides().forEach(s => s.classList.remove('active', 'exit'));
+  slides()[cur].classList.add('exit');
+  cur = idx;
+  slides()[cur].classList.add('active');
+  setTimeout(() => slides().forEach(s => s.classList.remove('exit')), 520);
+  updateNav();
+}
+function nextSlide() { goToSlide((cur + 1) % total); }
+function prevSlide() { goToSlide((cur - 1 + total) % total); }
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('gallery').classList.contains('open')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevSlide();
+});
+
+/* ─── Gallery ─── */
+let galCamp = 0, galTab = 'photo', galIdx = 0;
+
+function getItems(campIdx, tab) {
+  const c = CAMPS[campIdx];
+  if (tab === 'photo') return [{ type:'photo', src: COS + c.map }, ...c.photos.map(p => ({ type:'photo', src: COS + p }))];
+  if (tab === 'video') return c.videos.map(v => ({ type:'video', src: COS + v }));
+  return [];
+}
+
+function openGallery(campIdx, tabIdx, itemIdx) {
+  galCamp = campIdx;
+  const c = CAMPS[campIdx];
+  galTab = tabIdx === 1 ? 'video' : 'photo';
+  galIdx = tabIdx === 1 ? itemIdx : itemIdx + 1; // +1 to skip map if going to photo
+
+  document.getElementById('galTitle').textContent = c.name;
+
+  // Build tabs
+  const tabsEl = document.getElementById('galTabs');
+  tabsEl.innerHTML = `<button class="gal-tab ${galTab==='photo'?'active':''}" onclick="switchGalTab('photo')">🖼 图片 (${c.photos.length + 1})</button>`;
+  if (c.videos.length) {
+    tabsEl.innerHTML += `<button class="gal-tab ${galTab==='video'?'active':''}" onclick="switchGalTab('video')">🎬 视频 (${c.videos.length})</button>`;
   }
-  resize();
-  window.addEventListener('resize', resize);
 
-  for (let i = 0; i < 55; i++) {
-    fireflies.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: 1 + Math.random() * 1.5,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      alpha: Math.random(),
-      alphaDir: Math.random() > 0.5 ? 1 : -1,
-      alphaSpeed: 0.008 + Math.random() * 0.012,
-      hue: 100 + Math.random() * 60,
-    });
-  }
+  renderGallery();
+  document.getElementById('gallery').classList.add('open');
+}
 
-  function animateFireflies() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fireflies.forEach(f => {
-      f.x += f.vx;
-      f.y += f.vy;
-      f.alpha += f.alphaDir * f.alphaSpeed;
-      if (f.alpha >= 1 || f.alpha <= 0) f.alphaDir *= -1;
-      if (f.x < 0) f.x = canvas.width;
-      if (f.x > canvas.width) f.x = 0;
-      if (f.y < 0) f.y = canvas.height;
-      if (f.y > canvas.height) f.y = 0;
-
-      ctx.save();
-      ctx.globalAlpha = f.alpha * 0.85;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = `hsl(${f.hue}, 80%, 65%)`;
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      ctx.fillStyle = `hsl(${f.hue}, 80%, 70%)`;
-      ctx.fill();
-      ctx.restore();
-    });
-    requestAnimationFrame(animateFireflies);
-  }
-  animateFireflies();
-
-  /* ── Scroll Reveal ── */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.style.transitionDelay = (i % 3) * 0.07 + 's';
-    observer.observe(el);
+function switchGalTab(tab) {
+  galTab = tab;
+  galIdx = 0;
+  document.querySelectorAll('.gal-tab').forEach(t => {
+    t.classList.toggle('active', t.textContent.includes(tab === 'photo' ? '图片' : '视频'));
   });
+  renderGallery();
+}
 
-  /* ── Lightbox ── */
-  const lb = document.getElementById('lb');
-  const lbImg = document.getElementById('lbImg');
-  const lbCounter = document.getElementById('lbCounter');
-  let allImgs = [], cur = 0;
+function renderGallery() {
+  const items = getItems(galCamp, galTab);
+  if (!items.length) return;
+  galIdx = Math.max(0, Math.min(galIdx, items.length - 1));
 
-  function collectImgs() {
-    allImgs = Array.from(document.querySelectorAll('.img-wrap img'));
+  // Main content
+  const item = items[galIdx];
+  const contentEl = document.getElementById('galContent');
+  contentEl.innerHTML = '';
+  if (item.type === 'photo') {
+    const img = document.createElement('img');
+    img.className = 'gal-main-img';
+    img.src = item.src;
+    contentEl.appendChild(img);
+  } else {
+    const vid = document.createElement('video');
+    vid.className = 'gal-main-video';
+    vid.controls = true; vid.autoplay = false; vid.playsinline = true;
+    vid.src = item.src;
+    contentEl.appendChild(vid);
   }
-  function openLb(idx) {
-    collectImgs();
-    cur = idx;
-    lbImg.src = allImgs[cur].src;
-    lbImg.alt = allImgs[cur].alt;
-    lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLb() {
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function navigate(dir) {
-    cur = (cur + dir + allImgs.length) % allImgs.length;
-    lbImg.style.opacity = '0';
+
+  document.getElementById('galCounter').textContent = `${galIdx + 1} / ${items.length}`;
+
+  // Strip
+  const strip = document.getElementById('galStrip');
+  strip.innerHTML = items.map((it, i) => {
+    const isVid = it.type === 'video';
+    return `<div class="gal-thumb-item ${i === galIdx ? 'active' : ''} ${isVid ? 'video-thumb' : ''}" onclick="galGoTo(${i})">
+      ${isVid
+        ? `<video src="${it.src}" style="width:100%;height:100%;object-fit:cover" preload="metadata"></video>`
+        : `<img src="${it.src}" loading="lazy">`}
+    </div>`;
+  }).join('');
+
+  // Scroll active thumb into view
+  const activeThumb = strip.querySelector('.active');
+  if (activeThumb) activeThumb.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+function galGoTo(i) {
+  galIdx = i;
+  renderGallery();
+}
+function galNav(dir) {
+  const items = getItems(galCamp, galTab);
+  galIdx = (galIdx + dir + items.length) % items.length;
+  renderGallery();
+}
+function closeGallery() {
+  const vid = document.querySelector('#galContent video');
+  if (vid) vid.pause();
+  document.getElementById('gallery').classList.remove('open');
+}
+
+document.getElementById('gallery').addEventListener('click', e => {
+  if (e.target === document.getElementById('gallery')) closeGallery();
+});
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('gallery').classList.contains('open')) return;
+  if (e.key === 'Escape') closeGallery();
+  if (e.key === 'ArrowRight') galNav(1);
+  if (e.key === 'ArrowLeft')  galNav(-1);
+  e.stopImmediatePropagation();
+}, true);
+
+/* ─── Douyin Copy ─── */
+function copyDouyin(id) {
+  const camp = CAMPS.find(c => c.id === id);
+  if (!camp || !camp.douyin) return;
+  const btn = document.getElementById(`btn-douyin-${id}`);
+  navigator.clipboard.writeText(camp.douyin).then(() => {
+    btn.textContent = '✅ 已复制！去抖音打开';
+    btn.classList.add('copied');
     setTimeout(() => {
-      lbImg.src = allImgs[cur].src;
-      lbImg.alt = allImgs[cur].alt;
-      lbCounter.textContent = `${cur + 1} / ${allImgs.length}`;
-      lbImg.style.opacity = '1';
-    }, 150);
-  }
-  lbImg.style.transition = 'opacity 0.15s';
-
-  document.querySelectorAll('.img-wrap').forEach((w, i) => {
-    w.addEventListener('click', () => openLb(i));
+      btn.textContent = '🎵 复制抖音口令预订';
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    btn.textContent = '👆 复制失败，请手动复制';
+    setTimeout(() => { btn.textContent = '🎵 复制抖音口令预订'; }, 2500);
   });
-  document.getElementById('lbClose').addEventListener('click', closeLb);
-  document.getElementById('lbPrev').addEventListener('click', () => navigate(-1));
-  document.getElementById('lbNext').addEventListener('click', () => navigate(1));
-  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
-  document.addEventListener('keydown', e => {
-    if (!lb.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLb();
-    if (e.key === 'ArrowLeft') navigate(-1);
-    if (e.key === 'ArrowRight') navigate(1);
-  });
+}
 
-  /* ── 一键复制抖音口令 ── */
-  function copyDouyin() {
-    const text = document.querySelector('.copy-text').textContent.trim();
-    const btn = document.querySelector('.copy-btn');
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✅ 已复制！';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = '📋 点击复制';
-        btn.classList.remove('copied');
-      }, 2500);
-    }).catch(() => {
-      /* 降级：选中文本 */
-      const range = document.createRange();
-      range.selectNode(document.querySelector('.copy-text'));
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      btn.textContent = '👆 请手动复制';
-      setTimeout(() => { btn.textContent = '📋 点击复制'; }, 2500);
-    });
-  }
+/* ─── Firefly Animation ─── */
+const canvas = document.getElementById('fireflyCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+const fireflies = Array.from({ length: 60 }, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  r: 0.8 + Math.random() * 1.4,
+  vx: (Math.random() - 0.5) * 0.35,
+  vy: (Math.random() - 0.5) * 0.35,
+  alpha: Math.random(),
+  alphaDir: Math.random() > 0.5 ? 1 : -1,
+  alphaSpeed: 0.007 + Math.random() * 0.011,
+  hue: 100 + Math.random() * 60,
+}));
+
+function animateFireflies() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fireflies.forEach(f => {
+    f.x += f.vx; f.y += f.vy;
+    f.alpha += f.alphaDir * f.alphaSpeed;
+    if (f.alpha >= 1 || f.alpha <= 0) f.alphaDir *= -1;
+    if (f.x < 0) f.x = canvas.width;
+    if (f.x > canvas.width) f.x = 0;
+    if (f.y < 0) f.y = canvas.height;
+    if (f.y > canvas.height) f.y = 0;
+    ctx.save();
+    ctx.globalAlpha = f.alpha * 0.8;
+    ctx.shadowBlur = 8; ctx.shadowColor = `hsl(${f.hue},80%,65%)`;
+    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${f.hue},80%,70%)`; ctx.fill();
+    ctx.restore();
+  });
+  requestAnimationFrame(animateFireflies);
+}
+animateFireflies();
 </script>
 </body>
 </html>
