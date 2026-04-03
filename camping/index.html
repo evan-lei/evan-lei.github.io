@@ -232,6 +232,9 @@
     .camp-preview-grid.g3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
     .camp-preview-grid.g3 .thumb:first-child { grid-row: 1 / 3; }
     .camp-preview-grid.g4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    /* 竖图在左，多张横图在右堆叠 */
+    .camp-preview-grid.g-portrait { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+    .camp-preview-grid.g-portrait .thumb:first-child { grid-row: 1 / 4; }
     .thumb {
       overflow: hidden; cursor: pointer; position: relative;
     }
@@ -478,6 +481,7 @@ const CAMPS = [
     photos: ['szq-1.jpeg','szq-2.jpg','szq-3.jpg'],
     videos: [],
     douyin: null,
+    portraitPreview: true,
     accentColor: '#80cbc4',
     bgClass: 's5',
   },
@@ -515,17 +519,33 @@ CAMPS.forEach((c, idx) => {
   const allMedia = [...c.photos.map(p => ({ type:'photo', src: COS + p })),
                     ...c.videos.map(v => ({ type:'video', src: COS + v }))];
 
-  const previewPhotos = c.photos.slice(0, 4);
-  const gridClass = previewPhotos.length >= 4 ? 'g4' : previewPhotos.length === 3 ? 'g3' : previewPhotos.length === 2 ? 'g2' : 'g1';
-  const extraCount = c.photos.length - previewPhotos.length + c.videos.length;
+  let previewPhotos, gridClass, thumbsHtml;
+  const extraCount = c.photos.length - Math.min(c.photos.length, 4) + c.videos.length;
 
-  const thumbsHtml = previewPhotos.map((p, i) => {
-    const isLast = i === previewPhotos.length - 1 && extraCount > 0;
-    return `<div class="thumb" onclick="openGallery(${idx}, 0, ${i})">
-      <img src="${COS + p}" loading="lazy">
-      ${isLast ? `<div class="thumb-more">+${extraCount}</div>` : ''}
-    </div>`;
-  }).join('');
+  if (c.portraitPreview) {
+    // 竖图（map）在左，横图在右堆叠
+    gridClass = 'g-portrait';
+    const rightPhotos = c.photos.slice(0, 3);
+    thumbsHtml = `<div class="thumb" onclick="openGallery(${idx}, 0, 0)">
+      <img src="${COS + c.map}" loading="lazy">
+    </div>` + rightPhotos.map((p, i) => {
+      const isLast = i === rightPhotos.length - 1 && extraCount > 0;
+      return `<div class="thumb" onclick="openGallery(${idx}, 0, ${i + 1})">
+        <img src="${COS + p}" loading="lazy">
+        ${isLast ? `<div class="thumb-more">+${extraCount}</div>` : ''}
+      </div>`;
+    }).join('');
+  } else {
+    previewPhotos = c.photos.slice(0, 4);
+    gridClass = previewPhotos.length >= 4 ? 'g4' : previewPhotos.length === 3 ? 'g3' : previewPhotos.length === 2 ? 'g2' : 'g1';
+    thumbsHtml = previewPhotos.map((p, i) => {
+      const isLast = i === previewPhotos.length - 1 && extraCount > 0;
+      return `<div class="thumb" onclick="openGallery(${idx}, 0, ${i})">
+        <img src="${COS + p}" loading="lazy">
+        ${isLast ? `<div class="thumb-more">+${extraCount}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
 
   const btnHtml = `
     <button class="camp-btn camp-btn-primary anim d4" onclick="openGallery(${idx}, 0, 0)">
