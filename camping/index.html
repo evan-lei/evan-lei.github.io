@@ -342,8 +342,9 @@
     #s2 { background: linear-gradient(135deg, #0d2818 0%, #1a3a28 60%, #0a1f10 100%); }
     #s3 { background: linear-gradient(135deg, #0d2020 0%, #1a3632 60%, #0a1a18 100%); }
     #s4 { background: linear-gradient(135deg, #1a1a0d 0%, #2a2818 60%, #120f08 100%); }
-    #s5 { background: linear-gradient(135deg, #0d1e2a 0%, #1a2e3a 60%, #08141e 100%); }
-    #s6 { background: linear-gradient(135deg, #1a0d28 0%, #281a3a 60%, #100818 100%); }
+    #s5 { background: linear-gradient(135deg, #0d1e20 0%, #1a2e30 60%, #081414 100%); }
+    #s6 { background: linear-gradient(135deg, #0d1e2a 0%, #1a2e3a 60%, #08141e 100%); }
+    #s7 { background: linear-gradient(135deg, #1a0d28 0%, #281a3a 60%, #100818 100%); }
 
     /* ══════════════════ MISC ══════════════════ */
     @keyframes popIn {
@@ -408,8 +409,9 @@
       <span class="cover-camp-tag anim d2" onclick="goToSlide(1)">01 · 潮白河怡生园 ✅</span>
       <span class="cover-camp-tag anim d3" onclick="goToSlide(2)">02 · 白河湾 ✅</span>
       <span class="cover-camp-tag anim d4" onclick="goToSlide(3)">03 · 六渡河 ✅</span>
-      <span class="cover-camp-tag anim d5" onclick="goToSlide(4)">04 · 野鸭露营地 📌</span>
-      <span class="cover-camp-tag anim d6" onclick="goToSlide(5)">05 · 黄土岭 📌</span>
+      <span class="cover-camp-tag anim d5" onclick="goToSlide(4)">04 · 苏庄闸桥 📌</span>
+      <span class="cover-camp-tag anim d6" onclick="goToSlide(5)">05 · 野鸭露营地 📌</span>
+      <span class="cover-camp-tag anim d6" onclick="goToSlide(6)">06 · 黄土岭 📌</span>
     </div>
     <div class="cover-hint anim d6">点击营地名直达 · 或点击右下角箭头翻页</div>
   </div>
@@ -467,7 +469,20 @@ const CAMPS = [
     bgClass: 's4',
   },
   {
-    id: 'yaly', num: '04', name: '野鸭露营地', warn: null, status: '未去',
+    id: 'szq', num: '04', name: '苏庄闸桥', warn: null, status: '未去',
+    location: '顺义区苏庄闸桥',
+    distance: '约 20 公里 · 30 分钟',
+    fee: 'free', feeText: '完全免费',
+    tip: '沙滩地，距离近，适合临时起意的周末亲子露营。',
+    map: 'szq-map.jpg',
+    photos: ['szq-1.jpeg','szq-2.jpg','szq-3.jpg'],
+    videos: [],
+    douyin: null,
+    accentColor: '#80cbc4',
+    bgClass: 's5',
+  },
+  {
+    id: 'yaly', num: '05', name: '野鸭露营地', warn: null, status: '未去',
     location: '密云区野鸭露营地',
     distance: '约 70 公里 · 55 分钟',
     fee: 'paid', feeText: '¥168 / 辆（车位费）',
@@ -477,10 +492,10 @@ const CAMPS = [
     videos: ['5.mp4'],
     douyin: '8- 野鸭露营地，人均 ¥184，露营地，入围北京市露营地人气榜，戳链接查看地点详情 https://v.douyin.com/qtgbrGeOS24/ 9@7.com :1pm',
     accentColor: '#f4a261',
-    bgClass: 's5',
+    bgClass: 's6',
   },
   {
-    id: 'htl', num: '05', name: '黄土岭', warn: null, status: '未去',
+    id: 'htl', num: '06', name: '黄土岭', warn: null, status: '未去',
     location: '兴隆三道河镇黄土岭村',
     distance: '约 150 公里 · 两个半小时',
     fee: 'free', feeText: '完全免费',
@@ -490,7 +505,7 @@ const CAMPS = [
     videos: ['10.mp4'],
     douyin: null,
     accentColor: '#b39ddb',
-    bgClass: 's6',
+    bgClass: 's7',
   },
 ];
 
@@ -566,7 +581,7 @@ CAMPS.forEach((c, idx) => {
 /* ─── Slide Engine ─── */
 const slides = () => document.querySelectorAll('.slide');
 let cur = 0;
-const total = CAMPS.length + 1;
+const total = CAMPS.length + 1; // 6 camps + 1 cover = 7
 
 function updateNav() {
   document.getElementById('slide-num').textContent = `${cur + 1} / ${total}`;
