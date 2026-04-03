@@ -446,8 +446,30 @@
     }
     footer a { color: var(--sage); text-decoration: none; }
 
+    /* 多视频网格 */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .video-grid .video-wrap { margin-bottom: 0; }
+
+    /* 营地标题警告徽标 */
+    .camp-warn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 0.7rem;
+      background: rgba(244,162,97,0.2);
+      border: 1px solid rgba(244,162,97,0.5);
+      color: var(--gold);
+      padding: 2px 10px;
+      border-radius: 12px;
+      vertical-align: middle;
+    }
+
     @media (max-width: 600px) {
       .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .video-grid { grid-template-columns: 1fr; }
       .info-card { padding: 18px; }
       .lb-nav { width: 38px; height: 38px; font-size: 1.1rem; }
     }
@@ -475,8 +497,8 @@
     <h1 class="hero-title">跟着爸爸去露营</h1>
     <p class="hero-sub">离开城市的喧嚣，搭一顶帐篷，听虫鸣，数星星，陪米诺感受大自然最真实的样子。</p>
     <div class="hero-tags">
-      <span class="hero-tag">⛺ 2 处营地</span>
-      <span class="hero-tag">🏔️ 密云 · 兴隆</span>
+      <span class="hero-tag">⛺ 5 处营地</span>
+      <span class="hero-tag">🏔️ 密云 · 兴隆 · 顺义 · 房山</span>
       <span class="hero-tag">🌿 亲子户外</span>
     </div>
   </div>
@@ -492,10 +514,194 @@
 
 <div class="container">
 
-  <!-- ════ 营地一：野鸭露营地 ════ -->
+  <!-- ════ 营地一：潮白河怡生园 ════ -->
   <div class="camp-divider reveal">
     <div class="camp-divider-badge">
       <div class="camp-num">01</div>
+      潮白河怡生园
+    </div>
+  </div>
+
+  <div class="info-card reveal">
+    <div class="info-item">
+      <div class="info-label">📍 地点</div>
+      <div class="info-value">牛栏山大桥南边</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🚗 距离</div>
+      <div class="info-value">约 2 公里 · 几分钟</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">💰 费用</div>
+      <div class="info-value free">🎉 完全免费</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🏕️ 场地</div>
+      <div class="info-value">纯户外河边场地，自带装备</div>
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
+  <div class="map-wrap reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-map.jpeg" alt="潮白河怡生园路线" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>实地环境</div>
+  <div class="photo-grid reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-1.jpg" alt="潮白河环境 1" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-2.jpg" alt="潮白河环境 2" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-3.jpg" alt="潮白河环境 3" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-4.jpg" alt="潮白河环境 4" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-5.jpg" alt="潮白河环境 5" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-6.jpg" alt="潮白河环境 6" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/chb-7.jpg" alt="潮白河环境 7" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <!-- ════ 营地二：白河湾 ════ -->
+  <div class="camp-divider reveal">
+    <div class="camp-divider-badge">
+      <div class="camp-num">02</div>
+      白河湾
+    </div>
+  </div>
+
+  <div class="info-card reveal">
+    <div class="info-item">
+      <div class="info-label">📍 地点</div>
+      <div class="info-value">白河湾前安岭村</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🚗 距离</div>
+      <div class="info-value">约 60 公里 · 70 分钟</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">💰 费用</div>
+      <div class="info-value free">🎉 完全免费</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🏕️ 场地</div>
+      <div class="info-value">纯户外场地，自带装备</div>
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
+  <div class="map-wrap reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-map.png" alt="白河湾路线" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>实地环境</div>
+  <div class="photo-grid reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-1.jpeg" alt="白河湾环境 1" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-2.jpg" alt="白河湾环境 2" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-3.jpeg" alt="白河湾环境 3" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-4.jpg" alt="白河湾环境 4" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-5.jpg" alt="白河湾环境 5" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-6.jpg" alt="白河湾环境 6" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-7.jpg" alt="白河湾环境 7" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>营地视频</div>
+  <div class="video-grid reveal">
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v1.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🌊 白河湾片段 1</div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v2.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🌊 白河湾片段 2</div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v3.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🌊 白河湾片段 3</div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/bhy-v4.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🌊 白河湾片段 4</div>
+    </div>
+  </div>
+
+  <!-- ════ 营地三：六渡河 ════ -->
+  <div class="camp-divider reveal">
+    <div class="camp-divider-badge">
+      <div class="camp-num">03</div>
+      六渡河
+      <span class="camp-warn">⚠️ 可能被封</span>
+    </div>
+  </div>
+
+  <div class="info-card reveal">
+    <div class="info-item">
+      <div class="info-label">📍 地点</div>
+      <div class="info-value">六渡河村</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🚗 距离</div>
+      <div class="info-value">约 32 公里 · 45 分钟</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">💰 费用</div>
+      <div class="info-value free">🎉 完全免费</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">🏕️ 场地</div>
+      <div class="info-value">纯户外场地，自带装备</div>
+    </div>
+    <div class="info-tip">
+      ⚠️ 该营地存在被封的风险，出发前请确认是否仍可进入。
+    </div>
+  </div>
+
+  <div class="section-title reveal"><span>🗺️</span>路线导航</div>
+  <div class="map-wrap reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-map.png" alt="六渡河路线" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>📸</span>实地环境</div>
+  <div class="photo-grid reveal">
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-1.jpeg" alt="六渡河环境 1" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-2.jpg" alt="六渡河环境 2" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-3.jpg" alt="六渡河环境 3" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-4.jpg" alt="六渡河环境 4" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-5.jpg" alt="六渡河环境 5" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-6.jpg" alt="六渡河环境 6" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-7.jpg" alt="六渡河环境 7" loading="lazy"><div class="zoom-icon"></div></div>
+    <div class="img-wrap"><img src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-8.jpg" alt="六渡河航拍" loading="lazy"><div class="zoom-icon"></div></div>
+  </div>
+
+  <div class="section-title reveal"><span>🎬</span>营地视频</div>
+  <div class="video-grid reveal">
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v1.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🏞️ 六渡河片段 1</div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v2.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🏞️ 六渡河片段 2</div>
+    </div>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline>
+        <source src="https://camping-1256297898.cos.ap-beijing.myqcloud.com/ldh-v3.mp4" type="video/mp4">
+      </video>
+      <div class="video-label">🚁 无人机航拍</div>
+    </div>
+  </div>
+
+  <!-- ════ 营地四：野鸭露营地 ════ -->
+  <div class="camp-divider reveal">
+    <div class="camp-divider-badge">
+      <div class="camp-num">04</div>
       野鸭露营地
     </div>
   </div>
@@ -546,10 +752,10 @@
     <div class="video-label">🌿 野鸭露营地 · 点击播放</div>
   </div>
 
-  <!-- ════ 营地二：黄土岭 ════ -->
+  <!-- ════ 营地五：黄土岭 ════ -->
   <div class="camp-divider reveal">
     <div class="camp-divider-badge">
-      <div class="camp-num">02</div>
+      <div class="camp-num">05</div>
       黄土岭
     </div>
   </div>
