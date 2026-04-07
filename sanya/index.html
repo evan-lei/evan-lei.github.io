@@ -1200,22 +1200,25 @@
   (function() {
     const style = document.createElement('style');
     style.textContent = `
-      .vid-play-wrap { position:relative; }
-      .vid-center-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:opacity .2s; pointer-events:none; }
-      .vid-center-play.visible { pointer-events:auto; }
+      .vid-play-wrap { position:relative; display:block; }
+      .vid-play-wrap video { display:block; width:100%; }
+      .vid-center-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:opacity .2s; }
+      .vid-center-play.hidden { opacity:0; pointer-events:none; }
       .vid-center-play::after { content:''; width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,.88); box-shadow:0 2px 16px rgba(0,0,0,.4); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23222'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); background-size:30px; background-repeat:no-repeat; background-position:58% center; }
     `;
     document.head.appendChild(style);
     document.querySelectorAll('video[controls]').forEach(vid => {
-      const wrap = vid.parentElement;
-      wrap.classList.add('vid-play-wrap');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'vid-play-wrap';
+      vid.parentNode.insertBefore(wrapper, vid);
+      wrapper.appendChild(vid);
       const btn = document.createElement('div');
-      btn.className = 'vid-center-play visible';
-      wrap.appendChild(btn);
+      btn.className = 'vid-center-play';
+      wrapper.appendChild(btn);
       btn.addEventListener('click', () => { vid.play(); });
-      vid.addEventListener('play', () => { btn.classList.remove('visible'); btn.style.opacity = '0'; });
-      vid.addEventListener('pause', () => { btn.classList.add('visible'); btn.style.opacity = ''; });
-      vid.addEventListener('ended', () => { btn.classList.add('visible'); btn.style.opacity = ''; });
+      vid.addEventListener('play', () => { btn.classList.add('hidden'); });
+      vid.addEventListener('pause', () => { btn.classList.remove('hidden'); });
+      vid.addEventListener('ended', () => { btn.classList.remove('hidden'); });
     });
   })();
 </script>
