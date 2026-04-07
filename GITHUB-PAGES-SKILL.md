@@ -199,8 +199,17 @@ document.querySelectorAll('.pthumb-play').forEach(btn => {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: opacity .2s;
 }
+.pthumb-play::after {
+  content: '';
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 2px 12px rgba(0,0,0,.35);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23222'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  background-size: 26px; background-repeat: no-repeat; background-position: 58% center;
+}
 ```
 注意：**不要**加 `pointer-events: none`，否则点击事件无法触发。
+**按钮必须用白底深色图标**（不要用黑底白图标），视频首帧通常偏暗，黑色按钮会隐身。
 
 ---
 
