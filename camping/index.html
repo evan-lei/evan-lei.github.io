@@ -733,8 +733,34 @@ function galGoTo(i) {
 }
 function galNav(dir) {
   const items = getItems(galCamp, galTab);
-  galIdx = (galIdx + dir + items.length) % items.length;
-  renderGallery();
+  const next = galIdx + dir;
+  if (next >= items.length) {
+    // 到达末尾，尝试切换到下一个 tab
+    const c = CAMPS[galCamp];
+    if (galTab === 'photo' && c.videos.length) {
+      switchGalTab('video');
+      return;
+    }
+    galIdx = 0; // 最后 tab 也到头了，循环回去
+    renderGallery();
+  } else if (next < 0) {
+    // 到达开头，尝试切换到上一个 tab
+    const c = CAMPS[galCamp];
+    if (galTab === 'video' && c.photos.length) {
+      galTab = 'photo';
+      document.querySelectorAll('.gal-tab').forEach(t => {
+        t.classList.toggle('active', t.textContent.includes('图片'));
+      });
+      galIdx = getItems(galCamp, 'photo').length - 1;
+      renderGallery();
+      return;
+    }
+    galIdx = items.length - 1;
+    renderGallery();
+  } else {
+    galIdx = next;
+    renderGallery();
+  }
 }
 function closeGallery() {
   const vid = document.querySelector('#galContent video');
@@ -742,9 +768,12 @@ function closeGallery() {
   document.getElementById('gallery').classList.remove('open');
 }
 
+// 点击背景关闭
 document.getElementById('gallery').addEventListener('click', e => {
   if (e.target === document.getElementById('gallery')) closeGallery();
 });
+
+// 键盘导航
 document.addEventListener('keydown', e => {
   if (!document.getElementById('gallery').classList.contains('open')) return;
   if (e.key === 'Escape') closeGallery();
@@ -752,6 +781,24 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft')  galNav(-1);
   e.stopImmediatePropagation();
 }, true);
+
+// 触摸滑动导航
+(function() {
+  let touchStartX = 0, touchStartY = 0;
+  const galEl = document.getElementById('gallery');
+  galEl.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  galEl.addEventListener('touchend', e => {
+    if (!galEl.classList.contains('open')) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      galNav(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+})();
 
 /* ─── Douyin Copy ─── */
 function copyDouyin(id) {
