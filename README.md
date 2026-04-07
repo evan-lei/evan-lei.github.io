@@ -19,6 +19,7 @@
 | 跟着爸爸去三亚 | `sanya/` | [evan-lei.github.io/sanya/](https://evan-lei.github.io/sanya/) | 三亚旅行全攻略，含行程、景点地图、物品清单 🌴 |
 | 跟着爸爸去沙漠 | `desert/` | [evan-lei.github.io/desert/](https://evan-lei.github.io/desert/) | 北京出发，翁牛特旗沙漠 3 天 2 夜亲子探险 🏜️ |
 | 跟着爸爸去露营 | `camping/` | [evan-lei.github.io/camping/](https://evan-lei.github.io/camping/) | 北京周边露营地推荐，含路线、费用、图片和视频 ⛺ |
+| 跟着爸爸去呼市 | `hohhot/` | [evan-lei.github.io/hohhot/](https://evan-lei.github.io/hohhot/) | 五一5天亲子自驾，北京→张家口→乌兰察布→呼和浩特→大同，天幕轻露营三站 🏔️ |
 
 ---
 
