@@ -879,6 +879,11 @@ function animateFireflies() {
 }
 animateFireflies();
 
+// 强制渲染预览视频第一帧
+document.querySelectorAll('.thumb video').forEach(vid => {
+  vid.addEventListener('loadedmetadata', () => { if (vid.paused) vid.currentTime = 0.001; });
+});
+
 // 预览视频点击播放
 document.querySelectorAll('.thumb-play').forEach(btn => {
   btn.addEventListener('click', e => {

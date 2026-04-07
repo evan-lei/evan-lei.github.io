@@ -607,6 +607,11 @@ document.addEventListener('keydown', e => {
   }, { passive: true });
 
   // 点击播放按钮原地播放视频，不打开画廊
+  // 强制渲染预览视频第一帧
+  document.querySelectorAll('.preview-grid video').forEach(vid => {
+    vid.addEventListener('loadedmetadata', () => { if (vid.paused) vid.currentTime = 0.001; });
+  });
+
   document.querySelectorAll('.pthumb-play').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
