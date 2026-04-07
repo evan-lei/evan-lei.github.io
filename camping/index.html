@@ -408,14 +408,7 @@
   <div class="cover-content">
     <div class="cover-eyebrow anim">Family · Nature · Adventure</div>
     <h1 class="cover-title anim d1">跟着爸爸去露营</h1>
-    <div class="cover-camps">
-      <span class="cover-camp-tag anim d2" onclick="goToSlide(1)">01 · 潮白河怡生园 ✅</span>
-      <span class="cover-camp-tag anim d3" onclick="goToSlide(2)">02 · 白河湾 ✅</span>
-      <span class="cover-camp-tag anim d4" onclick="goToSlide(3)">03 · 六渡河 ✅</span>
-      <span class="cover-camp-tag anim d5" onclick="goToSlide(4)">04 · 苏庄闸桥 📌</span>
-      <span class="cover-camp-tag anim d6" onclick="goToSlide(5)">05 · 野鸭露营地 📌</span>
-      <span class="cover-camp-tag anim d6" onclick="goToSlide(6)">06 · 黄土岭 📌</span>
-    </div>
+    <div class="cover-camps" id="coverCamps"></div>
     <div class="cover-hint anim d6">点击营地名直达 · 或点击右下角箭头翻页</div>
   </div>
 
@@ -512,6 +505,20 @@ const CAMPS = [
     bgClass: 's7',
   },
 ];
+
+/* ─── Build Cover Tags ─── */
+(function() {
+  const container = document.getElementById('coverCamps');
+  const delays = ['d2','d3','d4','d5','d6','d6','d6'];
+  CAMPS.forEach((c, idx) => {
+    const icon = c.status === '去过' ? '✅' : '📌';
+    const span = document.createElement('span');
+    span.className = `cover-camp-tag anim ${delays[idx] || 'd6'}`;
+    span.textContent = `${c.num} · ${c.name} ${icon}`;
+    span.onclick = () => goToSlide(idx + 1);
+    container.appendChild(span);
+  });
+})();
 
 /* ─── Build Camp Slides ─── */
 CAMPS.forEach((c, idx) => {
