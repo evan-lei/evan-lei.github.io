@@ -81,7 +81,7 @@
   .pthumb.portrait { aspect-ratio:3/4; }
   .pthumb img, .pthumb video { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
   .pthumb:hover img, .pthumb:hover video { transform:scale(1.05); }
-  .pthumb-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+  .pthumb-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:opacity .2s; }
   .pthumb-play::after { content:''; width:38px; height:38px; border-radius:50%; background:rgba(0,0,0,.5); border:2px solid rgba(255,255,255,.8); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); background-size:20px; background-repeat:no-repeat; background-position:60% center; }
   .pthumb-more { position:absolute; inset:0; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:700; color:#fff; }
   .view-all-btn { display:inline-flex; align-items:center; gap:6px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:.85rem; cursor:pointer; color:var(--text); transition:background .2s; margin-top:4px; }
@@ -214,7 +214,7 @@
     <div class="spot-header"><span class="spot-name">张家口市区</span></div>
     <div class="preview-grid g1" onclick="openGal('zhangjiakou')">
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/zhangjiakou-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/zhangjiakou-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -233,7 +233,7 @@
     <div class="spot-header"><span class="spot-name">涝利海</span></div>
     <div class="preview-grid g1" onclick="openGal('laoli')">
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/laoli-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/laoli-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -268,7 +268,7 @@
     <div class="spot-header"><span class="spot-name">红石崖</span></div>
     <div class="preview-grid g1" onclick="openGal('hongshi')">
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/hongshi-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/hongshi-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -282,7 +282,7 @@
   <div class="spot" id="s-wulancha" style="margin-top:8px">
     <div class="preview-grid g1" onclick="openGal('wulancha')">
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/wulancha-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/wulancha-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -306,7 +306,7 @@
       <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-1.jpg" loading="lazy" alt="察尔湖 1"></div>
       <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-2.jpg" loading="lazy" alt="察尔湖 2"></div>
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -349,7 +349,7 @@
       <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-2.jpg" loading="lazy" alt="云冈 2"></div>
       <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-3.jpg" loading="lazy" alt="云冈 3"></div>
       <div class="pthumb portrait">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -384,7 +384,7 @@
     <div class="spot-header"><span class="spot-name">应县木塔</span></div>
     <div class="preview-grid g1" onclick="openGal('yingxian')">
       <div class="pthumb">
-        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yingxian-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yingxian-v1.mp4" muted playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
       </div>
     </div>
@@ -605,6 +605,23 @@ document.addEventListener('keydown', e => {
     const dy = e.changedTouches[0].clientY - ty;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) galNav(dx < 0 ? 1 : -1);
   }, { passive: true });
+
+  // 点击播放按钮原地播放视频，不打开画廊
+  document.querySelectorAll('.pthumb-play').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const video = btn.previousElementSibling;
+      if (!video || video.tagName !== 'VIDEO') return;
+      if (video.paused) {
+        video.play();
+        btn.style.opacity = '0';
+        video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
+        video.addEventListener('ended', () => { btn.style.opacity = ''; video.load(); }, { once: true });
+      } else {
+        video.pause();
+      }
+    });
+  });
 })();
 </script>
 </body>
