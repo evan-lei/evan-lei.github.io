@@ -1216,6 +1216,7 @@
       btn.className = 'vid-center-play';
       wrapper.appendChild(btn);
       btn.addEventListener('click', () => { vid.play(); });
+      vid.addEventListener('loadedmetadata', () => { if (vid.paused) vid.currentTime = 0.001; });
       vid.addEventListener('play', () => { btn.classList.add('hidden'); });
       vid.addEventListener('pause', () => { btn.classList.remove('hidden'); });
       vid.addEventListener('ended', () => { btn.classList.remove('hidden'); });
