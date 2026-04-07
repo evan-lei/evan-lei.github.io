@@ -149,7 +149,58 @@ ffprobe -v error -select_streams v:0 \
 - **全横图**：2×2 或 3 列网格平铺
 - **全竖图**：单列或并排 2 列
 - **竖图 + 横图混排**：竖图单独占一列（`grid-row: 1 / span N`），横图堆叠在另一列
-- **地图/路线图（通常竖向）**：放左列大图，右侧放环境横图；若有视频，右侧最后一格放视频缩略图（`<video muted autoplay loop playsinline>`）
+- **地图/路线图（通常竖向）**：放左列大图，右侧放环境横图；若有视频，右侧最后一格放视频缩略图（见下方预览视频规范）
+
+---
+
+### 预览视频规范（点击播放，禁止自动播放）
+
+**原则：预览网格中的视频禁止 `autoplay`，改为点击播放。**
+
+原因：
+- 自动播放会在页面加载时立即拉取视频流，拖慢页面速度
+- 腾讯云 COS 按下行流量计费，autoplay 会造成不必要的费用
+
+**正确写法：**
+```html
+<div class="pthumb">
+  <video src="https://xxx.cos.ap-beijing.myqcloud.com/xxx.mp4"
+         muted playsinline preload="metadata"></video>
+  <div class="pthumb-play"></div>
+</div>
+```
+- `preload="metadata"` 仅加载元数据（时长、首帧），不拉取完整视频流
+- 禁止使用 `autoplay` 和 `loop`
+- 必须有 `.pthumb-play` 叠加层作为播放按钮
+
+**点击播放 JS（在页面初始化时绑定一次）：**
+```js
+document.querySelectorAll('.pthumb-play').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation(); // 阻止冒泡，避免触发父级 openGal
+    const video = btn.previousElementSibling;
+    if (!video || video.tagName !== 'VIDEO') return;
+    if (video.paused) {
+      video.play();
+      btn.style.opacity = '0';
+      video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
+      video.addEventListener('ended', () => { btn.style.opacity = ''; video.load(); }, { once: true });
+    } else {
+      video.pause();
+    }
+  });
+});
+```
+
+**CSS（`.pthumb-play` 必须可点击）：**
+```css
+.pthumb-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: opacity .2s;
+}
+```
+注意：**不要**加 `pointer-events: none`，否则点击事件无法触发。
 
 ---
 

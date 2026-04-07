@@ -555,8 +555,8 @@ CAMPS.forEach((c, idx) => {
       </div>`;
     }).join('') + (firstVideo ? `
     <div class="thumb" onclick="openGallery(${idx}, 1, 0)">
-      <video src="${COS + firstVideo}" muted autoplay loop playsinline preload="metadata" style="pointer-events:none"></video>
-      <div class="thumb-play"></div>
+      <video src="${COS + firstVideo}" muted playsinline preload="metadata" style="pointer-events:none"></video>
+      <div class="thumb-play" style="pointer-events:auto;cursor:pointer"></div>
       ${extraCount > 0 ? `<div class="thumb-more">+${extraCount}</div>` : ''}
     </div>` : '');
   } else {
@@ -856,6 +856,23 @@ function animateFireflies() {
   requestAnimationFrame(animateFireflies);
 }
 animateFireflies();
+
+// 预览视频点击播放
+document.querySelectorAll('.thumb-play').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const video = btn.previousElementSibling;
+    if (!video || video.tagName !== 'VIDEO') return;
+    if (video.paused) {
+      video.play();
+      btn.style.opacity = '0';
+      video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
+      video.addEventListener('ended', () => { btn.style.opacity = ''; video.load(); }, { once: true });
+    } else {
+      video.pause();
+    }
+  });
+});
 </script>
 </body>
 </html>
