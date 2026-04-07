@@ -2,7 +2,12 @@
 
 个人小站，存放一些课件和小工具。
 
-🌐 **访问地址**：[https://evan-lei.github.io](https://evan-lei.github.io)
+| 地址 | 说明 |
+|------|------|
+| 🌐 [evan-minho.com](https://evan-minho.com) | 主域名，**优先用这个** |
+| [evan-lei-github-io.pages.dev](https://evan-lei-github-io.pages.dev) | Cloudflare Pages 备用 |
+| [evan-lei-github-io.vercel.app](https://evan-lei-github-io.vercel.app) | Vercel 备用 |
+| [evan-lei.github.io](https://evan-lei.github.io) | GitHub Pages 备用 |
 
 ---
 
