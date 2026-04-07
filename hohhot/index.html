@@ -73,6 +73,8 @@
   .preview-grid.g3 .pthumb:first-child { grid-row:1/3; }
   .preview-grid.g4 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
   .preview-grid.g3p { grid-template-columns:1fr 1fr 1fr; }
+  .preview-grid.g2-1b { grid-template-columns:1fr 1fr; }
+  .preview-grid.g2-1b .pthumb:last-child { grid-column:1/3; }
   .preview-grid.g-v2p { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; }
   .preview-grid.g-v2p .pthumb:first-child { grid-row:1/4; }
   .pthumb { overflow:hidden; position:relative; aspect-ratio:4/3; }
@@ -276,7 +278,15 @@
     <div class="spot-time">⏱ 建议停留 20 分钟</div>
   </div>
 
-  <div class="lodging"><span>🏨</span>住宿：乌兰察布市区 &nbsp;<button class="view-all-btn" onclick="openGal('wulancha')" style="margin-top:0;padding:4px 12px;font-size:.78rem">▶ 看看市区夜景</button></div>
+  <div class="lodging"><span>🏨</span>住宿：乌兰察布市区</div>
+  <div class="spot" id="s-wulancha" style="margin-top:8px">
+    <div class="preview-grid g1" onclick="openGal('wulancha')">
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/wulancha-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ─── Day 3 ─── -->
@@ -292,13 +302,12 @@
       <span class="spot-name">察尔湖</span>
       <span class="badge badge-camp">⛺ 天幕午餐</span>
     </div>
-    <div class="preview-grid g3" onclick="openGal('chaer')">
+    <div class="preview-grid g2-1b" onclick="openGal('chaer')">
       <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-1.jpg" loading="lazy" alt="察尔湖 1"></div>
       <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-2.jpg" loading="lazy" alt="察尔湖 2"></div>
       <div class="pthumb">
         <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
         <div class="pthumb-play"></div>
-        <div class="pthumb-more" style="background:rgba(0,0,0,.4);font-size:.85rem">▶ 视频</div>
       </div>
     </div>
     <div class="spot-activities">
