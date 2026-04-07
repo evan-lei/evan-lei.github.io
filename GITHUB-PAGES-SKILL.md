@@ -149,7 +149,47 @@ ffprobe -v error -select_streams v:0 \
 - **全横图**：2×2 或 3 列网格平铺
 - **全竖图**：单列或并排 2 列
 - **竖图 + 横图混排**：竖图单独占一列（`grid-row: 1 / span N`），横图堆叠在另一列
-- **地图/路线图（通常竖向）**：放左列大图，右侧放环境横图
+- **地图/路线图（通常竖向）**：放左列大图，右侧放环境横图；若有视频，右侧最后一格放视频缩略图（`<video muted autoplay loop playsinline>`）
+
+---
+
+### 图片/视频查看器交互规范
+
+所有项目的 lightbox / gallery 必须遵守以下三条规则：
+
+#### 1. 触摸滑动导航
+```js
+let _touchX = 0, _touchY = 0;
+lb.addEventListener('touchstart', e => {
+  _touchX = e.touches[0].clientX;
+  _touchY = e.touches[0].clientY;
+}, { passive: true });
+lb.addEventListener('touchend', e => {
+  if (!lb.classList.contains('open')) return;
+  const dx = e.changedTouches[0].clientX - _touchX;
+  const dy = e.changedTouches[0].clientY - _touchY;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) navigate(dx < 0 ? 1 : -1);
+}, { passive: true });
+```
+- 左滑 → 下一张，右滑 → 上一张
+- 触发条件：水平位移 > 50px 且横向幅度 > 纵向 × 1.5（避免上下滚动误触发）
+
+#### 2. 键盘方向键导航
+```js
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft')  navigate(-1);
+  if (e.key === 'ArrowRight') navigate(1);
+});
+```
+
+#### 3. 跨 Tab 连续翻页（仅适用于有图片/视频分 Tab 的 gallery）
+- 图片翻到最后一张再点"下一张" → 自动切换到"视频"Tab 第一个
+- 视频往前翻到第一个再点"上一张" → 自动切换回"图片"Tab 最后一张
+- 实现：`navigate` 函数中判断边界时调用 `switchTab`，而非取模循环
+
+参考实现见 `camping/index.html` 的 `galNav` 函数。
 
 ---
 
