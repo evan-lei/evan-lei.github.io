@@ -197,7 +197,6 @@
       <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-3.jpg" loading="lazy" alt="草原天路 3"></div>
       <div class="pthumb portrait" id="tianlu-more">
         <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-4.jpg" loading="lazy" alt="草原天路 4">
-        <div class="pthumb-more">+1 视频</div>
       </div>
     </div>
     <div class="spot-activities">
@@ -205,6 +204,16 @@
       <span class="act-tag">🌾 孩子跑草地</span><span class="act-tag">🌀 风车拍照</span>
     </div>
     <div class="spot-time">⏱ 建议停留 1.5 小时</div>
+  </div>
+
+  <div class="spot" id="s-zhangjiakou">
+    <div class="spot-header"><span class="spot-name">张家口市区</span></div>
+    <div class="preview-grid g1" onclick="openGal('zhangjiakou')">
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/zhangjiakou-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+      </div>
+    </div>
   </div>
 
   <div class="lodging"><span>🏨</span>住宿：张家口市区</div>
@@ -424,7 +433,8 @@
 const COS = 'https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/';
 
 const SPOTS = {
-  tianlu:   { name:'草原天路',    photos:['tianlu-1.jpg','tianlu-2.jpg','tianlu-3.jpg','tianlu-4.jpg'], videos:['zhangjiakou-v1.mp4'] },
+  tianlu:   { name:'草原天路',    photos:['tianlu-1.jpg','tianlu-2.jpg','tianlu-3.jpg','tianlu-4.jpg'], videos:[] },
+  zhangjiakou: { name:'张家口市区', photos:[], videos:['zhangjiakou-v1.mp4'] },
   laoli:    { name:'涝利海',      photos:[], videos:['laoli-v1.mp4'] },
   volcano:  { name:'乌兰哈达火山', photos:['volcano-1.jpg','volcano-2.jpg','volcano-3.jpg','volcano-4.jpg'], videos:[] },
   hongshi:  { name:'红石崖',      photos:[], videos:['hongshi-v1.mp4'] },
