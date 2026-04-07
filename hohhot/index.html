@@ -6,140 +6,137 @@
 <title>跟着爸爸去呼市</title>
 <style>
   :root {
-    --grass: #3d6b4a;
-    --grass-light: #5a9b6e;
-    --sky: #5c9bb5;
-    --steppe: #c9a550;
-    --volcano: #c0522a;
-    --bg: #0b1811;
-    --surface: #132019;
-    --surface2: #1b2e22;
-    --text: #e8f0ea;
-    --muted: rgba(232,240,234,0.55);
-    --border: rgba(93,155,110,0.2);
-    --cos: 'https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/';
+    --grass: #3d6b4a; --grass-light: #5a9b6e; --sky: #5c9bb5;
+    --steppe: #c9a550; --volcano: #c0522a;
+    --bg: #0b1811; --surface: #132019; --surface2: #1b2e22;
+    --text: #e8f0ea; --muted: rgba(232,240,234,0.55); --border: rgba(93,155,110,0.2);
+    --COS: https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'PingFang SC', sans-serif; line-height: 1.6; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system,'PingFang SC',sans-serif; line-height: 1.6; }
 
   /* ─── Hero ─── */
-  .hero {
-    min-height: 100svh; display: flex; flex-direction: column;
-    justify-content: center; align-items: center; text-align: center;
-    padding: 60px 24px 48px; position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(61,107,74,0.35) 0%, transparent 70%),
-                radial-gradient(ellipse 60% 40% at 80% 70%, rgba(92,155,181,0.15) 0%, transparent 60%);
-  }
-  .hero-eyebrow { font-size: 0.78rem; letter-spacing: 0.2em; color: var(--grass-light); text-transform: uppercase; margin-bottom: 14px; }
-  .hero-title { font-size: clamp(2.2rem, 7vw, 4rem); font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; margin-bottom: 16px; }
-  .hero-title span { color: var(--grass-light); }
-  .hero-sub { font-size: 1rem; color: var(--muted); margin-bottom: 28px; }
-  .hero-route {
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center;
-    font-size: 0.88rem; color: var(--text); background: var(--surface2); border: 1px solid var(--border);
-    padding: 10px 20px; border-radius: 40px; margin-bottom: 28px;
-  }
-  .hero-route .arrow { color: var(--grass-light); }
-  .hero-route .city { font-weight: 600; }
-  .hero-route .city.home { color: var(--sky); }
-  .hero-stats { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
-  .hero-stat {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
-    padding: 10px 18px; text-align: center;
-  }
-  .hero-stat .val { font-size: 1.4rem; font-weight: 700; color: var(--steppe); }
-  .hero-stat .lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-  .hero-nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .day-tag {
-    padding: 8px 18px; border-radius: 24px; border: 1px solid var(--border);
-    background: var(--surface2); cursor: pointer; font-size: 0.85rem;
-    transition: background 0.2s, border-color 0.2s; text-decoration: none; color: var(--text);
-  }
-  .day-tag:hover { background: var(--grass); border-color: var(--grass-light); }
-  .day-tag.camp { border-color: var(--steppe); color: var(--steppe); }
-  .scroll-hint { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .scroll-hint::after { content: '↓'; animation: bounce 1.6s infinite; }
-  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+  .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 24px 48px; position: relative; overflow: hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(61,107,74,.35) 0%,transparent 70%), radial-gradient(ellipse 60% 40% at 80% 70%, rgba(92,155,181,.15) 0%,transparent 60%); }
+  .hero-eyebrow { font-size:.78rem; letter-spacing:.2em; color:var(--grass-light); text-transform:uppercase; margin-bottom:14px; }
+  .hero-title { font-size:clamp(2.2rem,7vw,4rem); font-weight:800; line-height:1.1; margin-bottom:16px; }
+  .hero-title span { color:var(--grass-light); }
+  .hero-sub { font-size:1rem; color:var(--muted); margin-bottom:28px; }
+  .hero-route { display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; font-size:.88rem; background:var(--surface2); border:1px solid var(--border); padding:10px 20px; border-radius:40px; margin-bottom:28px; }
+  .hero-route .arrow { color:var(--grass-light); }
+  .hero-route .city { font-weight:600; }
+  .hero-route .city.home { color:var(--sky); }
+  .hero-stats { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+  .hero-stat { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:10px 18px; text-align:center; }
+  .hero-stat .val { font-size:1.4rem; font-weight:700; color:var(--steppe); }
+  .hero-stat .lbl { font-size:.72rem; color:var(--muted); margin-top:2px; }
+  .hero-nav { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .day-tag { padding:8px 18px; border-radius:24px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; font-size:.85rem; transition:background .2s,border-color .2s; text-decoration:none; color:var(--text); }
+  .day-tag:hover { background:var(--grass); border-color:var(--grass-light); }
+  .day-tag.camp { border-color:var(--steppe); color:var(--steppe); }
+  .scroll-hint { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); font-size:.75rem; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .scroll-hint::after { content:'↓'; animation:bounce 1.6s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+  /* ─── Map row ─── */
+  .map-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:960px; margin:0 auto 20px; padding:0 20px; }
+  .map-img { width:100%; border-radius:12px; object-fit:cover; max-height:340px; background:var(--surface2); cursor:zoom-in; transition:transform .3s; }
+  .map-img:hover { transform:scale(1.02); }
 
   /* ─── Day sections ─── */
-  .day-section {
-    max-width: 960px; margin: 0 auto; padding: 60px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .day-header {
-    display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; flex-wrap: wrap;
-  }
-  .day-num { font-size: 3rem; font-weight: 900; color: var(--grass); line-height: 1; }
-  .day-route-label { font-size: 1.1rem; font-weight: 600; color: var(--text); }
-  .day-drive { font-size: 0.82rem; color: var(--muted); background: var(--surface2); padding: 4px 12px; border-radius: 20px; }
-  .day-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+  .day-section { max-width:960px; margin:0 auto; padding:60px 20px; border-bottom:1px solid var(--border); }
+  .day-header { display:flex; align-items:baseline; gap:16px; margin-bottom:6px; flex-wrap:wrap; }
+  .day-num { font-size:3rem; font-weight:900; color:var(--grass); line-height:1; }
+  .day-route-label { font-size:1.1rem; font-weight:600; }
+  .day-drive { font-size:.82rem; color:var(--muted); background:var(--surface2); padding:4px 12px; border-radius:20px; }
+  .day-sub { font-size:.85rem; color:var(--muted); margin-bottom:28px; }
 
-  .spot { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
-  .spot-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-  .spot-name { font-size: 1.05rem; font-weight: 700; color: var(--text); }
-  .spot-star { font-size: 0.8rem; background: rgba(201,165,80,0.2); color: var(--steppe); border-radius: 20px; padding: 2px 10px; }
-  .spot-camp-badge { font-size: 0.78rem; background: rgba(61,107,74,0.3); color: var(--grass-light); border-radius: 20px; padding: 2px 10px; }
-  .spot-photos { display: grid; gap: 4px; margin-bottom: 14px; border-radius: 10px; overflow: hidden; }
-  .spot-photos.p1 { grid-template-columns: 1fr; }
-  .spot-photos.p2 { grid-template-columns: 1fr 1fr; }
-  .spot-photos.p3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-  .spot-photos.p3 img:first-child { grid-row: 1 / 3; }
-  .spot-photos img {
-    width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
-    background: var(--surface2); transition: transform 0.4s;
-  }
-  .spot-photos img:hover { transform: scale(1.03); cursor: zoom-in; }
-  .spot-activities { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-  .activity-tag { font-size: 0.8rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; color: var(--text); }
-  .spot-time { font-size: 0.8rem; color: var(--muted); }
+  /* ─── Spot card ─── */
+  .spot { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:16px; }
+  .spot-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .spot-name { font-size:1.05rem; font-weight:700; }
+  .badge { font-size:.78rem; border-radius:20px; padding:2px 10px; }
+  .badge-star { background:rgba(201,165,80,.2); color:var(--steppe); }
+  .badge-camp { background:rgba(61,107,74,.3); color:var(--grass-light); }
+  .badge-warn { background:rgba(192,82,42,.2); color:#e8825a; }
+  .spot-activities { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .act-tag { font-size:.8rem; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:4px 12px; }
+  .spot-time { font-size:.8rem; color:var(--muted); }
+  .lodging { display:flex; align-items:center; gap:8px; background:rgba(92,155,181,.1); border:1px solid rgba(92,155,181,.2); border-radius:10px; padding:10px 16px; margin-top:8px; font-size:.85rem; }
 
-  .lodging { display: flex; align-items: center; gap: 8px; background: rgba(92,155,181,0.1); border: 1px solid rgba(92,155,181,0.2); border-radius: 10px; padding: 10px 16px; margin-top: 8px; font-size: 0.85rem; }
-  .lodging-icon { font-size: 1rem; }
+  /* ─── Preview grid ─── */
+  .preview-grid { display:grid; gap:4px; border-radius:10px; overflow:hidden; margin-bottom:14px; cursor:pointer; }
+  .preview-grid.g1 { grid-template-columns:1fr; }
+  .preview-grid.g2 { grid-template-columns:1fr 1fr; }
+  .preview-grid.g3 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+  .preview-grid.g3 .pthumb:first-child { grid-row:1/3; }
+  .preview-grid.g4 { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+  .preview-grid.g-v2p { grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr 1fr; }
+  .preview-grid.g-v2p .pthumb:first-child { grid-row:1/4; }
+  .pthumb { overflow:hidden; position:relative; aspect-ratio:4/3; }
+  .pthumb.portrait { aspect-ratio:3/4; }
+  .pthumb img, .pthumb video { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
+  .pthumb:hover img, .pthumb:hover video { transform:scale(1.05); }
+  .pthumb-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+  .pthumb-play::after { content:''; width:38px; height:38px; border-radius:50%; background:rgba(0,0,0,.5); border:2px solid rgba(255,255,255,.8); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); background-size:20px; background-repeat:no-repeat; background-position:60% center; }
+  .pthumb-more { position:absolute; inset:0; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:700; color:#fff; }
+  .view-all-btn { display:inline-flex; align-items:center; gap:6px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 16px; font-size:.85rem; cursor:pointer; color:var(--text); transition:background .2s; margin-top:4px; }
+  .view-all-btn:hover { background:var(--grass); border-color:var(--grass-light); }
 
-  /* ─── 天幕三站 highlight ─── */
-  .camp-summary { max-width: 960px; margin: 0 auto; padding: 60px 20px; }
-  .section-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
-  .section-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
-  .camp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  .camp-card { background: var(--surface); border: 1px solid rgba(201,165,80,0.3); border-radius: 14px; padding: 20px; }
-  .camp-card-day { font-size: 0.72rem; color: var(--steppe); letter-spacing: 0.1em; margin-bottom: 6px; }
-  .camp-card-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-  .camp-card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  /* ─── Gallery Modal ─── */
+  #gallery { position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:1000; display:none; flex-direction:column; }
+  #gallery.open { display:flex; }
+  .gal-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; flex-shrink:0; }
+  .gal-title { font-size:1rem; font-weight:700; color:var(--text); }
+  .gal-tabs { display:flex; gap:8px; }
+  .gal-tab { padding:6px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; font-size:.82rem; color:var(--muted); transition:.2s; }
+  .gal-tab.active { background:var(--grass); border-color:var(--grass-light); color:var(--text); }
+  .gal-close { background:none; border:none; color:var(--text); font-size:1.6rem; cursor:pointer; padding:4px 10px; line-height:1; }
+  .gal-content { flex:1; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  #galMedia { max-width:100%; max-height:100%; object-fit:contain; border-radius:6px; }
+  .gal-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.5); border:none; color:#fff; font-size:2rem; padding:8px 14px; cursor:pointer; border-radius:8px; transition:background .2s; line-height:1; }
+  .gal-nav:hover { background:rgba(255,255,255,.15); }
+  .gal-prev { left:10px; }
+  .gal-next { right:10px; }
+  .gal-counter { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); font-size:.8rem; color:var(--muted); background:rgba(0,0,0,.5); padding:3px 12px; border-radius:20px; }
+  .gal-strip { display:flex; gap:6px; padding:10px 16px; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
+  .gal-strip::-webkit-scrollbar { display:none; }
+  .gal-strip-item { width:60px; height:60px; flex-shrink:0; border-radius:6px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:.2s; opacity:.6; }
+  .gal-strip-item.active { border-color:var(--grass-light); opacity:1; }
+  .gal-strip-item img, .gal-strip-item video { width:100%; height:100%; object-fit:cover; pointer-events:none; }
 
-  /* ─── 装备 ─── */
-  .gear-section { max-width: 960px; margin: 0 auto; padding: 40px 20px 60px; }
-  .gear-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
-  .gear-group { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
-  .gear-group-title { font-size: 0.78rem; color: var(--grass-light); letter-spacing: 0.1em; margin-bottom: 10px; }
-  .gear-list { list-style: none; }
-  .gear-list li { font-size: 0.85rem; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); }
-  .gear-list li:last-child { border-bottom: none; }
-  .gear-list li::before { content: '· '; color: var(--muted); }
+  /* ─── Summary sections ─── */
+  .camp-summary, .gear-section { max-width:960px; margin:0 auto; padding:60px 20px; }
+  .section-title { font-size:1.5rem; font-weight:800; margin-bottom:6px; }
+  .section-sub { font-size:.85rem; color:var(--muted); margin-bottom:28px; }
+  .camp-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+  .camp-card { background:var(--surface); border:1px solid rgba(201,165,80,.3); border-radius:14px; padding:20px; }
+  .camp-card-day { font-size:.72rem; color:var(--steppe); letter-spacing:.1em; margin-bottom:6px; }
+  .camp-card-name { font-size:1rem; font-weight:700; margin-bottom:8px; }
+  .camp-card-desc { font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .gear-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:20px; }
+  .gear-group { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .gear-group-title { font-size:.78rem; color:var(--grass-light); letter-spacing:.1em; margin-bottom:10px; }
+  .gear-list { list-style:none; }
+  .gear-list li { font-size:.85rem; padding:4px 0; border-bottom:1px solid var(--border); }
+  .gear-list li:last-child { border-bottom:none; }
+  .gear-list li::before { content:'· '; color:var(--muted); }
+  .temp-bar { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .temp-card { flex:1; min-width:120px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; text-align:center; }
+  .temp-card .val { font-size:1.5rem; font-weight:700; }
+  .temp-day .val { color:var(--steppe); }
+  .temp-night .val { color:var(--sky); }
+  .temp-card .lbl { font-size:.75rem; color:var(--muted); margin-top:4px; }
 
-  /* ─── 温度 ─── */
-  .temp-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
-  .temp-card { flex: 1; min-width: 120px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; text-align: center; }
-  .temp-val { font-size: 1.5rem; font-weight: 700; }
-  .temp-day .temp-val { color: var(--steppe); }
-  .temp-night .temp-val { color: var(--sky); }
-  .temp-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+  footer { text-align:center; padding:32px 20px; font-size:.78rem; color:var(--muted); border-top:1px solid var(--border); }
 
-  /* ─── Map images ─── */
-  .map-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
-  .map-img { width: 100%; border-radius: 12px; object-fit: cover; max-height: 340px; background: var(--surface2); }
-
-  /* ─── Footer ─── */
-  footer { text-align: center; padding: 32px 20px; font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); }
-
-  /* ─── Mobile ─── */
-  @media (max-width: 600px) {
-    .day-num { font-size: 2.2rem; }
-    .map-row { grid-template-columns: 1fr; }
-    .hero-route { font-size: 0.8rem; gap: 4px; }
+  @media(max-width:600px) {
+    .day-num { font-size:2.2rem; }
+    .map-row { grid-template-columns:1fr; }
+    .hero-route { font-size:.8rem; gap:4px; }
+    .preview-grid.g-v2p { grid-template-columns:1fr; grid-template-rows:auto; }
+    .preview-grid.g-v2p .pthumb:first-child { grid-row:auto; }
   }
 </style>
 </head>
@@ -151,23 +148,18 @@
   <h1 class="hero-title">跟着爸爸去<span>呼市</span></h1>
   <p class="hero-sub">5天亲子自驾 · 天幕轻露营 · 适合5岁小朋友</p>
   <div class="hero-route">
-    <span class="city home">北京</span>
-    <span class="arrow">→</span>
-    <span class="city">张家口</span>
-    <span class="arrow">→</span>
-    <span class="city">乌兰察布</span>
-    <span class="arrow">→</span>
-    <span class="city">呼和浩特</span>
-    <span class="arrow">→</span>
-    <span class="city">大同</span>
-    <span class="arrow">→</span>
+    <span class="city home">北京</span><span class="arrow">→</span>
+    <span class="city">张家口</span><span class="arrow">→</span>
+    <span class="city">乌兰察布</span><span class="arrow">→</span>
+    <span class="city">呼和浩特</span><span class="arrow">→</span>
+    <span class="city">大同</span><span class="arrow">→</span>
     <span class="city home">北京</span>
   </div>
   <div class="hero-stats">
     <div class="hero-stat"><div class="val">5</div><div class="lbl">天 4 夜</div></div>
     <div class="hero-stat"><div class="val">1100</div><div class="lbl">公里</div></div>
     <div class="hero-stat"><div class="val">3</div><div class="lbl">次天幕</div></div>
-    <div class="hero-stat"><div class="val">5+</div><div class="lbl">精华景点</div></div>
+    <div class="hero-stat"><div class="val">10+</div><div class="lbl">精华景点</div></div>
   </div>
   <div class="hero-nav">
     <a class="day-tag" href="#day1">Day 1 · 草原天路</a>
@@ -180,218 +172,204 @@
 </section>
 
 <!-- ─── 路线参考图 ─── -->
-<div style="max-width:960px;margin:0 auto;padding:0 20px 20px;">
-  <div class="map-row">
-    <img class="map-img" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/map1.jpg" alt="路线参考图 1">
-    <img class="map-img" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/map2.jpg" alt="路线参考图 2">
-  </div>
+<div class="map-row">
+  <img class="map-img" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/map1.jpg" alt="路线参考图 1" onclick="openGalSingle(this.src,'路线图 1')">
+  <img class="map-img" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/map2.jpg" alt="路线参考图 2" onclick="openGalSingle(this.src,'路线图 2')">
 </div>
 
 <!-- ─── Day 1 ─── -->
 <section class="day-section" id="day1">
   <div class="day-header">
     <div class="day-num">01</div>
-    <div>
-      <div class="day-route-label">北京 → 张家口</div>
-      <span class="day-drive">约 3 小时车程</span>
-    </div>
+    <div><div class="day-route-label">北京 → 张家口</div><span class="day-drive">约 3 小时车程</span></div>
   </div>
-  <p class="day-sub">出发第一天，沿途欣赏草原公路风光，搭天幕吃午餐</p>
+  <p class="day-sub">出发第一天，草原公路风光，搭天幕吃午餐</p>
 
-  <div class="spot">
+  <div class="spot" id="s-tianlu">
     <div class="spot-header">
       <span class="spot-name">草原天路</span>
-      <span class="spot-star">⭐ 核心打卡</span>
-      <span class="spot-camp-badge">⛺ 天幕推荐</span>
+      <span class="badge badge-star">⭐ 核心打卡</span>
+      <span class="badge badge-camp">⛺ 天幕推荐</span>
     </div>
-    <div class="spot-photos p3">
-      <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/day1-tianlu-1.jpg" alt="草原天路 1">
-      <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/day1-tianlu-2.jpg" alt="草原天路 2">
-      <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/day1-tianlu-3.jpg" alt="草原天路 3">
+    <div class="preview-grid g-v2p" onclick="openGal('tianlu')">
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-1.jpg" loading="lazy" alt="草原天路 1"></div>
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-2.jpg" loading="lazy" alt="草原天路 2"></div>
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-3.jpg" loading="lazy" alt="草原天路 3"></div>
+      <div class="pthumb portrait" id="tianlu-more">
+        <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/tianlu-4.jpg" loading="lazy" alt="草原天路 4">
+        <div class="pthumb-more">+1 视频</div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🚗 草原公路停车</span>
-      <span class="activity-tag">⛺ 搭天幕午餐</span>
-      <span class="activity-tag">🌾 孩子跑草地</span>
-      <span class="activity-tag">🌀 风车拍照</span>
+      <span class="act-tag">🚗 草原公路停车</span><span class="act-tag">⛺ 搭天幕午餐</span>
+      <span class="act-tag">🌾 孩子跑草地</span><span class="act-tag">🌀 风车拍照</span>
     </div>
     <div class="spot-time">⏱ 建议停留 1.5 小时</div>
   </div>
 
-  <div class="lodging"><span class="lodging-icon">🏨</span>住宿：张家口市区</div>
+  <div class="lodging"><span>🏨</span>住宿：张家口市区</div>
 </section>
 
 <!-- ─── Day 2 ─── -->
 <section class="day-section" id="day2">
   <div class="day-header">
     <div class="day-num" style="color:var(--volcano)">02</div>
-    <div>
-      <div class="day-route-label">张家口 → 涝利海 → 火山 → 红石崖 → 乌兰察布</div>
-      <span class="day-drive">约 2 小时车程</span>
-    </div>
+    <div><div class="day-route-label">张家口 → 涝利海 → 火山 → 红石崖 → 乌兰察布</div><span class="day-drive">约 2 小时车程</span></div>
   </div>
-  <p class="day-sub">今天亮点最多，草原湿地 + 火山天幕 + 红色峡谷，景色反差极大</p>
+  <p class="day-sub">今天亮点最多，草原湿地 + 火山天幕 + 红色峡谷</p>
 
-  <div class="spot">
-    <div class="spot-header">
-      <span class="spot-name">涝利海</span>
-    </div>
-    <div class="spot-photos p2">
-      <img src="https://p1-q.mafengwo.net/s17/M00/BE/BB/CoUBXl9lWvSAU4sXAA3fQ6R5YJk033.jpg" alt="涝利海 1" onerror="this.style.display='none'">
-      <img src="https://dimg04.c-ctrip.com/images/100p0z000000ndv2uB3D8.jpg" alt="涝利海 2" onerror="this.style.display='none'">
+  <div class="spot" id="s-laoli">
+    <div class="spot-header"><span class="spot-name">涝利海</span></div>
+    <div class="preview-grid g1" onclick="openGal('laoli')">
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/laoli-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🌿 草原湿地</span>
-      <span class="activity-tag">🚗 途中停车</span>
-      <span class="activity-tag">🏃 孩子跑动</span>
+      <span class="act-tag">🌿 草原湿地</span><span class="act-tag">🚗 途中停车</span><span class="act-tag">🏃 孩子跑动</span>
     </div>
     <div class="spot-time">⏱ 建议停留 30 分钟</div>
   </div>
 
-  <div class="spot" style="border-color:rgba(201,165,80,0.4)">
+  <div class="spot" style="border-color:rgba(201,165,80,.4)" id="s-volcano">
     <div class="spot-header">
       <span class="spot-name">乌兰哈达火山</span>
-      <span class="spot-star">⭐ 今日亮点</span>
-      <span class="spot-camp-badge">⛺ 天幕午餐</span>
+      <span class="badge badge-star">⭐ 今日亮点</span>
+      <span class="badge badge-camp">⛺ 天幕午餐</span>
     </div>
-    <div class="spot-photos p3">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Ulanhad_Volcano.jpg" alt="火山 1" onerror="this.style.display='none'">
-      <img src="https://inews.gtimg.com/newsapp_bt/0/15043273925/1000" alt="火山 2" onerror="this.style.display='none'">
-      <img src="https://dimg04.c-ctrip.com/images/0101o1200099w2q1sE3D0.jpg" alt="火山 3" onerror="this.style.display='none'">
+    <div class="preview-grid g4" onclick="openGal('volcano')">
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/volcano-1.jpg" loading="lazy" alt="火山 1"></div>
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/volcano-2.jpg" loading="lazy" alt="火山 2"></div>
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/volcano-3.jpg" loading="lazy" alt="火山 3"></div>
+      <div class="pthumb" onclick="openGal('volcano')">
+        <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/volcano-4.jpg" loading="lazy" alt="火山 4">
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🌋 火山脚下停车</span>
-      <span class="activity-tag">⛺ 搭天幕午餐</span>
-      <span class="activity-tag">🥾 爬小火山</span>
-      <span class="activity-tag">🪨 捡火山石</span>
+      <span class="act-tag">🌋 火山脚下停车</span><span class="act-tag">⛺ 搭天幕午餐</span>
+      <span class="act-tag">🥾 爬小火山</span><span class="act-tag">🪨 捡火山石</span>
     </div>
     <div class="spot-time">⏱ 建议停留 1.5 小时</div>
   </div>
 
-  <div class="spot">
-    <div class="spot-header">
-      <span class="spot-name">红石崖</span>
-    </div>
-    <div class="spot-photos p2">
-      <img src="https://img1.qunarzz.com/travel/d4/1806/b7/ca9f8a6a36e0e8b5.jpg" alt="红石崖 1" onerror="this.style.display='none'">
-      <img src="https://p1-q.mafengwo.net/s11/M00/5F/8A/wKgBEFr0vQ6Af5QwAA0sW1mTB9A73.jpeg" alt="红石崖 2" onerror="this.style.display='none'">
+  <div class="spot" id="s-hongshi">
+    <div class="spot-header"><span class="spot-name">红石崖</span></div>
+    <div class="preview-grid g1" onclick="openGal('hongshi')">
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/hongshi-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">📸 红色崖壁拍照</span>
-      <span class="activity-tag">🚶 短暂停留</span>
+      <span class="act-tag">📸 红色崖壁拍照</span><span class="act-tag">🚶 短暂停留</span>
     </div>
     <div class="spot-time">⏱ 建议停留 20 分钟</div>
   </div>
 
-  <div class="lodging"><span class="lodging-icon">🏨</span>住宿：乌兰察布市区</div>
+  <div class="lodging"><span>🏨</span>住宿：乌兰察布市区 &nbsp;<button class="view-all-btn" onclick="openGal('wulancha')" style="margin-top:0;padding:4px 12px;font-size:.78rem">▶ 看看市区夜景</button></div>
 </section>
 
 <!-- ─── Day 3 ─── -->
 <section class="day-section" id="day3">
   <div class="day-header">
     <div class="day-num">03</div>
-    <div>
-      <div class="day-route-label">乌兰察布 → 察尔湖 → 呼和浩特</div>
-      <span class="day-drive">约 2 小时车程</span>
-    </div>
+    <div><div class="day-route-label">乌兰察布 → 察尔湖 → 呼和浩特</div><span class="day-drive">约 2 小时车程</span></div>
   </div>
-  <p class="day-sub">第三次天幕，湖边午餐；下午进呼和浩特，逛博物院和老街</p>
+  <p class="day-sub">第三次天幕，湖边午餐；下午进呼和浩特</p>
 
-  <div class="spot" style="border-color:rgba(92,155,181,0.4)">
+  <div class="spot" style="border-color:rgba(92,155,181,.4)" id="s-chaer">
     <div class="spot-header">
       <span class="spot-name">察尔湖</span>
-      <span class="spot-camp-badge">⛺ 天幕午餐</span>
+      <span class="badge badge-camp">⛺ 天幕午餐</span>
     </div>
-    <div class="spot-photos p3">
-      <img src="https://dimg04.c-ctrip.com/images/0100j1200083r7c3f8C5F.jpg" alt="察尔湖 1" onerror="this.style.display='none'">
-      <img src="https://p1-q.mafengwo.net/s12/M00/89/55/wKgED1v9V6mAfyDgAAeXG6bqB8o72.jpeg" alt="察尔湖 2" onerror="this.style.display='none'">
-      <img src="https://img0.baidu.com/it/u=2272053647,4037570034&fm=253" alt="察尔湖 3" onerror="this.style.display='none'">
+    <div class="preview-grid g3" onclick="openGal('chaer')">
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-1.jpg" loading="lazy" alt="察尔湖 1"></div>
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-2.jpg" loading="lazy" alt="察尔湖 2"></div>
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/chaer-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+        <div class="pthumb-more" style="background:rgba(0,0,0,.4);font-size:.85rem">▶ 视频</div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🌊 湖边天幕</span>
-      <span class="activity-tag">🌾 孩子跑草地</span>
-      <span class="activity-tag">🪁 放风筝</span>
+      <span class="act-tag">🌊 湖边天幕</span><span class="act-tag">🌾 孩子跑草地</span><span class="act-tag">🪁 放风筝</span>
     </div>
     <div class="spot-time">⏱ 建议停留 1 小时</div>
   </div>
 
-  <div class="spot">
-    <div class="spot-header">
-      <span class="spot-name">呼和浩特市区</span>
+  <div class="spot" id="s-hhht">
+    <div class="spot-header"><span class="spot-name">呼和浩特市区</span></div>
+    <div class="preview-grid g2" onclick="openGal('hhht')">
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/hhht-1.jpg" loading="lazy" alt="呼市 1"></div>
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/hhht-2.jpg" loading="lazy" alt="呼市 2"></div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🏛 内蒙古博物院</span>
-      <span class="activity-tag">🏘 塞上老街</span>
-      <span class="activity-tag">🍖 尝手把肉</span>
+      <span class="act-tag">🏛 内蒙古博物院</span><span class="act-tag">🏘 塞上老街</span><span class="act-tag">🍖 尝手把肉</span>
     </div>
-    <div class="spot-time">⏱ 下午自由游览</div>
   </div>
 
-  <div class="lodging"><span class="lodging-icon">🏨</span>住宿：呼和浩特</div>
+  <div class="lodging"><span>🏨</span>住宿：呼和浩特</div>
 </section>
 
 <!-- ─── Day 4 ─── -->
 <section class="day-section" id="day4">
   <div class="day-header">
     <div class="day-num">04</div>
-    <div>
-      <div class="day-route-label">呼和浩特 → 大同</div>
-      <span class="day-drive">约 3 小时车程</span>
-    </div>
+    <div><div class="day-route-label">呼和浩特 → 大同</div><span class="day-drive">约 3 小时车程</span></div>
   </div>
   <p class="day-sub">千年石窟 + 古城墙，文化最浓的一天</p>
 
-  <div class="spot">
+  <div class="spot" id="s-yungang">
     <div class="spot-header">
       <span class="spot-name">云冈石窟</span>
-      <span class="spot-star">⭐ 世界文化遗产</span>
+      <span class="badge badge-star">⭐ 世界文化遗产</span>
     </div>
-    <div class="spot-photos p1">
-      <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/day4-yungang-1.jpg" alt="云冈石窟" style="aspect-ratio:16/9">
+    <div class="preview-grid g3" onclick="openGal('yungang')">
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-1.jpg" loading="lazy" alt="云冈 1"></div>
+      <div class="pthumb portrait"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-2.jpg" loading="lazy" alt="云冈 2"></div>
+      <div class="pthumb portrait">
+        <img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yungang-3.jpg" loading="lazy" alt="云冈 3">
+        <div class="pthumb-more" style="background:rgba(0,0,0,.4);font-size:.85rem">+1 视频</div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🗿 参观石窟佛像</span>
-      <span class="activity-tag">📷 亲子合影</span>
+      <span class="act-tag">🗿 参观石窟佛像</span><span class="act-tag">📷 亲子合影</span>
     </div>
   </div>
 
-  <div class="spot">
-    <div class="spot-header">
-      <span class="spot-name">大同古城</span>
-    </div>
-    <div class="spot-photos p1">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Datong_city_wall.jpg" alt="大同古城" onerror="this.style.display='none'" style="aspect-ratio:16/9">
+  <div class="spot" id="s-datong">
+    <div class="spot-header"><span class="spot-name">大同古城</span></div>
+    <div class="preview-grid g2" onclick="openGal('datong')">
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/datong-1.jpg" loading="lazy" alt="大同 1"></div>
+      <div class="pthumb"><img src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/datong-2.jpg" loading="lazy" alt="大同 2"></div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🏯 古城墙漫步</span>
-      <span class="activity-tag">🍜 品尝大同刀削面</span>
+      <span class="act-tag">🏯 古城墙漫步</span><span class="act-tag">🍜 大同刀削面</span>
     </div>
   </div>
 
-  <div class="lodging"><span class="lodging-icon">🏨</span>住宿：大同古城附近</div>
+  <div class="lodging"><span>🏨</span>住宿：大同古城附近</div>
 </section>
 
 <!-- ─── Day 5 ─── -->
 <section class="day-section" id="day5">
   <div class="day-header">
     <div class="day-num">05</div>
-    <div>
-      <div class="day-route-label">大同 → 应县 → 北京</div>
-      <span class="day-drive">约 5 小时车程（含停留）</span>
-    </div>
+    <div><div class="day-route-label">大同 → 应县 → 北京</div><span class="day-drive">约 5 小时（含停留）</span></div>
   </div>
   <p class="day-sub">顺路看千年木塔，轻松返京</p>
 
-  <div class="spot">
-    <div class="spot-header">
-      <span class="spot-name">应县木塔</span>
-    </div>
-    <div class="spot-photos p1">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Yingxian_Wooden_Pagoda.jpg" alt="应县木塔" onerror="this.style.display='none'" style="aspect-ratio:4/3">
+  <div class="spot" id="s-yingxian">
+    <div class="spot-header"><span class="spot-name">应县木塔</span></div>
+    <div class="preview-grid g1" onclick="openGal('yingxian')">
+      <div class="pthumb">
+        <video src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/yingxian-v1.mp4" muted autoplay loop playsinline preload="metadata"></video>
+        <div class="pthumb-play"></div>
+      </div>
     </div>
     <div class="spot-activities">
-      <span class="activity-tag">🏯 世界最高木塔</span>
-      <span class="activity-tag">📸 拍照打卡</span>
+      <span class="act-tag">🏯 世界最高木塔</span><span class="act-tag">📸 拍照打卡</span>
     </div>
     <div class="spot-time">⏱ 建议停留 40 分钟</div>
   </div>
@@ -402,70 +380,211 @@
   <div class="section-title">⛺ 天幕三站总结</div>
   <div class="section-sub">车边轻露营，不住帐篷，全程适合 5 岁小朋友</div>
   <div class="camp-cards">
-    <div class="camp-card">
-      <div class="camp-card-day">Day 1</div>
-      <div class="camp-card-name">草原天路</div>
-      <div class="camp-card-desc">草原公路边停车搭天幕，风车为背景，孩子可以在草地自由奔跑</div>
-    </div>
-    <div class="camp-card">
-      <div class="camp-card-day">Day 2</div>
-      <div class="camp-card-name">乌兰哈达火山</div>
-      <div class="camp-card-desc">火山脚下的天幕午餐，独特的火山地貌，还可以捡火山石做纪念</div>
-    </div>
-    <div class="camp-card">
-      <div class="camp-card-day">Day 3</div>
-      <div class="camp-card-name">察尔湖</div>
-      <div class="camp-card-desc">湖边草地天幕，视野开阔，放风筝、戏水、看蓝天白云</div>
-    </div>
+    <div class="camp-card"><div class="camp-card-day">Day 1</div><div class="camp-card-name">草原天路</div><div class="camp-card-desc">草原公路边停车搭天幕，风车为背景，孩子可以在草地自由奔跑</div></div>
+    <div class="camp-card"><div class="camp-card-day">Day 2</div><div class="camp-card-name">乌兰哈达火山</div><div class="camp-card-desc">火山脚下的天幕午餐，独特的火山地貌，还可以捡火山石做纪念</div></div>
+    <div class="camp-card"><div class="camp-card-day">Day 3</div><div class="camp-card-name">察尔湖</div><div class="camp-card-desc">湖边草地天幕，视野开阔，放风筝、戏水、看蓝天白云</div></div>
   </div>
 </section>
 
-<!-- ─── 装备建议 ─── -->
+<!-- ─── 装备 ─── -->
 <section class="gear-section">
   <div class="section-title">🎒 出行准备</div>
-  <div style="margin-top:6px;margin-bottom:0;font-size:0.85rem;color:var(--muted)">五一内蒙古白天凉爽，早晚温差大，记得带防风层</div>
+  <div style="font-size:.85rem;color:var(--muted);margin-top:6px">五一内蒙古白天凉爽，早晚温差大，记得带防风层</div>
   <div class="temp-bar">
-    <div class="temp-card temp-day">
-      <div class="temp-val">15–20°</div>
-      <div class="temp-lbl">白天气温</div>
-    </div>
-    <div class="temp-card temp-night">
-      <div class="temp-val">5–8°</div>
-      <div class="temp-lbl">夜间气温</div>
-    </div>
+    <div class="temp-card temp-day"><div class="val">15–20°</div><div class="lbl">白天气温</div></div>
+    <div class="temp-card temp-night"><div class="val">5–8°</div><div class="lbl">夜间气温</div></div>
   </div>
   <div class="gear-grid">
-    <div class="gear-group">
-      <div class="gear-group-title">天幕露营</div>
-      <ul class="gear-list">
-        <li>天幕 + 地钉地绳</li>
-        <li>地垫 / 野餐垫</li>
-        <li>折叠椅 × 2</li>
-        <li>便携小桌</li>
-      </ul>
-    </div>
-    <div class="gear-group">
-      <div class="gear-group-title">衣物保暖</div>
-      <ul class="gear-list">
-        <li>防风冲锋衣</li>
-        <li>抓绒中间层</li>
-        <li>儿童防晒服</li>
-        <li>备用换洗衣物</li>
-      </ul>
-    </div>
-    <div class="gear-group">
-      <div class="gear-group-title">儿童必备</div>
-      <ul class="gear-list">
-        <li>风筝（察尔湖必备）</li>
-        <li>小桶铲子（沙地玩）</li>
-        <li>防晒霜 SPF50+</li>
-        <li>儿童驱虫贴</li>
-      </ul>
-    </div>
+    <div class="gear-group"><div class="gear-group-title">天幕露营</div><ul class="gear-list"><li>天幕 + 地钉地绳</li><li>地垫 / 野餐垫</li><li>折叠椅 × 2</li><li>便携小桌</li></ul></div>
+    <div class="gear-group"><div class="gear-group-title">衣物保暖</div><ul class="gear-list"><li>防风冲锋衣</li><li>抓绒中间层</li><li>儿童防晒服</li><li>备用换洗衣物</li></ul></div>
+    <div class="gear-group"><div class="gear-group-title">儿童必备</div><ul class="gear-list"><li>风筝（察尔湖必备）</li><li>小桶铲子</li><li>防晒霜 SPF50+</li><li>儿童驱虫贴</li></ul></div>
   </div>
 </section>
 
 <footer>evan ♥ wendy → minho · 2025 五一</footer>
 
+<!-- ─── Gallery Modal ─── -->
+<div id="gallery">
+  <div class="gal-topbar">
+    <div class="gal-title" id="galTitle"></div>
+    <div class="gal-tabs" id="galTabs"></div>
+    <button class="gal-close" onclick="closeGal()">✕</button>
+  </div>
+  <div class="gal-content">
+    <button class="gal-nav gal-prev" onclick="galNav(-1)">‹</button>
+    <img id="galMedia" src="" alt="" style="display:none">
+    <video id="galVideo" controls playsinline style="max-width:100%;max-height:100%;display:none"></video>
+    <button class="gal-nav gal-next" onclick="galNav(1)">›</button>
+    <div class="gal-counter" id="galCounter"></div>
+  </div>
+  <div class="gal-strip" id="galStrip"></div>
+</div>
+
+<script>
+const COS = 'https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/';
+
+const SPOTS = {
+  tianlu:   { name:'草原天路',    photos:['tianlu-1.jpg','tianlu-2.jpg','tianlu-3.jpg','tianlu-4.jpg'], videos:['zhangjiakou-v1.mp4'] },
+  laoli:    { name:'涝利海',      photos:[], videos:['laoli-v1.mp4'] },
+  volcano:  { name:'乌兰哈达火山', photos:['volcano-1.jpg','volcano-2.jpg','volcano-3.jpg','volcano-4.jpg'], videos:[] },
+  hongshi:  { name:'红石崖',      photos:[], videos:['hongshi-v1.mp4'] },
+  wulancha: { name:'乌兰察布市区', photos:[], videos:['wulancha-v1.mp4'] },
+  chaer:    { name:'察尔湖',      photos:['chaer-1.jpg','chaer-2.jpg'], videos:['chaer-v1.mp4'] },
+  hhht:     { name:'呼和浩特市区', photos:['hhht-1.jpg','hhht-2.jpg'], videos:[] },
+  yungang:  { name:'云冈石窟',    photos:['yungang-1.jpg','yungang-2.jpg','yungang-3.jpg'], videos:['yungang-v1.mp4'] },
+  datong:   { name:'大同古城',    photos:['datong-1.jpg','datong-2.jpg'], videos:[] },
+  yingxian: { name:'应县木塔',    photos:[], videos:['yingxian-v1.mp4'] },
+};
+
+let galSpot = null, galTab = 'photo', galIdx = 0;
+
+function getItems(spotId, tab) {
+  const s = SPOTS[spotId];
+  if (tab === 'photo') return s.photos.map(p => ({ type:'photo', src: COS + p }));
+  return s.videos.map(v => ({ type:'video', src: COS + v }));
+}
+
+function openGal(spotId, tab, idx) {
+  galSpot = spotId;
+  const s = SPOTS[spotId];
+  galTab = (tab !== undefined) ? tab : (s.photos.length ? 'photo' : 'video');
+  galIdx = idx || 0;
+
+  document.getElementById('galTitle').textContent = s.name;
+
+  const tabsEl = document.getElementById('galTabs');
+  tabsEl.innerHTML = '';
+  if (s.photos.length) {
+    const b = document.createElement('button');
+    b.className = 'gal-tab' + (galTab==='photo' ? ' active' : '');
+    b.textContent = `🖼 图片 (${s.photos.length})`;
+    b.onclick = () => switchGalTab('photo');
+    tabsEl.appendChild(b);
+  }
+  if (s.videos.length) {
+    const b = document.createElement('button');
+    b.className = 'gal-tab' + (galTab==='video' ? ' active' : '');
+    b.textContent = `🎬 视频 (${s.videos.length})`;
+    b.onclick = () => switchGalTab('video');
+    tabsEl.appendChild(b);
+  }
+
+  renderGal();
+  document.getElementById('gallery').classList.add('open');
+}
+
+function openGalSingle(src, title) {
+  document.getElementById('galTitle').textContent = title;
+  document.getElementById('galTabs').innerHTML = '';
+  const img = document.getElementById('galMedia');
+  const vid = document.getElementById('galVideo');
+  img.src = src; img.style.display = 'block';
+  vid.style.display = 'none'; vid.pause();
+  document.getElementById('galCounter').textContent = '';
+  document.getElementById('galStrip').innerHTML = '';
+  galSpot = null;
+  document.getElementById('gallery').classList.add('open');
+}
+
+function switchGalTab(tab) {
+  galTab = tab; galIdx = 0;
+  document.querySelectorAll('.gal-tab').forEach(t => {
+    t.classList.toggle('active', (tab==='photo' && t.textContent.includes('图片')) || (tab==='video' && t.textContent.includes('视频')));
+  });
+  renderGal();
+}
+
+function renderGal() {
+  if (!galSpot) return;
+  const items = getItems(galSpot, galTab);
+  if (!items.length) return;
+  const item = items[galIdx];
+
+  const img = document.getElementById('galMedia');
+  const vid = document.getElementById('galVideo');
+
+  if (item.type === 'video') {
+    img.style.display = 'none';
+    vid.style.display = 'block';
+    if (vid.src !== item.src) { vid.src = item.src; vid.load(); }
+    vid.play().catch(() => {});
+  } else {
+    vid.pause(); vid.style.display = 'none';
+    img.style.display = 'block';
+    img.src = item.src;
+  }
+
+  document.getElementById('galCounter').textContent = `${galIdx + 1} / ${items.length}`;
+
+  const strip = document.getElementById('galStrip');
+  strip.innerHTML = items.map((it, i) => {
+    const active = i === galIdx ? ' active' : '';
+    if (it.type === 'video') {
+      return `<div class="gal-strip-item${active}" onclick="galGoTo(${i})"><video src="${it.src}" muted preload="metadata"></video></div>`;
+    }
+    return `<div class="gal-strip-item${active}" onclick="galGoTo(${i})"><img src="${it.src}" loading="lazy"></div>`;
+  }).join('');
+
+  // scroll active thumb into view
+  const activeEl = strip.children[galIdx];
+  if (activeEl) activeEl.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+}
+
+function galGoTo(i) { galIdx = i; renderGal(); }
+
+function galNav(dir) {
+  if (!galSpot) return;
+  const items = getItems(galSpot, galTab);
+  const next = galIdx + dir;
+  if (next >= items.length) {
+    const s = SPOTS[galSpot];
+    if (galTab === 'photo' && s.videos.length) { switchGalTab('video'); return; }
+    galIdx = 0; renderGal();
+  } else if (next < 0) {
+    const s = SPOTS[galSpot];
+    if (galTab === 'video' && s.photos.length) {
+      galTab = 'photo';
+      document.querySelectorAll('.gal-tab').forEach(t => t.classList.toggle('active', t.textContent.includes('图片')));
+      galIdx = getItems(galSpot, 'photo').length - 1; renderGal(); return;
+    }
+    galIdx = items.length - 1; renderGal();
+  } else {
+    galIdx = next; renderGal();
+  }
+}
+
+function closeGal() {
+  const vid = document.getElementById('galVideo');
+  vid.pause(); vid.src = '';
+  document.getElementById('gallery').classList.remove('open');
+}
+
+// 点击背景关闭
+document.getElementById('gallery').addEventListener('click', e => {
+  if (e.target === document.getElementById('gallery')) closeGal();
+});
+
+// 键盘
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('gallery').classList.contains('open')) return;
+  if (e.key === 'Escape') closeGal();
+  if (e.key === 'ArrowRight') galNav(1);
+  if (e.key === 'ArrowLeft') galNav(-1);
+  e.stopImmediatePropagation();
+}, true);
+
+// 触摸滑动
+(function() {
+  let tx = 0, ty = 0;
+  const g = document.getElementById('gallery');
+  g.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  g.addEventListener('touchend', e => {
+    if (!g.classList.contains('open')) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    const dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) galNav(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
