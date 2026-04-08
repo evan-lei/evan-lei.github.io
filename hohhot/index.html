@@ -618,6 +618,7 @@ document.addEventListener('keydown', e => {
       const video = btn.previousElementSibling;
       if (!video || video.tagName !== 'VIDEO') return;
       if (video.paused) {
+        video.muted = false;
         video.play();
         btn.style.opacity = '0';
         video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
