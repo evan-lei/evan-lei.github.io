@@ -41,6 +41,12 @@ evan-lei.github.io/
 └── camping/                            # 跟着爸爸去露营
     ├── index.html
     └── source/                         # 营地图片/视频素材
+└── hohhot/                             # 跟着爸爸去呼市
+    ├── index.html
+    └── source/
+└── tangshan/                           # 唐山轻松游
+    ├── index.html
+    └── source/
 ```
 
 ## 新增项目

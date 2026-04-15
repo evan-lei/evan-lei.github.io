@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>唐山轻松游 · evan ♥ wendy → minho</title>
+<style>
+  :root {
+    --bg: #0f1a1c;
+    --surface: #162022;
+    --surface2: #1e2d30;
+    --border: rgba(255,255,255,.08);
+    --text: #e8f0f2;
+    --text2: #8fa8ae;
+    --accent: #4db8a0;
+    --amber: #f0a050;
+    --night: #7b9fe0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'PingFang SC', sans-serif; min-height: 100vh; }
+
+  /* ─── Hero ─── */
+  .hero { padding: 48px 20px 32px; max-width: 680px; margin: 0 auto; }
+  .hero-eyebrow { font-size: .78rem; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+  .hero-title { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .hero-sub { font-size: .95rem; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: .8rem; color: var(--text2); }
+
+  /* ─── Timeline ─── */
+  .timeline { max-width: 680px; margin: 0 auto; padding: 0 20px 60px; }
+  .time-block { margin-bottom: 32px; }
+  .time-label { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .time-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .time-dot.noon  { background: rgba(240,160,80,.15); border: 1px solid rgba(240,160,80,.3); }
+  .time-dot.aft   { background: rgba(77,184,160,.15); border: 1px solid rgba(77,184,160,.3); }
+  .time-dot.night { background: rgba(123,159,224,.15); border: 1px solid rgba(123,159,224,.3); }
+  .time-title { font-size: 1.05rem; font-weight: 600; }
+  .time-desc  { font-size: .82rem; color: var(--text2); margin-top: 2px; }
+
+  /* ─── Spot card ─── */
+  .spot { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+  .spot-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .spot-name { font-size: 1rem; font-weight: 600; }
+  .badge { font-size: .72rem; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .badge-star  { background: rgba(240,160,80,.15); color: var(--amber); border: 1px solid rgba(240,160,80,.3); }
+  .badge-green { background: rgba(77,184,160,.15); color: var(--accent); border: 1px solid rgba(77,184,160,.3); }
+  .badge-night { background: rgba(123,159,224,.15); color: var(--night); border: 1px solid rgba(123,159,224,.3); }
+
+  /* ─── Preview grid ─── */
+  .preview-grid { display: grid; gap: 6px; border-radius: 10px; overflow: hidden; cursor: pointer; margin-bottom: 12px; }
+  .preview-grid.g1 { grid-template-columns: 1fr; }
+  .preview-grid.g2 { grid-template-columns: 1fr 1fr; }
+  .preview-grid.g4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  .preview-grid.g3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  .preview-grid.g3 .pthumb:first-child { grid-row: 1/3; }
+  .preview-grid.g2-1b { grid-template-columns: 1fr 1fr; }
+  .preview-grid.g2-1b .pthumb:last-child { grid-column: 1/3; }
+
+  .pthumb { overflow: hidden; position: relative; aspect-ratio: 3/4; }
+  .pthumb.land { aspect-ratio: 4/3; }
+  .pthumb img, .pthumb video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+  .preview-grid:hover .pthumb img,
+  .preview-grid:hover .pthumb video { transform: scale(1.04); }
+  .pthumb-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity .2s; }
+  .pthumb-play::after { content: ''; width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,.88); box-shadow: 0 2px 12px rgba(0,0,0,.35); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23222'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); background-size: 26px; background-repeat: no-repeat; background-position: 58% center; }
+  .pthumb-more { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; font-size: .9rem; color: #fff; font-weight: 600; }
+
+  /* ─── Activity tags ─── */
+  .act-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .act-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 3px 10px; font-size: .8rem; color: var(--text2); }
+
+  /* ─── Tips ─── */
+  .tip { font-size: .82rem; color: var(--text2); line-height: 1.6; padding: 10px 12px; background: var(--surface2); border-radius: 10px; border-left: 3px solid var(--accent); }
+  .tip + .tip { margin-top: 8px; }
+
+  /* ─── Must-eat list ─── */
+  .must-eat { list-style: none; margin: 8px 0; }
+  .must-eat li { font-size: .85rem; color: var(--text2); padding: 3px 0; }
+  .must-eat li::before { content: '▸ '; color: var(--amber); }
+
+  /* ─── Hotel suggestion ─── */
+  .hotel-box { margin-top: 10px; padding: 10px 12px; background: var(--surface2); border-radius: 10px; }
+  .hotel-box p { font-size: .82rem; color: var(--text2); line-height: 1.8; }
+  .hotel-box strong { color: var(--text); }
+
+  /* ─── Gallery modal ─── */
+  #gallery { display:none; position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:9999; flex-direction:column; align-items:center; justify-content:center; }
+  #gallery.open { display:flex; }
+  .gal-header { position:absolute; top:0; left:0; right:0; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; background:linear-gradient(to bottom,rgba(0,0,0,.7),transparent); }
+  .gal-title { font-size:.9rem; color:#fff; }
+  .gal-close { background:none; border:none; color:#fff; font-size:1.6rem; cursor:pointer; padding:4px 10px; }
+  .gal-body { width:100%; max-width:760px; flex:1; display:flex; align-items:center; justify-content:center; padding:56px 16px 80px; }
+  .gal-main-img { max-width:100%; max-height:100%; border-radius:8px; object-fit:contain; display:block; }
+  .gal-main-video { max-width:100%; max-height:100%; border-radius:8px; display:block; }
+  .gal-vid-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:opacity .2s; }
+  .gal-vid-play::after { content:''; width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,.88); box-shadow:0 2px 20px rgba(0,0,0,.5); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23222'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); background-size:32px; background-repeat:no-repeat; background-position:58% center; }
+  .gal-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.12); border:none; color:#fff; font-size:1.8rem; padding:8px 14px; border-radius:50%; cursor:pointer; }
+  .gal-nav.prev { left:12px; }
+  .gal-nav.next { right:12px; }
+  .gal-counter { position:absolute; bottom:56px; left:50%; transform:translateX(-50%); font-size:.82rem; color:rgba(255,255,255,.6); }
+  .gal-strip { position:absolute; bottom:0; left:0; right:0; height:52px; display:flex; gap:4px; padding:4px 8px; overflow-x:auto; background:rgba(0,0,0,.6); scrollbar-width:none; }
+  .gal-strip::-webkit-scrollbar { display:none; }
+  .gal-strip-item { flex-shrink:0; width:44px; height:44px; border-radius:6px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:border-color .2s; }
+  .gal-strip-item.active { border-color:var(--accent); }
+  .gal-strip-item img, .gal-strip-item video { width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* ─── Footer ─── */
+  footer { text-align: center; padding: 24px; font-size: .78rem; color: var(--text2); border-top: 1px solid var(--border); max-width: 680px; margin: 0 auto; }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: 1.6rem; }
+    .gal-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Hero ─── -->
+<div class="hero">
+  <div class="hero-eyebrow">Family Day Trip · 唐山</div>
+  <h1 class="hero-title">唐山轻松游</h1>
+  <p class="hero-sub">一餐正食 · 一湖微风 · 一条老街——婚礼前最好的放松节奏</p>
+  <div class="hero-tags">
+    <span class="hero-tag">🍽 本地海鲜</span>
+    <span class="hero-tag">🌿 南湖公园</span>
+    <span class="hero-tag">🏮 河头老街</span>
+    <span class="hero-tag">🚶 全程不赶路</span>
+  </div>
+</div>
+
+<!-- ─── Timeline ─── -->
+<div class="timeline">
+
+  <!-- 中午 -->
+  <div class="time-block">
+    <div class="time-label">
+      <div class="time-dot noon">🍽</div>
+      <div>
+        <div class="time-title">中午 · 本地正餐</div>
+        <div class="time-desc">用餐约 1~1.5 小时</div>
+      </div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-header">
+        <span class="spot-name">锦色小鲜</span>
+        <span class="badge badge-star">🦀 必吃</span>
+        <span class="badge badge-green">本地人常去</span>
+      </div>
+      <div class="preview-grid g1" onclick="openGal('restaurant')">
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/restaurant-1.jpg" loading="lazy" alt="锦色小鲜"></div>
+      </div>
+      <div class="act-tags">
+        <span class="act-tag">🦐 海肠捞饭</span>
+        <span class="act-tag">🐟 黄焖海河汤</span>
+        <span class="act-tag">🥟 鲅鱼水饺</span>
+        <span class="act-tag">🐠 干烧闽东黄鱼</span>
+      </div>
+      <div class="tip">📍 导航：锦色小鲜 · 黄焖河豚 · 鲅鱼水饺（兴源道店）</div>
+    </div>
+  </div>
+
+  <!-- 下午 -->
+  <div class="time-block">
+    <div class="time-label">
+      <div class="time-dot aft">🌿</div>
+      <div>
+        <div class="time-title">下午 · 轻松漫步</div>
+        <div class="time-desc">停留约 45 分钟~1 小时</div>
+      </div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-header">
+        <span class="spot-name">南湖公园</span>
+        <span class="badge badge-green">🌊 开阔湖景</span>
+      </div>
+      <div class="preview-grid g4" onclick="openGal('nanhu')">
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/nanhu-1.jpg" loading="lazy" alt="南湖 1"></div>
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/nanhu-2.jpg" loading="lazy" alt="南湖 2"></div>
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/nanhu-3.jpg" loading="lazy" alt="南湖 3"></div>
+        <div class="pthumb" id="nanhu-more">
+          <img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/nanhu-4.jpg" loading="lazy" alt="南湖 4">
+          <div class="pthumb-more">+1 视频</div>
+        </div>
+      </div>
+      <div class="act-tags">
+        <span class="act-tag">🚶 湖边栈道</span>
+        <span class="act-tag">🌾 草地席坐</span>
+        <span class="act-tag">☕ 带杯咖啡</span>
+        <span class="act-tag">📸 随手拍</span>
+      </div>
+      <div class="tip">📍 停车导航：丹凤朝阳广场</div>
+    </div>
+  </div>
+
+  <!-- 晚上 -->
+  <div class="time-block">
+    <div class="time-label">
+      <div class="time-dot night">🏮</div>
+      <div>
+        <div class="time-title">晚上 · 河头老街</div>
+        <div class="time-desc">建议 18:00 后进入，停留约 1.5~2 小时</div>
+      </div>
+    </div>
+
+    <div class="spot">
+      <div class="spot-header">
+        <span class="spot-name">河头老街</span>
+        <span class="badge badge-night">🌙 夜景更美</span>
+      </div>
+      <div class="preview-grid g4" onclick="openGal('laojie')">
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/laojie-1.jpg" loading="lazy" alt="老街 1"></div>
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/laojie-2.jpg" loading="lazy" alt="老街 2"></div>
+        <div class="pthumb"><img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/laojie-3.jpg" loading="lazy" alt="老街 3"></div>
+        <div class="pthumb" id="laojie-more">
+          <img src="https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/laojie-4.jpg" loading="lazy" alt="老街 4">
+          <div class="pthumb-more">+1 视频</div>
+        </div>
+      </div>
+      <div class="act-tags">
+        <span class="act-tag">🍢 烤串炸串</span>
+        <span class="act-tag">🍡 糖葫芦</span>
+        <span class="act-tag">🦑 铁板鱿鱼</span>
+        <span class="act-tag">📷 仿古夜景</span>
+      </div>
+      <div class="tip">💡 小吃为主，建议少量多样，不要提前吃太饱</div>
+    </div>
+
+    <div class="hotel-box">
+      <p>🏨 <strong>住宿参考</strong>（均在老街附近）</p>
+      <p>唐山安然酒店（河头老街店）</p>
+      <p>空中花园设计师酒店（河头老街店）</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Gallery Modal ─── -->
+<div id="gallery">
+  <div class="gal-header">
+    <span class="gal-title" id="galTitle"></span>
+    <button class="gal-close" onclick="closeGal()">✕</button>
+  </div>
+  <div class="gal-body" id="galBody"></div>
+  <button class="gal-nav prev" onclick="galNav(-1)">‹</button>
+  <button class="gal-nav next" onclick="galNav(1)">›</button>
+  <div class="gal-counter" id="galCounter"></div>
+  <div class="gal-strip" id="galStrip"></div>
+</div>
+
+<footer>evan ♥ wendy → minho · 唐山轻松游</footer>
+
+<script>
+const COS = 'https://tangshan-1256297898.cos.ap-beijing.myqcloud.com/';
+
+const SPOTS = {
+  restaurant: { name:'锦色小鲜', photos:['restaurant-1.jpg'], videos:[] },
+  nanhu:      { name:'南湖公园',  photos:['nanhu-1.jpg','nanhu-2.jpg','nanhu-3.jpg','nanhu-4.jpg'], videos:['nanhu-v1.mp4'] },
+  laojie:     { name:'河头老街',  photos:['laojie-1.jpg','laojie-2.jpg','laojie-3.jpg','laojie-4.jpg'], videos:['laojie-v1.mp4'] },
+};
+
+let galSpot = null, galTab = 'photo', galIdx = 0;
+
+function getItems(spotId, tab) {
+  const s = SPOTS[spotId];
+  if (tab === 'photo') return s.photos.map(p => ({ type:'photo', src: COS + p }));
+  return s.videos.map(v => ({ type:'video', src: COS + v }));
+}
+
+function openGal(spotId, tab, idx) {
+  galSpot = spotId; galTab = tab || 'photo'; galIdx = idx || 0;
+  document.getElementById('gallery').classList.add('open');
+  renderGal();
+}
+
+function closeGal() {
+  const vid = document.querySelector('#galBody video');
+  if (vid) vid.pause();
+  document.getElementById('gallery').classList.remove('open');
+}
+
+function renderGal() {
+  const items = getItems(galSpot, galTab);
+  const item = items[galIdx];
+  const s = SPOTS[galSpot];
+  document.getElementById('galTitle').textContent = s.name;
+  document.getElementById('galCounter').textContent = `${galIdx + 1} / ${items.length}`;
+
+  const body = document.getElementById('galBody');
+  body.innerHTML = '';
+
+  if (item.type === 'photo') {
+    const img = document.createElement('img');
+    img.className = 'gal-main-img'; img.src = item.src;
+    body.appendChild(img);
+  } else {
+    const vid = document.createElement('video');
+    vid.className = 'gal-main-video'; vid.controls = true; vid.playsinline = true; vid.src = item.src;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;';
+    wrap.appendChild(vid);
+    const btn = document.createElement('div');
+    btn.className = 'gal-vid-play';
+    wrap.appendChild(btn);
+    btn.addEventListener('click', () => { vid.muted = false; vid.play(); });
+    vid.addEventListener('play', () => { btn.style.opacity='0'; btn.style.pointerEvents='none'; });
+    vid.addEventListener('pause', () => { btn.style.opacity=''; btn.style.pointerEvents=''; });
+    vid.addEventListener('ended', () => { btn.style.opacity=''; btn.style.pointerEvents=''; });
+    vid.addEventListener('loadedmetadata', () => { if (vid.paused) vid.currentTime = 0.001; });
+    body.appendChild(wrap);
+  }
+
+  const strip = document.getElementById('galStrip');
+  strip.innerHTML = items.map((it, i) => {
+    const active = i === galIdx ? ' active' : '';
+    if (it.type === 'video') return `<div class="gal-strip-item${active}" onclick="galGoTo(${i})"><video src="${it.src}" muted preload="metadata"></video></div>`;
+    return `<div class="gal-strip-item${active}" onclick="galGoTo(${i})"><img src="${it.src}" loading="lazy"></div>`;
+  }).join('');
+  strip.querySelectorAll('.active')[0]?.scrollIntoView({ inline:'nearest' });
+}
+
+function galGoTo(idx) { galIdx = idx; renderGal(); }
+
+function galNav(dir) {
+  const items = getItems(galSpot, galTab);
+  const s = SPOTS[galSpot];
+  const newIdx = galIdx + dir;
+  if (newIdx >= 0 && newIdx < items.length) { galIdx = newIdx; renderGal(); return; }
+  if (newIdx >= items.length && galTab === 'photo' && s.videos.length > 0) { galTab = 'video'; galIdx = 0; renderGal(); return; }
+  if (newIdx < 0 && galTab === 'video' && s.photos.length > 0) { galTab = 'photo'; galIdx = s.photos.length - 1; renderGal(); return; }
+}
+
+// 键盘 & 背景关闭
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('gallery').classList.contains('open')) return;
+  if (e.key === 'Escape') closeGal();
+  if (e.key === 'ArrowLeft') galNav(-1);
+  if (e.key === 'ArrowRight') galNav(1);
+});
+document.getElementById('gallery').addEventListener('click', e => { if (e.target === document.getElementById('gallery')) closeGal(); });
+
+// 触摸滑动
+let tx = 0, ty = 0;
+const g = document.getElementById('gallery');
+g.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+g.addEventListener('touchend', e => {
+  if (!g.classList.contains('open')) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) galNav(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+// 强制渲染预览视频第一帧
+document.querySelectorAll('.preview-grid video').forEach(vid => {
+  vid.addEventListener('loadedmetadata', () => { if (vid.paused) vid.currentTime = 0.001; });
+});
+
+// 点击播放按钮
+document.querySelectorAll('.pthumb-play').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const video = btn.previousElementSibling;
+    if (!video || video.tagName !== 'VIDEO') return;
+    if (video.paused) {
+      video.muted = false; video.play();
+      btn.style.opacity = '0';
+      video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
+      video.addEventListener('ended', () => { btn.style.opacity = ''; video.load(); }, { once: true });
+    } else { video.pause(); }
+  });
+});
+</script>
+</body>
+</html>
