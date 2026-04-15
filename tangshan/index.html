@@ -108,6 +108,12 @@
   /* ─── Footer ─── */
   footer { text-align: center; padding: 24px; font-size: .78rem; color: var(--text2); border-top: 1px solid var(--border); max-width: 680px; margin: 0 auto; }
 
+  /* ─── Copy ─── */
+  .copy-text { cursor: pointer; border-bottom: 1px dashed var(--accent); color: var(--accent); white-space: nowrap; transition: opacity .15s; }
+  .copy-text:hover { opacity: .75; }
+  .copy-icon { margin-left: 4px; font-size: .8em; opacity: .6; }
+  .copy-toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 7px 18px; border-radius: 20px; font-size: .82rem; pointer-events: none; opacity: 0; transition: opacity .2s; z-index: 9999; }
+
   @media (max-width: 480px) {
     .hero-title { font-size: 1.6rem; }
     .gal-nav { display: none; }
@@ -157,7 +163,7 @@
         <span class="act-tag">🥟 鲅鱼水饺</span>
         <span class="act-tag">🐠 干烧闽东黄鱼</span>
       </div>
-      <div class="tip">📍 导航：锦色小鲜 · 黄焖河豚 · 鲅鱼水饺（兴源道店）</div>
+      <div class="tip">📍 导航：<span class="copy-text" data-copy="锦色小鲜·黄焖河豚·鲅鱼水饺(兴源道店)">锦色小鲜 · 黄焖河豚 · 鲅鱼水饺（兴源道店）<span class="copy-icon">⎘</span></span></div>
     </div>
   </div>
 
@@ -191,7 +197,7 @@
         <span class="act-tag">☕ 带杯咖啡</span>
         <span class="act-tag">📸 随手拍</span>
       </div>
-      <div class="tip">📍 停车导航：丹凤朝阳广场</div>
+      <div class="tip">📍 停车导航：<span class="copy-text" data-copy="丹凤朝阳广场">丹凤朝阳广场<span class="copy-icon">⎘</span></span></div>
     </div>
   </div>
 
@@ -230,8 +236,8 @@
 
     <div class="hotel-box">
       <p>🏨 <strong>住宿参考</strong>（均在老街附近）</p>
-      <p>唐山安然酒店（河头老街店）</p>
-      <p>空中花园设计师酒店（河头老街店）</p>
+      <p><span class="copy-text" data-copy="唐山安然酒店(河头老街店)">唐山安然酒店（河头老街店）<span class="copy-icon">⎘</span></span></p>
+      <p><span class="copy-text" data-copy="空中花园设计师酒店(河头老街店)">空中花园设计师酒店（河头老街店）<span class="copy-icon">⎘</span></span></p>
     </div>
   </div>
 
@@ -369,6 +375,21 @@ document.querySelectorAll('.pthumb-play').forEach(btn => {
       video.addEventListener('pause', () => { btn.style.opacity = ''; }, { once: true });
       video.addEventListener('ended', () => { btn.style.opacity = ''; video.load(); }, { once: true });
     } else { video.pause(); }
+  });
+});
+// 点击复制
+const toast = document.createElement('div');
+toast.className = 'copy-toast';
+toast.textContent = '已复制 ✓';
+document.body.appendChild(toast);
+let toastTimer;
+document.querySelectorAll('.copy-text').forEach(el => {
+  el.addEventListener('click', () => {
+    navigator.clipboard.writeText(el.dataset.copy).then(() => {
+      clearTimeout(toastTimer);
+      toast.style.opacity = '1';
+      toastTimer = setTimeout(() => { toast.style.opacity = '0'; }, 1800);
+    });
   });
 });
 </script>
