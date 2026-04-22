@@ -53,6 +53,8 @@ description: Manage evan-lei's personal GitHub Pages site (evan-lei.github.io). 
     └── index.html
 ```
 
+**独立仓库（勿塞进本目录）**：与 `jiufu-fishing` 同级，例如工程笔记 **`/Users/user/Documents/harness-engineering-notes`** → GitHub `evan-lei/harness-engineering-notes`。
+
 ---
 
 ## 推送到 GitHub
