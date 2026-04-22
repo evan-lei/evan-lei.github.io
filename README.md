@@ -20,6 +20,8 @@
 | 跟着爸爸去沙漠 | `desert/` | [evan-lei.github.io/desert/](https://evan-lei.github.io/desert/) | 北京出发，翁牛特旗沙漠 3 天 2 夜亲子探险 🏜️ |
 | 跟着爸爸去露营 | `camping/` | [evan-lei.github.io/camping/](https://evan-lei.github.io/camping/) | 北京周边露营地推荐，含路线、费用、图片和视频 ⛺ |
 | 跟着爸爸去呼市 | `hohhot/` | [evan-lei.github.io/hohhot/](https://evan-lei.github.io/hohhot/) | 五一5天亲子自驾，北京→张家口→乌兰察布→呼和浩特→大同，天幕轻露营三站 🏔️ |
+| 唐山轻松游 | `tangshan/` | [evan-lei.github.io/tangshan/](https://evan-lei.github.io/tangshan/) | 一日轻松行程：本地正餐、南湖公园、河头老街 🏮 |
+| Harness Engineering 笔记 | `academic/` | [evan-lei.github.io/academic/](https://evan-lei.github.io/academic/) | 客户端 AI 辅助开发工程实践长文（可单独建库发布）📐 |
 
 ---
 
@@ -38,15 +40,19 @@ evan-lei.github.io/
 │   └── index.html
 ├── desert/                             # 跟着爸爸去沙漠
 │   └── index.html
-└── camping/                            # 跟着爸爸去露营
+├── camping/                            # 跟着爸爸去露营
+│   ├── index.html
+│   └── source/                         # 营地图片/视频素材
+├── hohhot/                             # 跟着爸爸去呼市
+│   ├── index.html
+│   └── source/
+├── tangshan/                           # 唐山轻松游
+│   ├── index.html
+│   └── source/
+└── academic/                           # 工程笔记（Harness 等）
     ├── index.html
-    └── source/                         # 营地图片/视频素材
-└── hohhot/                             # 跟着爸爸去呼市
-    ├── index.html
-    └── source/
-└── tangshan/                           # 唐山轻松游
-    ├── index.html
-    └── source/
+    ├── README.md                       # 独立仓库发布说明
+    └── 客户端Harness Engineering 使用探索.md
 ```
 
 ## 新增项目
