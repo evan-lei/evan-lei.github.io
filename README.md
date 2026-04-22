@@ -21,7 +21,8 @@
 | 跟着爸爸去露营 | `camping/` | [evan-lei.github.io/camping/](https://evan-lei.github.io/camping/) | 北京周边露营地推荐，含路线、费用、图片和视频 ⛺ |
 | 跟着爸爸去呼市 | `hohhot/` | [evan-lei.github.io/hohhot/](https://evan-lei.github.io/hohhot/) | 五一5天亲子自驾，北京→张家口→乌兰察布→呼和浩特→大同，天幕轻露营三站 🏔️ |
 | 唐山轻松游 | `tangshan/` | [evan-lei.github.io/tangshan/](https://evan-lei.github.io/tangshan/) | 一日轻松行程：本地正餐、南湖公园、河头老街 🏮 |
-| Harness Engineering 笔记 | `academic/` | [evan-lei.github.io/academic/](https://evan-lei.github.io/academic/) | 客户端 AI 辅助开发工程实践长文（可单独建库发布）📐 |
+
+工程笔记（Harness 长文）已迁至独立仓库：[harness-engineering-notes](https://github.com/evan-lei/harness-engineering-notes)（本地目录 `~/Documents/harness-engineering-notes`）。
 
 ---
 
@@ -49,11 +50,9 @@ evan-lei.github.io/
 ├── tangshan/                           # 唐山轻松游
 │   ├── index.html
 │   └── source/
-└── academic/                           # 工程笔记（Harness 等）
-    ├── index.html
-    ├── README.md                       # 独立仓库发布说明
-    └── 客户端Harness Engineering 使用探索.md
 ```
+
+工程笔记见独立仓库 **harness-engineering-notes**（与 jiufu-fishing 同级，不在本目录内）。
 
 ## 新增项目
 
