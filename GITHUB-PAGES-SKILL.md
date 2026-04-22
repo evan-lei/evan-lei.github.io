@@ -57,19 +57,64 @@ description: Manage evan-lei's personal GitHub Pages site (evan-lei.github.io). 
 
 ---
 
-## 推送到 GitHub
+## GitHub Personal Access Token
+
+**当前有效 Token**（明文只存本地 `~/.cursor/skills/evan-lei-github-pages/SKILL.md`，**禁止提交进任何公开 GitHub 仓库**，本文件用占位符）：
+
+```
+<见本地SKILL>
+```
+
+如 token 失效，在此重新生成：`https://github.com/settings/tokens/new`（勾选 `repo` 权限），然后**同步更新本文件和 `~/.cursor/skills/evan-lei-github-pages/SKILL.md`**。
+
+---
+
+## 在 GitHub 上新建远程仓库
+
+**用 GitHub REST API 创建**（不需要安装 `gh`，直接 `curl` 即可）：
+
+```bash
+curl -X POST https://api.github.com/user/repos \
+  -H "Authorization: token <见本地SKILL>" \
+  -H "Accept: application/vnd.github.v3+json" \
+  -d '{"name":"<仓库名>","description":"<描述>","private":false,"auto_init":false}'
+```
+
+返回 HTTP `201` 表示创建成功。
+
+**开启 GitHub Pages**（建库后执行）：
+
+```bash
+curl -X POST https://api.github.com/repos/evan-lei/<仓库名>/pages \
+  -H "Authorization: token <见本地SKILL>" \
+  -H "Accept: application/vnd.github.v3+json" \
+  -d '{"source":{"branch":"main","path":"/"}}'
+```
+
+**首次推送本地代码**：
+
+```bash
+cd /Users/user/Documents/<本地目录>
+git remote add origin https://evan-lei:<见本地SKILL>@github.com/evan-lei/<仓库名>.git
+git push -u origin main
+git remote set-url origin https://github.com/evan-lei/<仓库名>.git  # 推完改回不带 token 的地址
+```
+
+> ⚠️ **踩坑记录**：token 一直存在 SKILL 里，别再说"找不到 token"了。上次建 `harness-engineering-notes` 时忘记查 SKILL，兜了一大圈。**遇到任何 GitHub 操作，先查本文件 token。**
+
+---
+
+## 推送到已有 GitHub 仓库
 
 推送使用 Personal Access Token（HTTPS 方式），token 临时嵌入 remote URL：
 
 ```bash
 cd /Users/user/Documents/evan-lei.github.io
 
-git remote set-url origin https://evan-lei:<YOUR_GITHUB_PAT>@github.com/evan-lei/evan-lei.github.io.git
+git remote set-url origin https://evan-lei:<见本地SKILL>@github.com/evan-lei/evan-lei.github.io.git
 git push origin main
 git remote set-url origin https://github.com/evan-lei/evan-lei.github.io.git
 ```
-
-如 token 失效，在此重新生成：`https://github.com/settings/tokens/new`（勾选 `repo` 权限）。
 
 ---
 
