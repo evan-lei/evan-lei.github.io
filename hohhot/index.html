@@ -157,6 +157,8 @@
   .meal-badge.wu { background:rgba(61,107,74,.25); color:var(--grass-light); }
   .meal-badge.wan { background:rgba(92,155,181,.2); color:var(--sky); }
   .itin-lodge { display:flex; align-items:center; gap:8px; background:rgba(92,155,181,.08); border:1px solid rgba(92,155,181,.2); border-radius:10px; padding:9px 14px; font-size:.84rem; }
+  .itin-map { width:100%; border-radius:10px; object-fit:cover; cursor:zoom-in; transition:transform .3s; display:block; }
+  .itin-map:hover { transform:scale(1.02); }
 
   @media(max-width:600px) {
     .itin-cards { grid-template-columns:1fr; }
@@ -490,6 +492,7 @@
         </div>
       </div>
       <div class="itin-body">
+        <img class="itin-map" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/route-day1.jpg" alt="Day1 路线图" onclick="openGalSingle(this.src,'Day 1 路线图')">
         <div class="itin-spots">
           <span class="itin-spot">🌾 草原天路沿途风景（免费）</span>
         </div>
@@ -514,6 +517,7 @@
         </div>
       </div>
       <div class="itin-body">
+        <img class="itin-map" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/route-day2.jpg" alt="Day2 路线图" onclick="openGalSingle(this.src,'Day 2 路线图')">
         <div class="itin-spots">
           <span class="itin-spot">🌊 察尔湖 — 环湖游（免费）</span>
           <span class="itin-spot">🌿 涝利海 — 草原方舟 · 物生其地咖啡馆（免费）<a href="http://xhslink.com/o/1hztAYbitX1" target="_blank" rel="noopener" style="margin-left:4px">参考↗</a></span>
@@ -539,6 +543,7 @@
         </div>
       </div>
       <div class="itin-body">
+        <img class="itin-map" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/route-day3.jpg" alt="Day3 路线图" onclick="openGalSingle(this.src,'Day 3 路线图')">
         <div class="itin-spots">
           <span class="itin-spot">🌋 乌兰哈达火山（按人收费，可自驾进入）</span>
           <span class="itin-spot">🦕 恐龙公园</span>
@@ -566,6 +571,7 @@
         </div>
       </div>
       <div class="itin-body">
+        <img class="itin-map" src="https://hohhot-1256297898.cos.ap-beijing.myqcloud.com/route-day4.jpg" alt="Day4 路线图" onclick="openGalSingle(this.src,'Day 4 路线图')">
         <div class="itin-spots">
           <span class="itin-spot">🗿 云冈石窟</span>
         </div>
