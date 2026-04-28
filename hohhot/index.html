@@ -134,6 +134,34 @@
 
   footer { text-align:center; padding:32px 20px; font-size:.78rem; color:var(--muted); border-top:1px solid var(--border); }
 
+  /* ─── 详细行程安排 ─── */
+  .itinerary-detail { max-width:960px; margin:0 auto; padding:60px 20px; }
+  .itin-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:16px; margin-top:24px; }
+  .itin-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+  .itin-card-head { background:var(--surface2); padding:14px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+  .itin-day-num { font-size:1.6rem; font-weight:900; color:var(--grass); line-height:1; }
+  .itin-day-num.d2 { color:var(--sky); }
+  .itin-day-num.d3 { color:var(--volcano); }
+  .itin-day-num.d4 { color:var(--steppe); }
+  .itin-km { font-size:.72rem; background:rgba(61,107,74,.25); color:var(--grass-light); border-radius:20px; padding:2px 10px; font-weight:600; margin-left:4px; }
+  .itin-route { font-size:.82rem; color:var(--muted); margin-top:2px; }
+  .itin-body { padding:16px 20px; display:flex; flex-direction:column; gap:12px; }
+  .itin-spots { display:flex; flex-wrap:wrap; gap:6px; }
+  .itin-spot { font-size:.8rem; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:4px 12px; }
+  .itin-spot a { color:var(--sky); text-decoration:none; }
+  .itin-spot a:hover { text-decoration:underline; }
+  .itin-meals { display:flex; flex-direction:column; gap:6px; }
+  .meal-row { display:flex; align-items:baseline; gap:8px; font-size:.84rem; }
+  .meal-badge { font-size:.7rem; font-weight:700; border-radius:6px; padding:1px 7px; flex-shrink:0; }
+  .meal-badge.zao { background:rgba(201,165,80,.2); color:var(--steppe); }
+  .meal-badge.wu { background:rgba(61,107,74,.25); color:var(--grass-light); }
+  .meal-badge.wan { background:rgba(92,155,181,.2); color:var(--sky); }
+  .itin-lodge { display:flex; align-items:center; gap:8px; background:rgba(92,155,181,.08); border:1px solid rgba(92,155,181,.2); border-radius:10px; padding:9px 14px; font-size:.84rem; }
+
+  @media(max-width:600px) {
+    .itin-cards { grid-template-columns:1fr; }
+  }
+
   @media(max-width:600px) {
     .day-num { font-size:2.2rem; }
     .map-row { grid-template-columns:1fr; }
@@ -441,6 +469,114 @@
     <div class="gear-group"><div class="gear-group-title">天幕露营</div><ul class="gear-list"><li>天幕 + 地钉地绳</li><li>地垫 / 野餐垫</li><li>折叠椅 × 2</li><li>便携小桌</li></ul></div>
     <div class="gear-group"><div class="gear-group-title">衣物保暖</div><ul class="gear-list"><li>防风冲锋衣</li><li>抓绒中间层</li><li>儿童防晒服</li><li>备用换洗衣物</li></ul></div>
     <div class="gear-group"><div class="gear-group-title">儿童必备</div><ul class="gear-list"><li>风筝（察尔湖必备）</li><li>小桶铲子</li><li>防晒霜 SPF50+</li><li>儿童驱虫贴</li></ul></div>
+  </div>
+</section>
+
+<!-- ─── 详细行程安排 ─── -->
+<section class="itinerary-detail">
+  <div class="section-title">📋 详细行程安排（确认版）</div>
+  <div class="section-sub">含路线 · 餐饮 · 住宿</div>
+  <div class="itin-cards">
+
+    <!-- Day 1 -->
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="itin-day-num">01</span>
+            <span class="itin-km">300 KM</span>
+          </div>
+          <div class="itin-route">家 → 崇礼区五十家客运站 → 草原天路 → 张家口</div>
+        </div>
+      </div>
+      <div class="itin-body">
+        <div class="itin-spots">
+          <span class="itin-spot">🌾 草原天路沿途风景（免费）</span>
+        </div>
+        <div class="itin-meals">
+          <div class="meal-row"><span class="meal-badge zao">早</span>在家吃</div>
+          <div class="meal-row"><span class="meal-badge wu">午</span>天路露营（面包、泡面、零食）</div>
+          <div class="meal-row"><span class="meal-badge wan">晚</span>天骄功勋冰煮羊（桥东店）</div>
+        </div>
+        <div class="itin-lodge"><span>🏨</span>张家口兴垣维景国际大酒店</div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="itin-day-num d2">02</span>
+            <span class="itin-km" style="background:rgba(92,155,181,.2);color:var(--sky)">200 KM</span>
+          </div>
+          <div class="itin-route">张家口 → 察尔湖 → 涝利海 → 乌兰察布</div>
+        </div>
+      </div>
+      <div class="itin-body">
+        <div class="itin-spots">
+          <span class="itin-spot">🌊 察尔湖 — 环湖游（免费）</span>
+          <span class="itin-spot">🌿 涝利海 — 草原方舟 · 物生其地咖啡馆（免费）<a href="http://xhslink.com/o/1hztAYbitX1" target="_blank" rel="noopener" style="margin-left:4px">参考↗</a></span>
+        </div>
+        <div class="itin-meals">
+          <div class="meal-row"><span class="meal-badge zao">早</span>酒店附近</div>
+          <div class="meal-row"><span class="meal-badge wu">午</span>察尔湖露营（路上备好零食）</div>
+          <div class="meal-row"><span class="meal-badge wan">晚</span>酒店附近</div>
+        </div>
+        <div class="itin-lodge"><span>🏨</span>乌兰察布博源大酒店（霸王河店）</div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="itin-day-num d3">03</span>
+            <span class="itin-km" style="background:rgba(192,82,42,.2);color:#e8825a">300 KM</span>
+          </div>
+          <div class="itin-route">乌兰察布 → 乌兰哈达火山 → 大同</div>
+        </div>
+      </div>
+      <div class="itin-body">
+        <div class="itin-spots">
+          <span class="itin-spot">🌋 乌兰哈达火山（按人收费，可自驾进入）</span>
+          <span class="itin-spot">🦕 恐龙公园</span>
+          <span class="itin-spot">🔥 6 · 5 · 3 号火山</span>
+          <span class="itin-spot">🚀 宇航服拍照<a href="http://xhslink.com/o/4XHa6sc4YZc" target="_blank" rel="noopener" style="margin-left:4px">参考↗</a></span>
+        </div>
+        <div class="itin-meals">
+          <div class="meal-row"><span class="meal-badge zao">早</span>酒店附近</div>
+          <div class="meal-row"><span class="meal-badge wu">午</span>自备干粮</div>
+          <div class="meal-row"><span class="meal-badge wan">晚</span>酒店附近</div>
+        </div>
+        <div class="itin-lodge"><span>🏨</span>大同锦辰轻奢酒店</div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="itin-day-num d4">04</span>
+            <span class="itin-km" style="background:rgba(201,165,80,.2);color:var(--steppe)">400 KM</span>
+          </div>
+          <div class="itin-route">大同 → 云冈石窟 → 北京</div>
+        </div>
+      </div>
+      <div class="itin-body">
+        <div class="itin-spots">
+          <span class="itin-spot">🗿 云冈石窟</span>
+        </div>
+        <div class="itin-meals">
+          <div class="meal-row"><span class="meal-badge zao">早</span>酒店附近</div>
+          <div class="meal-row"><span class="meal-badge wu">午</span>待定</div>
+          <div class="meal-row"><span class="meal-badge wan">晚</span>回家吃</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
